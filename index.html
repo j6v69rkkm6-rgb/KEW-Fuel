@@ -1,123 +1,118 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#173a5e">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="PC-12 Fuel">
-<link rel="manifest" href="manifest.webmanifest">
-<title>PC-12 Fuel</title>
-<style>
-:root{
-  --bg:#f3f5f7;--card:#fff;--navy:#173a5e;--input:#fff4c2;--auto:#e4f2df;
-  --fixed:#ececec;--text:#17202a;--muted:#6b7280;--danger:#b42318;
-  --danger-bg:#fde8e7;--ok:#166534;--ok-bg:#e7f6e9;--border:#d8dee6;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
-.app{max-width:560px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 14px calc(24px + env(safe-area-inset-bottom))}
-header{background:var(--navy);color:white;padding:18px 16px;border-radius:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-h1{font-size:22px;margin:0 0 4px;font-weight:800}.subtitle{font-size:13px;opacity:.85}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 16px}
-.q{background:var(--fixed);border-radius:12px;padding:10px 6px;text-align:center;border:1px solid var(--border)}
-.n{font-size:20px;font-weight:800}.l{font-size:10px;color:var(--muted);margin-top:4px}
-.card{background:var(--card);border-radius:16px;padding:14px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid #e5e7eb}
-.card h2{font-size:16px;margin:0 0 12px;color:var(--navy)}
-.row{display:grid;grid-template-columns:1fr 132px;gap:10px;align-items:center;margin:9px 0}
-label{font-size:14px;font-weight:600}.hint{display:block;color:var(--muted);font-size:11px;font-weight:400;margin-top:2px}
-input{width:100%;height:46px;border-radius:11px;border:1px solid #d1d5db;padding:0 10px;font-size:20px;font-weight:700;text-align:right;background:var(--input);color:var(--text)}
-.output,.fixed{min-height:46px;border-radius:11px;padding:10px;font-size:20px;font-weight:800;text-align:right;display:flex;align-items:center;justify-content:flex-end}
-.output{background:var(--auto);border:1px solid #cbd5c0}.fixed{background:var(--fixed);border:1px solid #d1d5db}
-.output.danger{background:var(--danger-bg);color:var(--danger)}.output.ok{background:var(--ok-bg);color:var(--ok)}
-.result{margin-top:12px;padding-top:12px;border-top:1px solid #e5e7eb}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
-button{appearance:none;border:0;border-radius:12px;height:46px;font-size:15px;font-weight:700}
-.primary{background:var(--navy);color:#fff}.secondary{background:#e5e7eb;color:#111827}
-.foot{font-size:11px;line-height:1.4;color:var(--muted);text-align:center;padding:8px}
-@media(max-width:380px){.row{grid-template-columns:1fr 116px}.quick{grid-template-columns:repeat(2,1fr)}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#101418" />
+  <link rel="manifest" href="manifest.json" />
+  <title>KEW Fuel Quick Check</title>
+  <style>
+    :root{--bg:#0d1116;--card:#171d24;--card2:#202833;--text:#f5f7fa;--muted:#aab4c0;--line:#34404d;--ok:#52c781;--warn:#f0b64b;--bad:#ef6a6a;--accent:#dfe7ef}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    .wrap{max-width:640px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 14px calc(28px + env(safe-area-inset-bottom))}
+    h1{font-size:22px;margin:5px 0 4px;letter-spacing:.2px}.sub{font-size:13px;color:var(--muted);margin-bottom:14px}
+    .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;position:sticky;top:0;padding:7px 0;background:rgba(13,17,22,.96);backdrop-filter:blur(8px);z-index:5}
+    .tab{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:10px;padding:10px 4px;font-weight:700;font-size:12px}.tab.active{background:var(--accent);color:#111820;border-color:var(--accent)}
+    .panel{display:none}.panel.active{display:block}.card{background:var(--card);border:1px solid #27313c;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 6px 24px rgba(0,0,0,.15)}
+    .card h2{font-size:16px;margin:0 0 10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}
+    label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px;font-weight:700}.field{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px}
+    input,select{width:100%;font:inherit;font-size:22px;font-weight:750;background:transparent;color:var(--text);border:0;outline:0;padding:0;min-height:34px} input::placeholder{color:#66727e}
+    .suffix{font-size:11px;color:var(--muted);margin-top:2px}.result{border-radius:14px;padding:13px;background:var(--card2);border:1px solid var(--line);margin-top:10px}.result .k{font-size:12px;color:var(--muted);font-weight:700}.result .v{font-size:28px;font-weight:850;margin-top:3px}.result .note{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+    .status{font-size:14px;font-weight:800;margin-top:6px}.ok{color:var(--ok)}.warn{color:var(--warn)}.bad{color:var(--bad)}
+    button.reset{width:100%;border:1px solid var(--line);background:transparent;color:var(--muted);font-weight:750;border-radius:12px;padding:12px;margin-top:10px}
+    .formula{font-size:12px;line-height:1.45;color:var(--muted);background:#11171d;border-radius:10px;padding:10px;margin-top:10px}
+    .tiny{font-size:11px;color:#7f8b97;line-height:1.45;margin-top:14px}
+    @media(max-width:390px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.tabs{grid-template-columns:repeat(2,1fr)} }
+  </style>
 </head>
 <body>
-<div class="app">
-<header><h1>PC-12 Fuel Quick Reference</h1><div class="subtitle">Personal cockpit calculator</div></header>
+<div class="wrap">
+  <h1>KEW Fuel Quick Check</h1>
+  <div class="sub">Cockpit companion to Air Trail — quick calculations only.</div>
 
-<div class="quick">
-<div class="q"><div class="n">44</div><div class="l">Taxi / Takeoff</div></div>
-<div class="q"><div class="n">70</div><div class="l">Descent</div></div>
-<div class="q"><div class="n">116</div><div class="l">Descent + App + Missed</div></div>
-<div class="q"><div class="n">413</div><div class="l">Reserve</div></div>
+  <div class="tabs">
+    <button class="tab active" data-panel="halfway">Halfway</button>
+    <button class="tab" data-panel="landing">Landing</button>
+    <button class="tab" data-panel="roundtrip">Round Trip</button>
+    <button class="tab" data-panel="quick">Quick</button>
+  </div>
+
+  <section id="halfway" class="panel active">
+    <div class="card">
+      <h2>Halfway Fuel Check</h2>
+      <div class="grid">
+        <div class="field"><label>Fuel on Board NOW</label><input id="hw_fob" inputmode="decimal" placeholder="0"><div class="suffix">lb</div></div>
+        <div class="field"><label>Present Fuel Burn</label><input id="hw_burn" inputmode="decimal" placeholder="0"><div class="suffix">lb/hr</div></div>
+        <div class="field"><label>Minutes Remaining</label><input id="hw_min" inputmode="decimal" placeholder="0"><div class="suffix">to destination</div></div>
+        <div class="field"><label>Air Trail Remaining Fuel</label><input id="hw_enroute" inputmode="decimal" placeholder="0"><div class="suffix">lb — descent / approach / missed + alternate + reserve + contingency, as applicable</div></div>
+      </div>
+      <div class="result"><div class="k">Calculated Fuel Needed</div><div id="hw_need" class="v">—</div><div class="note">Present burn × minutes remaining ÷ 60 + Air Trail enroute fuel.</div></div>
+      <div class="result"><div class="k">Fuel Margin</div><div id="hw_margin" class="v">—</div><div id="hw_status" class="status"></div></div>
+      <div class="formula"><b>When:</b> Run this check at approximately the halfway point, then again anytime you want a progressive fuel check.<br><br><b>Calculation:</b> present burn × minutes remaining ÷ 60 + Air Trail remaining fuel. Compare that with actual fuel on board.</div>
+    </div>
+  </section>
+
+  <section id="landing" class="panel">
+    <div class="card">
+      <h2>Landing Weight / Max Landing Fuel</h2>
+      <div class="grid">
+        <div class="field"><label>Planned Landing Fuel</label><input id="ld_fuel" inputmode="decimal" placeholder="0"><div class="suffix">lb — from Air Trail</div></div>
+        <div class="field"><label>Pounds Under MLW</label><input id="ld_under" inputmode="decimal" placeholder="0"><div class="suffix">lb</div></div>
+        <div class="field full"><label>Predicted / Actual Landing Fuel</label><input id="ld_actual" inputmode="decimal" placeholder="0"><div class="suffix">lb</div></div>
+      </div>
+      <div class="result"><div class="k">Maximum Landing Fuel</div><div id="ld_max" class="v">—</div><div class="note">Planned landing fuel + pounds under maximum landing weight.</div></div>
+      <div class="result"><div class="k">Landing Fuel Margin</div><div id="ld_margin" class="v">—</div><div id="ld_status" class="status"></div></div>
+    </div>
+  </section>
+
+  <section id="roundtrip" class="panel">
+    <div class="card">
+      <h2>Round-Trip Fuel Check</h2>
+      <div class="grid">
+        <div class="field"><label>Starting Fuel</label><input id="rt_fob" inputmode="decimal" placeholder="0"><div class="suffix">lb</div></div>
+        <div class="field"><label>Fuel to TOD — Each Leg</label><input id="rt_tod" inputmode="decimal" placeholder="0"><div class="suffix">lb</div></div>
+        <div class="field"><label>Taxi / Takeoff — Each Leg</label><input id="rt_taxi" inputmode="decimal" value="44"><div class="suffix">lb</div></div>
+        <div class="field"><label>Normal Descent — Each Leg</label><input id="rt_descent" inputmode="decimal" value="70"><div class="suffix">lb</div></div>
+        <div class="field"><label>Alternate Fuel</label><input id="rt_alt" inputmode="decimal" placeholder="0"><div class="suffix">lb</div></div>
+        <div class="field"><label>Reserve</label><input id="rt_res" inputmode="decimal" value="413"><div class="suffix">lb</div></div>
+      </div>
+      <div class="result"><div class="k">Round-Trip Starting Fuel Required</div><div id="rt_need" class="v">—</div><div class="note">(44 + fuel to TOD + 70) × 2 + alternate + 413.</div></div>
+      <div class="result"><div class="k">Starting Fuel Margin</div><div id="rt_margin" class="v">—</div><div id="rt_status" class="status"></div></div>
+      <div class="formula">This is the quick round-trip check we settled on. Air Trail remains the official flight-planning and operational record.</div>
+    </div>
+  </section>
+
+  <section id="quick" class="panel">
+    <div class="card">
+      <h2>Quick Reference</h2>
+      <div class="result"><div class="k">Taxi Fuel</div><div class="v">44 lb</div></div>
+      <div class="result"><div class="k">Reserve Fuel</div><div class="v">413 lb</div></div>
+      <div class="formula"><b>Halfway:</b> present burn × minutes remaining ÷ 60 + Air Trail remaining fuel.<br><br><b>Round trip:</b> (44 + fuel to TOD + 70) × 2 + alternate + 413.<br><br><b>Max landing fuel:</b> Air Trail landing fuel + pounds under MLW.</div>
+      <button class="reset" id="reset">Clear entered values</button>
+    </div>
+  </section>
+
+  <div class="tiny">Personal quick-reference aid only. It does not replace Air Trail, Keewatin COM/SOP, AFM/POH, QRH, approved flight planning, or required crew calculations. Verify all operational figures against current approved sources.</div>
 </div>
-
-<section class="card">
-<h2>Halfway Fuel Check</h2>
-<div class="row"><label>Total trip distance<span class="hint">NM</span></label><input id="distance" inputmode="decimal" type="number"></div>
-<div class="row"><label>Halfway point<span class="hint">Distance ÷ 2</span></label><div class="output" id="halfway">0 NM</div></div>
-<div class="row"><label>Current fuel burn<span class="hint">lb/hr</span></label><input id="flow" inputmode="decimal" type="number"></div>
-<div class="row"><label>Minutes remaining</label><input id="minutes" inputmode="decimal" type="number"></div>
-<div class="row"><label>Remaining cruise fuel</label><div class="output" id="cruise">0 lb</div></div>
-<div class="row"><label>Descent / App / Missed</label><div class="fixed">116 lb</div></div>
-<div class="row"><label>Alternate fuel</label><input id="halfAlt" inputmode="decimal" type="number"></div>
-<div class="row"><label>Reserve</label><div class="fixed">413 lb</div></div>
-<div class="row"><label>Contingency</label><input id="contingency" inputmode="decimal" type="number" value="0"></div>
-<div class="row"><label>Fuel on board</label><input id="fob" inputmode="decimal" type="number"></div>
-<div class="result">
-<div class="row"><label>Fuel required</label><div class="output" id="required">529 lb</div></div>
-<div class="row"><label>Fuel margin</label><div class="output" id="margin">-529 lb</div></div>
-</div>
-</section>
-
-<section class="card">
-<h2>Landing Weight</h2>
-<div class="row"><label>Zero fuel weight</label><input id="zfw" inputmode="decimal" type="number" value="8134"></div>
-<div class="row"><label>Air Trail landing fuel</label><input id="landingFuel" inputmode="decimal" type="number"></div>
-<div class="row"><label>Estimated landing weight</label><div class="output" id="landingWeight">8134 lb</div></div>
-<div class="row"><label>Allowable landing weight</label><input id="allowable" inputmode="decimal" type="number"></div>
-<div class="result">
-<div class="row"><label>Under max landing weight</label><div class="output" id="underMax">0 lb</div></div>
-<div class="row"><label>Max landing fuel</label><div class="output" id="maxLandingFuel">0 lb</div></div>
-</div>
-</section>
-
-<section class="card">
-<h2>Round Trip</h2>
-<div class="row"><label>Taxi / Takeoff per leg</label><div class="fixed">44 lb</div></div>
-<div class="row"><label>Fuel to TOD per leg</label><input id="tod" inputmode="decimal" type="number"></div>
-<div class="row"><label>Descent per leg</label><div class="fixed">70 lb</div></div>
-<div class="row"><label>Normal burn per leg</label><div class="output" id="legBurn">114 lb</div></div>
-<div class="row"><label>Two-leg normal burn</label><div class="output" id="twoLeg">228 lb</div></div>
-<div class="row"><label>Alternate fuel</label><input id="roundAlt" inputmode="decimal" type="number"></div>
-<div class="row"><label>Reserve</label><div class="fixed">413 lb</div></div>
-<div class="result"><div class="row"><label>Starting fuel required</label><div class="output" id="roundTotal">641 lb</div></div></div>
-</section>
-
-<div class="actions"><button class="primary" onclick="saveValues()">Save Inputs</button><button class="secondary" onclick="resetValues()">Reset</button></div>
-<div class="foot">Personal quick reference only. Current company and aircraft documents remain authoritative.</div>
-</div>
-
 <script>
-const $=id=>document.getElementById(id), num=id=>parseFloat($(id).value)||0, fmt=n=>Math.round(n).toLocaleString();
-function flag(el,v){el.classList.remove("danger","ok"); if(v<0)el.classList.add("danger"); else if(v>0)el.classList.add("ok")}
+const $=id=>document.getElementById(id);
+const n=id=>{const v=parseFloat($(id).value);return Number.isFinite(v)?v:0};
+const show=(id,val)=>$(id).textContent=Number.isFinite(val)?Math.round(val).toLocaleString()+" lb":"—";
+const status=(id,margin)=>{const el=$(id); if(!Number.isFinite(margin)){el.textContent="";return;} if(margin<0){el.textContent="SHORT by "+Math.abs(Math.round(margin)).toLocaleString()+" lb";el.className="status bad"} else if(margin<100){el.textContent="Positive margin — close";el.className="status warn"} else {el.textContent="Positive margin";el.className="status ok"}};
 function calc(){
- $("halfway").textContent=fmt(num("distance")/2)+" NM";
- const cruise=num("flow")*num("minutes")/60; $("cruise").textContent=fmt(cruise)+" lb";
- const req=cruise+116+num("halfAlt")+413+num("contingency"); $("required").textContent=fmt(req)+" lb";
- const margin=num("fob")-req; $("margin").textContent=(margin>0?"+":"")+fmt(margin)+" lb"; flag($("margin"),margin);
- const lw=num("zfw")+num("landingFuel"); $("landingWeight").textContent=fmt(lw)+" lb";
- const under=num("allowable")-lw; $("underMax").textContent=(under>0?"+":"")+fmt(under)+" lb"; flag($("underMax"),under);
- $("maxLandingFuel").textContent=fmt(num("landingFuel")+under)+" lb";
- const leg=44+num("tod")+70; $("legBurn").textContent=fmt(leg)+" lb";
- const two=leg*2; $("twoLeg").textContent=fmt(two)+" lb";
- $("roundTotal").textContent=fmt(two+num("roundAlt")+413)+" lb";
+  let hwNeed=n('hw_burn')*n('hw_min')/60+n('hw_enroute'); let hwMargin=n('hw_fob')-hwNeed;
+  show('hw_need',hwNeed); show('hw_margin',hwMargin); status('hw_status',hwMargin);
+  let ldMax=n('ld_fuel')+n('ld_under'); let ldMargin=ldMax-n('ld_actual');
+  show('ld_max',ldMax); show('ld_margin',ldMargin); status('ld_status',ldMargin);
+  let rtNeed=(n('rt_taxi')+n('rt_tod')+n('rt_descent'))*2+n('rt_alt')+n('rt_res'); let rtMargin=n('rt_fob')-rtNeed;
+  show('rt_need',rtNeed); show('rt_margin',rtMargin); status('rt_status',rtMargin);
+  document.querySelectorAll('input').forEach(i=>localStorage.setItem('kew_'+i.id,i.value));
 }
-const ids=["distance","flow","minutes","halfAlt","contingency","fob","zfw","landingFuel","allowable","tod","roundAlt"];
-ids.forEach(id=>$(id).addEventListener("input",calc));
-function saveValues(){const d={};ids.forEach(id=>d[id]=$(id).value);localStorage.setItem("pc12FuelInputs",JSON.stringify(d));alert("Inputs saved.");}
-function loadValues(){try{const d=JSON.parse(localStorage.getItem("pc12FuelInputs")||"{}");ids.forEach(id=>{if(d[id]!==undefined&&d[id]!=="")$(id).value=d[id]})}catch(e){}calc();}
-function resetValues(){if(!confirm("Clear entered values?"))return;["distance","flow","minutes","halfAlt","fob","landingFuel","allowable","tod","roundAlt"].forEach(id=>$(id).value="");$("contingency").value=0;$("zfw").value=8134;localStorage.removeItem("pc12FuelInputs");calc();}
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js"))}
-loadValues();
+document.querySelectorAll('input').forEach(i=>{let s=localStorage.getItem('kew_'+i.id);if(s!==null)i.value=s;i.addEventListener('input',calc)});
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.panel).classList.add('active')}));
+$('reset').addEventListener('click',()=>{document.querySelectorAll('input').forEach(i=>{localStorage.removeItem('kew_'+i.id); i.value=(i.id==='rt_taxi'?'44':i.id==='rt_descent'?'70':i.id==='rt_res'?'413':'')});calc()});
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
+calc();
 </script>
 </body>
 </html>
