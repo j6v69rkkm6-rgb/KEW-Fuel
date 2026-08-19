@@ -1,1 +1,522 @@
-index.html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#101418" />
+  <link rel="manifest" href="manifest.json" />
+  <title>KEW Fuel Quick Check</title>
+
+  <style>
+    :root{
+      --bg:#0d1116;
+      --card:#171d24;
+      --card2:#202833;
+      --text:#f5f7fa;
+      --muted:#aab4c0;
+      --line:#34404d;
+      --ok:#52c781;
+      --warn:#f0b64b;
+      --bad:#ef6a6a;
+      --accent:#dfe7ef;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .wrap{
+      max-width:640px;
+      margin:0 auto;
+      padding:calc(14px + env(safe-area-inset-top)) 14px
+              calc(28px + env(safe-area-inset-bottom));
+    }
+
+    h1{
+      font-size:22px;
+      margin:5px 0 4px;
+    }
+
+    .sub{
+      font-size:13px;
+      color:var(--muted);
+      margin-bottom:14px;
+    }
+
+    .tabs{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+      position:sticky;
+      top:0;
+      padding:7px 0;
+      background:rgba(13,17,22,.96);
+      backdrop-filter:blur(8px);
+      z-index:5;
+    }
+
+    .tab{
+      border:1px solid var(--line);
+      background:var(--card);
+      color:var(--muted);
+      border-radius:10px;
+      padding:10px 4px;
+      font-weight:700;
+      font-size:12px;
+    }
+
+    .tab.active{
+      background:var(--accent);
+      color:#111820;
+      border-color:var(--accent);
+    }
+
+    .panel{display:none}
+    .panel.active{display:block}
+
+    .card{
+      background:var(--card);
+      border:1px solid #27313c;
+      border-radius:16px;
+      padding:14px;
+      margin:10px 0;
+    }
+
+    .card h2{
+      font-size:16px;
+      margin:0 0 10px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .full{grid-column:1/-1}
+
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin:0 0 5px;
+      font-weight:700;
+    }
+
+    .field{
+      background:var(--card2);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+    }
+
+    input{
+      width:100%;
+      font:inherit;
+      font-size:22px;
+      font-weight:750;
+      background:transparent;
+      color:var(--text);
+      border:0;
+      outline:0;
+      padding:0;
+      min-height:34px;
+    }
+
+    input::placeholder{
+      color:#66727e;
+    }
+
+    .suffix{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:2px;
+    }
+
+    .result{
+      border-radius:14px;
+      padding:13px;
+      background:var(--card2);
+      border:1px solid var(--line);
+      margin-top:10px;
+    }
+
+    .result .k{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .result .v{
+      font-size:28px;
+      font-weight:850;
+      margin-top:3px;
+    }
+
+    .result .note{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:4px;
+      line-height:1.35;
+    }
+
+    .status{
+      font-size:14px;
+      font-weight:800;
+      margin-top:6px;
+    }
+
+    .ok{color:var(--ok)}
+    .warn{color:var(--warn)}
+    .bad{color:var(--bad)}
+
+    .formula{
+      font-size:12px;
+      line-height:1.45;
+      color:var(--muted);
+      background:#11171d;
+      border-radius:10px;
+      padding:10px;
+      margin-top:10px;
+    }
+
+    button.reset{
+      width:100%;
+      border:1px solid var(--line);
+      background:transparent;
+      color:var(--muted);
+      font-weight:750;
+      border-radius:12px;
+      padding:12px;
+      margin-top:10px;
+    }
+
+    .tiny{
+      font-size:11px;
+      color:#7f8b97;
+      line-height:1.45;
+      margin-top:14px;
+    }
+
+    @media(max-width:390px){
+      .grid{grid-template-columns:1fr}
+      .full{grid-column:auto}
+      .tabs{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <h1>KEW Fuel Quick Check</h1>
+  <div class="sub">Cockpit companion to Air Trail — quick calculations only.</div>
+
+  <div class="tabs">
+    <button class="tab active" data-panel="halfway">Halfway</button>
+    <button class="tab" data-panel="landing">Landing</button>
+    <button class="tab" data-panel="roundtrip">Round Trip</button>
+    <button class="tab" data-panel="quick">Quick</button>
+  </div>
+
+  <section id="halfway" class="panel active">
+    <div class="card">
+      <h2>Halfway / Enroute Fuel Check</h2>
+
+      <div class="grid">
+        <div class="field">
+          <label>Fuel on Board NOW</label>
+          <input id="hw_fob" inputmode="decimal" placeholder="0">
+          <div class="suffix">lb</div>
+        </div>
+
+        <div class="field">
+          <label>Present Fuel Burn</label>
+          <input id="hw_burn" inputmode="decimal" placeholder="0">
+          <div class="suffix">lb/hr</div>
+        </div>
+
+        <div class="field">
+          <label>Minutes Remaining</label>
+          <input id="hw_min" inputmode="decimal" placeholder="0">
+          <div class="suffix">to destination</div>
+        </div>
+
+        <div class="field">
+          <label>Air Trail Remaining Fuel</label>
+          <input id="hw_enroute" inputmode="decimal" placeholder="0">
+          <div class="suffix">remaining planned fuel components</div>
+        </div>
+      </div>
+
+      <div class="result">
+        <div class="k">Calculated Fuel Needed</div>
+        <div id="hw_need" class="v">—</div>
+        <div class="note">
+          Present burn × minutes remaining ÷ 60 + Air Trail remaining fuel.
+        </div>
+      </div>
+
+      <div class="result">
+        <div class="k">Fuel Margin</div>
+        <div id="hw_margin" class="v">—</div>
+        <div id="hw_status" class="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="landing" class="panel">
+    <div class="card">
+      <h2>Landing Weight / Max Landing Fuel</h2>
+
+      <div class="grid">
+        <div class="field">
+          <label>Planned Landing Fuel</label>
+          <input id="ld_fuel" inputmode="decimal" placeholder="0">
+          <div class="suffix">lb — from Air Trail</div>
+        </div>
+
+        <div class="field">
+          <label>Pounds Under MLW</label>
+          <input id="ld_under" inputmode="decimal" placeholder="0">
+          <div class="suffix">lb</div>
+        </div>
+
+        <div class="field full">
+          <label>Predicted / Actual Landing Fuel</label>
+          <input id="ld_actual" inputmode="decimal" placeholder="0">
+          <div class="suffix">lb</div>
+        </div>
+      </div>
+
+      <div class="result">
+        <div class="k">Maximum Landing Fuel</div>
+        <div id="ld_max" class="v">—</div>
+        <div class="note">
+          Planned landing fuel + pounds under maximum landing weight.
+        </div>
+      </div>
+
+      <div class="result">
+        <div class="k">Landing Fuel Margin</div>
+        <div id="ld_margin" class="v">—</div>
+        <div id="ld_status" class="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roundtrip" class="panel">
+    <div class="card">
+      <h2>Round-Trip Fuel Check</h2>
+
+      <div class="grid">
+        <div class="field">
+          <label>Fuel on Board</label>
+          <input id="rt_fob" inputmode="decimal" placeholder="0">
+          <div class="suffix">lb</div>
+        </div>
+
+        <div class="field">
+          <label>Fuel to TOD</label>
+          <input id="rt_tod" inputmode="decimal" placeholder="0">
+          <div class="suffix">one way</div>
+        </div>
+
+        <div class="field">
+          <label>Alternate Fuel</label>
+          <input id="rt_alt" inputmode="decimal" placeholder="0">
+          <div class="suffix">lb</div>
+        </div>
+      </div>
+
+      <div class="result">
+        <div class="k">Total Fuel Required</div>
+        <div id="rt_need" class="v">—</div>
+        <div class="note">
+          (44 taxi/takeoff + fuel to TOD + 70 descent) × 2 + alternate + 413 reserve.
+        </div>
+      </div>
+
+      <div class="result">
+        <div class="k">Fuel Margin</div>
+        <div id="rt_margin" class="v">—</div>
+        <div id="rt_status" class="status"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="quick" class="panel">
+    <div class="card">
+      <h2>Quick Reference</h2>
+
+      <div class="result">
+        <div class="k">Taxi / Takeoff Fuel</div>
+        <div class="v">44 lb</div>
+      </div>
+
+      <div class="result">
+        <div class="k">Descent Fuel</div>
+        <div class="v">70 lb</div>
+      </div>
+
+      <div class="result">
+        <div class="k">Reserve Fuel</div>
+        <div class="v">413 lb</div>
+      </div>
+
+      <div class="formula">
+        <b>Halfway:</b><br>
+        present burn × minutes remaining ÷ 60 + Air Trail remaining fuel.
+        <br><br>
+        <b>Max landing fuel:</b><br>
+        Air Trail landing fuel + pounds under MLW.
+        <br><br>
+        <b>Round trip:</b><br>
+        (44 + fuel to TOD + 70) × 2 + alternate + 413.
+      </div>
+
+      <button class="reset" id="reset">Clear entered values</button>
+    </div>
+  </section>
+
+  <div class="tiny">
+    Personal quick-reference aid only. It does not replace Air Trail,
+    Keewatin COM/SOP, AFM/POH, QRH, approved flight planning, or required
+    crew calculations. Verify all operational figures against current approved sources.
+  </div>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+const n = id => {
+  const v = parseFloat($(id).value);
+  return Number.isFinite(v) ? v : 0;
+};
+
+const show = (id, val) => {
+  $(id).textContent =
+    Number.isFinite(val)
+      ? Math.round(val).toLocaleString() + " lb"
+      : "—";
+};
+
+const status = (id, margin) => {
+  const el = $(id);
+
+  if (!Number.isFinite(margin)) {
+    el.textContent = "";
+    return;
+  }
+
+  if (margin < 0) {
+    el.textContent =
+      "SHORT by " +
+      Math.abs(Math.round(margin)).toLocaleString() +
+      " lb";
+    el.className = "status bad";
+  } else if (margin < 100) {
+    el.textContent = "Positive margin — close";
+    el.className = "status warn";
+  } else {
+    el.textContent = "Positive margin";
+    el.className = "status ok";
+  }
+};
+
+function calc() {
+  const hwNeed =
+    n("hw_burn") *
+    n("hw_min") /
+    60 +
+    n("hw_enroute");
+
+  const hwMargin =
+    n("hw_fob") -
+    hwNeed;
+
+  show("hw_need", hwNeed);
+  show("hw_margin", hwMargin);
+  status("hw_status", hwMargin);
+
+  const ldMax =
+    n("ld_fuel") +
+    n("ld_under");
+
+  const ldMargin =
+    ldMax -
+    n("ld_actual");
+
+  show("ld_max", ldMax);
+  show("ld_margin", ldMargin);
+  status("ld_status", ldMargin);
+
+  const rtNeed =
+    (44 + n("rt_tod") + 70) * 2 +
+    n("rt_alt") +
+    413;
+
+  const rtMargin =
+    n("rt_fob") -
+    rtNeed;
+
+  show("rt_need", rtNeed);
+  show("rt_margin", rtMargin);
+  status("rt_status", rtMargin);
+
+  document.querySelectorAll("input").forEach(i => {
+    localStorage.setItem("kew_" + i.id, i.value);
+  });
+}
+
+document.querySelectorAll("input").forEach(i => {
+  const saved = localStorage.getItem("kew_" + i.id);
+
+  if (saved !== null) {
+    i.value = saved;
+  }
+
+  i.addEventListener("input", calc);
+});
+
+document.querySelectorAll(".tab").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(x => {
+      x.classList.remove("active");
+    });
+
+    document.querySelectorAll(".panel").forEach(x => {
+      x.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    $(button.dataset.panel).classList.add("active");
+  });
+});
+
+$("reset").addEventListener("click", () => {
+  document.querySelectorAll("input").forEach(i => {
+    localStorage.removeItem("kew_" + i.id);
+    i.value = "";
+  });
+
+  calc();
+});
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").catch(() => {});
+}
+
+calc();
+</script>
+
+</body>
+</html>
