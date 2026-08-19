@@ -1,0 +1,9 @@
+{
+  "name": "KEW Fuel Quick Check",
+  "short_name": "KEW Fuel",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0d1116",
+  "theme_color": "#101418",
+  "description": "Personal cockpit fuel quick-check companion."
+}
