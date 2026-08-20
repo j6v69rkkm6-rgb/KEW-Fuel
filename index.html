@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
-<title>KEW Fuel v23 Manitoba</title>
+<title>KEW Fuel v25 Manitoba</title>
 <style>
 :root{
   --blue:#0b4aa2;
@@ -202,7 +202,7 @@ input,select{
 <div class="app">
 
   <section id="home" class="screen active">
-    <div class="home-brand"><div style="font-size:12px;font-weight:800;color:#5b6472;margin-bottom:2px">v23 • Manitoba airport test</div>
+    <div class="home-brand"><div style="font-size:12px;font-weight:800;color:#5b6472;margin-bottom:2px">v25 • Manitoba airport test</div>
       <h1>KEW FUEL</h1>
       <div class="sub">Cockpit Quick Reference</div>
     </div>
@@ -464,7 +464,7 @@ input,select{
     <div class="section-label">ENTER TRIP INFORMATION</div>
 
     <div class="field-row">
-      <div class="field-label"><strong>Total Trip Distance</strong><span>Planned total distance</span></div>
+      <div class="field-label"><strong>Total Trip Distance</strong><span>Auto from departure/destination — editable for planned routing</span><div id="distanceSource" class="synced-note">Select both airports to auto-fill</div></div>
       <div class="input-wrap"><input id="distance" inputmode="decimal"><span class="unit">nm</span></div>
     </div>
 
@@ -546,6 +546,18 @@ input,select{
     </div>
 
     <div class="section-label green-title">ENTER INFORMATION</div>
+
+    <div class="result-row" style="margin-bottom:10px">
+      <div class="r-icon">📍</div>
+      <div class="r-label"><strong>One-Way Distance</strong><span>Shared from Air Trail / selected airports</span></div>
+      <div id="rtOneWayDistance" class="r-value blue">—</div>
+    </div>
+
+    <div class="result-row" style="margin-bottom:14px">
+      <div class="r-icon">↔️</div>
+      <div class="r-label"><strong>Round-Trip Distance</strong><span>One-way distance × 2</span></div>
+      <div id="rtTotalDistance" class="r-value purple">—</div>
+    </div>
 
     <div class="field-row">
       <div class="field-label"><strong>Fuel To TOD (One Way)</strong><span>From Air Trail plan</span></div>
@@ -675,7 +687,7 @@ input,select{
 
 <script>
 const $ = id => document.getElementById(id);
-const AIRPORT_DB = {"CYWG":{"name":"Winnipeg / James Armstrong Richardson International Airport","elev":783,"runways":[{"id":"13/31","length":8841,"surface":"ASP"},{"id":"18/36","length":11000,"surface":"ASP"}]},"CYAV":{"name":"Winnipeg / St. Andrews Airport","elev":760,"runways":[{"id":"04/22","length":2850,"surface":"ASP"},{"id":"13/31","length":3000,"surface":"ASP"},{"id":"18/36","length":3000,"surface":"ASP"}]},"CYPG":{"name":"Portage-la-Prairie / Southport Airport","elev":885,"runways":[{"id":"02/20","length":3045,"surface":"ASP"},{"id":"09/27","length":2670,"surface":"ASP"},{"id":"13L/31R","length":3130,"surface":"ASP"},{"id":"13R/31L","length":7000,"surface":"ASP"}]},"CYBR":{"name":"Brandon Municipal Airport","elev":1343,"runways":[{"id":"08/26","length":6500,"surface":"ASP"},{"id":"14/32","length":3000,"surface":"GVL"}]},"CYDN":{"name":"Dauphin Barker Airport","elev":999,"runways":[{"id":"02/20","length":2000,"surface":"GVL"},{"id":"08/26","length":2700,"surface":"ASP"},{"id":"14/32","length":5000,"surface":"ASP"}]},"CYGM":{"name":"Gimli Industrial Park Airport","elev":753,"runways":[{"id":"15/33","length":6800,"surface":"ASP"}]},"CYQD":{"name":"The Pas Airport","elev":887,"runways":[{"id":"13/31","length":5901,"surface":"ASP"}]},"CYFO":{"name":"Flin Flon Airport","elev":997,"runways":[{"id":"19/01","length":5004,"surface":"ASP"}]},"CYTH":{"name":"Thompson Airport","elev":729,"runways":[{"id":"06/24","length":5800,"surface":"ASP"},{"id":"15/33","length":5079,"surface":"GVL"}]},"CYYQ":{"name":"Churchill Airport","elev":94,"runways":[{"id":"07/25","length":4000,"surface":"GVL"},{"id":"15/33","length":9200,"surface":"ASP"}]},"CYBV":{"name":"Berens River Airport","elev":728,"runways":[{"id":"09/27","length":2900,"surface":"CRUSHED ROCK"}]},"CYBQ":{"name":"Tadoule Lake Airport","elev":923,"runways":[{"id":"07/25","length":3201,"surface":"GRAVEL"}]},"CYBT":{"name":"Brochet Airport","elev":1136,"runways":[{"id":"03/21","length":3500,"surface":"CRUSHED ROCK"}]},"CYCR":{"name":"Cross Lake (Charlie Sinclair Memorial) Airport","elev":709,"runways":[{"id":"05/23","length":3990,"surface":"CRUSHED ROCK"}]},"CYGO":{"name":"Gods Lake Narrows Airport","elev":617,"runways":[{"id":"14/32","length":3810,"surface":"CRUSHED ROCK"}]},"CYGX":{"name":"Gillam Airport","elev":476,"runways":[{"id":"05/23","length":5000,"surface":"GRAVEL"}]},"CYIV":{"name":"Island Lake Airport","elev":770,"runways":[{"id":"12/30","length":4000,"surface":"CRUSHED ROCK"}]},"CYNE":{"name":"Norway House Airport","elev":734,"runways":[{"id":"06/24","length":3902,"surface":"GRAVEL"}]},"CYOH":{"name":"Oxford House Airport","elev":663,"runways":[{"id":"04/22","length":3828,"surface":"CRUSHED ROCK"}]},"CYRS":{"name":"Red Sucker Lake Airport","elev":729,"runways":[{"id":"09/27","length":3555,"surface":"CRUSHED ROCK"}]},"CYST":{"name":"St. Theresa Point Airport","elev":773,"runways":[{"id":"04/22","length":3400,"surface":"CRUSHED ROCK"}]},"CYYL":{"name":"Lynn Lake Airport","elev":1170,"runways":[{"id":"08/26","length":2520,"surface":"GVL"},{"id":"17/35","length":5000,"surface":"ASP"}]},"CZBD":{"name":"Ilford Airport","elev":642,"runways":[{"id":"09/27","length":3000,"surface":"CRUSHED ROCK"}]},"CZFG":{"name":"Pukatawagan Airport","elev":958,"runways":[{"id":"15/33","length":3000,"surface":"CRUSHED ROCK"}]},"CZGI":{"name":"Gods River Airport","elev":627,"runways":[{"id":"09/27","length":3540,"surface":"CRUSHED ROCK"}]},"CZSN":{"name":"South Indian Lake Airport","elev":951,"runways":[{"id":"18/36","length":3509,"surface":"CRUSHED ROCK"}]},"CZTA":{"name":"Bloodvein River Airport","elev":721,"runways":[{"id":"18/36","length":3000,"surface":"CRUSHED ROCK"}]},"CZTM":{"name":"Shamattawa Airport","elev":289,"runways":[{"id":"01/19","length":4006,"surface":"GRAVEL"}]},"CZWH":{"name":"Lac Brochet Airport","elev":1211,"runways":[{"id":"03/21","length":3500,"surface":"CRUSHED ROCK"}]},"CJB6":{"name":"Gods Lake Airport","elev":605,"runways":[{"id":"16/34","length":2500,"surface":"GRAVEL/SAND"}]},"CYLR":{"name":"Leaf Rapids Airport","elev":959,"runways":[{"id":"18/36","length":3000,"surface":"ASP"}]},"CZGR":{"name":"Little Grand Rapids Airport","elev":1005,"runways":[{"id":"18/36","length":2800,"surface":"CRUSHED ROCK"}]},"CZNG":{"name":"Poplar River Airport","elev":728,"runways":[{"id":"10/28","length":2500,"surface":"CRUSHED ROCK"}]},"CZMN":{"name":"Pikwitonei Airport","elev":630,"runways":[{"id":"05/23","length":2200,"surface":"CRUSHED ROCK"}]},"CZJN":{"name":"Swan River Airport","elev":1100,"runways":[{"id":"02/20","length":3933,"surface":"ASP"},{"id":"08/26","length":1950,"surface":"GRS"}]},"CZLQ":{"name":"Thicket Portage Airport","elev":678,"runways":[{"id":"12/30","length":2220,"surface":"CRUSHED ROCK"}]},"CZAC":{"name":"York Landing Airport","elev":621,"runways":[{"id":"10/28","length":3395,"surface":"CRUSHED ROCK"}]},"CZEE":{"name":"Kelsey Airport","elev":600,"runways":[{"id":"12/30","length":2590,"surface":"GRAVEL"}]},"CJE4":{"name":"Snow Lake Airport","elev":993,"runways":[{"id":"03/21","length":3510,"surface":"GRAVEL"}]},"CJV8":{"name":"Grand Rapids Airport","elev":860,"runways":[{"id":"13/31","length":3119,"surface":"GRAVEL"}]},"CYVD":{"name":"Virden / RJ (Bob) Andrew Field Regional Aerodrome","elev":1454,"runways":[{"id":"08/26","length":4000,"surface":"ASPHALT"}]}};
+const AIRPORT_DB = {"CYWG":{"name":"Winnipeg / James Armstrong Richardson International Airport","elev":783,"runways":[{"id":"13/31","length":8841,"surface":"ASP"},{"id":"18/36","length":11000,"surface":"ASP"}],"lat":49.91,"lon":-97.239899},"CYAV":{"name":"Winnipeg / St. Andrews Airport","elev":760,"runways":[{"id":"04/22","length":2850,"surface":"ASP"},{"id":"13/31","length":3000,"surface":"ASP"},{"id":"18/36","length":3000,"surface":"ASP"}],"lat":50.0564,"lon":-97.032501},"CYPG":{"name":"Portage-la-Prairie / Southport Airport","elev":885,"runways":[{"id":"02/20","length":3045,"surface":"ASP"},{"id":"09/27","length":2670,"surface":"ASP"},{"id":"13L/31R","length":3130,"surface":"ASP"},{"id":"13R/31L","length":7000,"surface":"ASP"}],"lat":49.903099,"lon":-98.273817},"CYBR":{"name":"Brandon Municipal Airport","elev":1343,"runways":[{"id":"08/26","length":6500,"surface":"ASP"},{"id":"14/32","length":3000,"surface":"GVL"}],"lat":49.91,"lon":-99.951897},"CYDN":{"name":"Dauphin Barker Airport","elev":999,"runways":[{"id":"02/20","length":2000,"surface":"GVL"},{"id":"08/26","length":2700,"surface":"ASP"},{"id":"14/32","length":5000,"surface":"ASP"}],"lat":51.1008,"lon":-100.052002},"CYGM":{"name":"Gimli Industrial Park Airport","elev":753,"runways":[{"id":"15/33","length":6800,"surface":"ASP"}],"lat":50.628101,"lon":-97.043297},"CYQD":{"name":"The Pas Airport","elev":887,"runways":[{"id":"13/31","length":5901,"surface":"ASP"}],"lat":53.971401,"lon":-101.091003},"CYFO":{"name":"Flin Flon Airport","elev":997,"runways":[{"id":"19/01","length":5004,"surface":"ASP"}],"lat":54.678101,"lon":-101.681999},"CYTH":{"name":"Thompson Airport","elev":729,"runways":[{"id":"06/24","length":5800,"surface":"ASP"},{"id":"15/33","length":5079,"surface":"GVL"}],"lat":55.801102,"lon":-97.864197},"CYYQ":{"name":"Churchill Airport","elev":94,"runways":[{"id":"07/25","length":4000,"surface":"GVL"},{"id":"15/33","length":9200,"surface":"ASP"}],"lat":58.739201,"lon":-94.065002},"CYBV":{"name":"Berens River Airport","elev":728,"runways":[{"id":"09/27","length":2900,"surface":"CRUSHED ROCK"}],"lat":52.358898,"lon":-97.018303},"CYBQ":{"name":"Tadoule Lake Airport","elev":923,"runways":[{"id":"07/25","length":3201,"surface":"GRAVEL"}],"lat":58.706308,"lon":-98.511057},"CYBT":{"name":"Brochet Airport","elev":1136,"runways":[{"id":"03/21","length":3500,"surface":"CRUSHED ROCK"}],"lat":57.8894,"lon":-101.679001},"CYCR":{"name":"Cross Lake (Charlie Sinclair Memorial) Airport","elev":709,"runways":[{"id":"05/23","length":3990,"surface":"CRUSHED ROCK"}],"lat":54.609758,"lon":-97.762442},"CYGO":{"name":"Gods Lake Narrows Airport","elev":617,"runways":[{"id":"14/32","length":3810,"surface":"CRUSHED ROCK"}],"lat":54.55768,"lon":-94.490061},"CYGX":{"name":"Gillam Airport","elev":476,"runways":[{"id":"05/23","length":5000,"surface":"GRAVEL"}],"lat":56.35712,"lon":-94.711504},"CYIV":{"name":"Island Lake Airport","elev":770,"runways":[{"id":"12/30","length":4000,"surface":"CRUSHED ROCK"}],"lat":53.857201,"lon":-94.653603},"CYNE":{"name":"Norway House Airport","elev":734,"runways":[{"id":"06/24","length":3902,"surface":"GRAVEL"}],"lat":53.958302,"lon":-97.8442},"CYOH":{"name":"Oxford House Airport","elev":663,"runways":[{"id":"04/22","length":3828,"surface":"CRUSHED ROCK"}],"lat":54.9333,"lon":-95.2789},"CYRS":{"name":"Red Sucker Lake Airport","elev":729,"runways":[{"id":"09/27","length":3555,"surface":"CRUSHED ROCK"}],"lat":54.167198,"lon":-93.557198},"CYST":{"name":"St. Theresa Point Airport","elev":773,"runways":[{"id":"04/22","length":3400,"surface":"CRUSHED ROCK"}],"lat":53.845261,"lon":-94.851966},"CYYL":{"name":"Lynn Lake Airport","elev":1170,"runways":[{"id":"08/26","length":2520,"surface":"GVL"},{"id":"17/35","length":5000,"surface":"ASP"}],"lat":56.863899,"lon":-101.075996},"CZBD":{"name":"Ilford Airport","elev":642,"runways":[{"id":"09/27","length":3000,"surface":"CRUSHED ROCK"}],"lat":56.051622,"lon":-95.61882},"CZFG":{"name":"Pukatawagan Airport","elev":958,"runways":[{"id":"15/33","length":3000,"surface":"CRUSHED ROCK"}],"lat":55.749199,"lon":-101.265999},"CZGI":{"name":"Gods River Airport","elev":627,"runways":[{"id":"09/27","length":3540,"surface":"CRUSHED ROCK"}],"lat":54.839699,"lon":-94.078598},"CZSN":{"name":"South Indian Lake Airport","elev":951,"runways":[{"id":"18/36","length":3509,"surface":"CRUSHED ROCK"}],"lat":56.792801,"lon":-98.907204},"CZTA":{"name":"Bloodvein River Airport","elev":721,"runways":[{"id":"18/36","length":3000,"surface":"CRUSHED ROCK"}],"lat":51.784568,"lon":-96.692305},"CZTM":{"name":"Shamattawa Airport","elev":289,"runways":[{"id":"01/19","length":4006,"surface":"GRAVEL"}],"lat":55.86356,"lon":-92.081137},"CZWH":{"name":"Lac Brochet Airport","elev":1211,"runways":[{"id":"03/21","length":3500,"surface":"CRUSHED ROCK"}],"lat":58.614279,"lon":-101.468954},"CJB6":{"name":"Gods Lake Airport","elev":605,"runways":[{"id":"16/34","length":2500,"surface":"GRAVEL/SAND"}],"lat":54.780469,"lon":-93.718228},"CYLR":{"name":"Leaf Rapids Airport","elev":959,"runways":[{"id":"18/36","length":3000,"surface":"ASP"}],"lat":56.513302,"lon":-99.985298},"CZGR":{"name":"Little Grand Rapids Airport","elev":1005,"runways":[{"id":"18/36","length":2800,"surface":"CRUSHED ROCK"}],"lat":52.045417,"lon":-95.46617},"CZNG":{"name":"Poplar River Airport","elev":728,"runways":[{"id":"10/28","length":2500,"surface":"CRUSHED ROCK"}],"lat":52.996526,"lon":-97.274194},"CZMN":{"name":"Pikwitonei Airport","elev":630,"runways":[{"id":"05/23","length":2200,"surface":"CRUSHED ROCK"}],"lat":55.588902,"lon":-97.1642},"CZJN":{"name":"Swan River Airport","elev":1100,"runways":[{"id":"02/20","length":3933,"surface":"ASP"},{"id":"08/26","length":1950,"surface":"GRS"}],"lat":52.120602,"lon":-101.236},"CZLQ":{"name":"Thicket Portage Airport","elev":678,"runways":[{"id":"12/30","length":2220,"surface":"CRUSHED ROCK"}],"lat":55.318901,"lon":-97.707802},"CZAC":{"name":"York Landing Airport","elev":621,"runways":[{"id":"10/28","length":3395,"surface":"CRUSHED ROCK"}],"lat":56.089401,"lon":-96.089203},"CZEE":{"name":"Kelsey Airport","elev":600,"runways":[{"id":"12/30","length":2590,"surface":"GRAVEL"}],"lat":56.037498,"lon":-96.509697},"CJE4":{"name":"Snow Lake Airport","elev":993,"runways":[{"id":"03/21","length":3510,"surface":"GRAVEL"}],"lat":54.897202,"lon":-99.818901},"CJV8":{"name":"Grand Rapids Airport","elev":860,"runways":[{"id":"13/31","length":3119,"surface":"GRAVEL"}],"lat":53.172501,"lon":-99.323097},"CYVD":{"name":"Virden / RJ (Bob) Andrew Field Regional Aerodrome","elev":1454,"runways":[{"id":"08/26","length":4000,"surface":"ASPHALT"}],"lat":49.8783,"lon":-100.917999}};
 
 const AIRPORT_ORDER = ["CYWG", "CYAV", "CYPG", "CYBR", "CYDN", "CYGM", "CYQD", "CYFO", "CYTH", "CYYQ", "CYBV", "CYBQ", "CYBT", "CYCR", "CYGO", "CYGX", "CYIV", "CYNE", "CYOH", "CYRS", "CYST", "CYYL", "CZBD", "CZFG", "CZGI", "CZSN", "CZTA", "CZTM", "CZWH", "CJB6", "CYLR", "CZGR", "CZNG", "CZMN", "CZJN", "CZLQ", "CZAC", "CZEE", "CJE4", "CJV8", "CYVD"];
 
@@ -770,6 +782,54 @@ function applyRunwaySelection(prefix){
   calcLanding();
 }
 
+
+function greatCircleNm(lat1, lon1, lat2, lon2){
+  const R = 3440.065; // nautical miles
+  const toRad = d => d * Math.PI / 180;
+  const p1 = toRad(lat1), p2 = toRad(lat2);
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 +
+            Math.cos(p1) * Math.cos(p2) * Math.sin(dLon/2)**2;
+  return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function autoTripDistance(){
+  const dep = $("toAirport") ? $("toAirport").value : "";
+  const dest = $("ldAirport") ? $("ldAirport").value : "";
+  const distanceInput = $("distance");
+  const source = $("distanceSource");
+  if(!distanceInput) return;
+
+  const a = AIRPORT_DB[dep];
+  const b = AIRPORT_DB[dest];
+
+  if(a && b && Number.isFinite(a.lat) && Number.isFinite(a.lon) &&
+             Number.isFinite(b.lat) && Number.isFinite(b.lon)){
+    const nm = Math.round(greatCircleNm(a.lat, a.lon, b.lat, b.lon));
+    distanceInput.value = nm;
+    distanceInput.dataset.auto = "1";
+    localStorage.setItem("kew_distance", String(nm));
+    if(source){
+      source.textContent = dep + " → " + dest + " direct: " + nm + " nm";
+    }
+    calcAir();
+  } else {
+    // Only clear a value that the airport selector itself previously supplied.
+    if(distanceInput.dataset.auto === "1"){
+      distanceInput.value = "";
+      localStorage.setItem("kew_distance", "");
+    }
+    distanceInput.dataset.auto = "";
+    if(source){
+      source.textContent = (dep === "MANUAL" || dest === "MANUAL")
+        ? "Manual airport selected — enter planned distance"
+        : "Select both airports to auto-fill";
+    }
+    calcAir();
+  }
+}
+
 function setupAirportSelectors(){
   ["to","ld"].forEach(prefix=>{
     populateAirportSelect(prefix+"Airport");
@@ -790,6 +850,7 @@ function setupAirportSelectors(){
       localStorage.setItem("kew_"+prefix+"Airport",airportSel.value);
       localStorage.setItem("kew_"+prefix+"RunwaySelect","");
       rebuildRunways(prefix,"");
+      autoTripDistance();
       calcTakeoff();
       calcLanding();
     });
@@ -1061,7 +1122,23 @@ function calcAir(){
   }
 }
 
+
+function updateRoundTripDistance(){
+  const d = val("distance");
+  const one = $("rtOneWayDistance");
+  const total = $("rtTotalDistance");
+
+  if(Number.isFinite(d) && d > 0){
+    if(one) one.textContent = Math.round(d) + " nm";
+    if(total) total.textContent = Math.round(d * 2) + " nm";
+  } else {
+    if(one) one.textContent = "—";
+    if(total) total.textContent = "—";
+  }
+}
+
 function calcRound(){
+  updateRoundTripDistance();
   const tod = val("tod");
   const alt = val("alt");
   const fob = val("rtFob");
@@ -1177,6 +1254,11 @@ setupAirportSelectors();
   const saved = localStorage.getItem("kew_"+id);
   if(saved !== null) $(id).value = saved;
   const updateField = ()=>{
+    if(id === "distance"){
+      $("distance").dataset.auto = "";
+      const source = $("distanceSource");
+      if(source) source.textContent = "Manual planned distance";
+    }
     localStorage.setItem("kew_"+id,$(id).value);
     if(id === "toWeight") $("toWeight").dataset.manual = $("toWeight").value ? "1" : "";
     if(id === "ldWeight") $("ldWeight").dataset.manual = $("ldWeight").value ? "1" : "";
@@ -1187,6 +1269,9 @@ setupAirportSelectors();
   $(id).addEventListener("input",updateField);
   $(id).addEventListener("change",updateField);
 });
+
+// Once saved airport selections and fields are loaded, keep Air Trail distance synced to the route.
+autoTripDistance();
 
 // Migrate values saved by the previous version.
 if(!localStorage.getItem("kew_shared_alt") && localStorage.getItem("kew_alt")){
@@ -1215,6 +1300,7 @@ $("newFlight").addEventListener("click",()=>{
   clearIds.forEach(id=>{ if($(id)) $(id).value=""; });
   rebuildRunways("to","");
   rebuildRunways("ld","");
+  autoTripDistance();
 
   // Return signed/default controls to a clean, obvious starting state.
   [["toWind","0"],["0"],["ldWind","0"],["0"],["toFlaps","15"],["ldFlaps","15"]]
