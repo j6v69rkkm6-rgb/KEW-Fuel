@@ -283,6 +283,15 @@ input,select{
       <div class="field-label"><strong>Aircraft Weight</strong><span>Auto from ZFW + Fuel On Board − 44 lb</span><div class="synced-note">AUTO: uses ZFW + Fuel On Board − 44 lb when available; you can still override it</div></div>
       <div class="input-wrap"><input id="toWeight" inputmode="decimal"><span class="unit">lb</span></div>
     </div>
+
+    <div class="field-row">
+      <div class="field-label"><strong>Departure Airport</strong><span>Select airport to auto-fill elevation and runway choices</span></div>
+      <div class="input-wrap"><select id="toAirport"></select></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Departure Runway</strong><span>Select runway to auto-fill published runway length</span></div>
+      <div class="input-wrap"><select id="toRunwaySelect"><option value="">Select airport first</option></select></div>
+    </div>
     <div class="field-row">
       <div class="field-label"><strong>Airport Elevation</strong><span>Published field elevation</span></div>
       <div class="input-wrap"><input id="toElev" inputmode="decimal"><span class="unit">ft</span></div>
@@ -316,6 +325,7 @@ input,select{
       <div class="field-label"><strong>Runway Available</strong><span>TORA / usable runway for take-off</span></div>
       <div class="input-wrap"><input id="toRunway" inputmode="decimal"><span class="unit">ft</span></div>
     </div>
+    <div class="small-note">Airport/runway selection auto-fills published field elevation and physical runway length. Runway Available remains editable — override it with current TORA/LDA if different. Verify current CFS/NOTAM/airport data.</div>
     <div class="small-note">No calculate button needed — results update automatically as you enter values.</div>
 
     <div class="section-label" style="color:var(--purple)">RESULTS</div>
@@ -369,6 +379,15 @@ input,select{
       <div class="field-label"><strong>Landing Weight</strong><span>Auto from Air Trail predicted landing weight</span><div class="synced-note">AUTO: uses predicted landing weight from Air Trail Entry when available; you can still override it</div></div>
       <div class="input-wrap"><input id="ldWeight" inputmode="decimal"><span class="unit">lb</span></div>
     </div>
+
+    <div class="field-row">
+      <div class="field-label"><strong>Destination Airport</strong><span>Select airport to auto-fill elevation and runway choices</span></div>
+      <div class="input-wrap"><select id="ldAirport"></select></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Landing Runway</strong><span>Select runway to auto-fill published runway length</span></div>
+      <div class="input-wrap"><select id="ldRunwaySelect"><option value="">Select airport first</option></select></div>
+    </div>
     <div class="field-row">
       <div class="field-label"><strong>Airport Elevation</strong><span>Field elevation</span></div>
       <div class="input-wrap"><input id="ldElev" inputmode="decimal"><span class="unit">ft</span></div>
@@ -402,6 +421,7 @@ input,select{
       <div class="field-label"><strong>Runway Available</strong><span>LDA / usable runway for landing</span></div>
       <div class="input-wrap"><input id="ldRunway" inputmode="decimal"><span class="unit">ft</span></div>
     </div>
+    <div class="small-note">Airport/runway selection auto-fills published field elevation and physical runway length. Runway Available remains editable — override it with current TORA/LDA if different. Verify current CFS/NOTAM/airport data.</div>
     <div class="small-note">No calculate button needed — results update automatically as you enter values.</div>
 
     <div class="section-label orange-title">RESULTS</div>
@@ -663,6 +683,136 @@ input,select{
 
 <script>
 const $ = id => document.getElementById(id);
+const AIRPORT_DB = {"CYWG":{"name":"Winnipeg / James Armstrong Richardson Intl","elev":783,"runways":[{"id":"07/25","length":4500,"surface":"ASP"},{"id":"13/31","length":8841,"surface":"ASP"},{"id":"18/36","length":11000,"surface":"ASP"}]},"CYTH":{"name":"Thompson","elev":729,"runways":[{"id":"06/24","length":5800,"surface":"ASP"},{"id":"15/33","length":5079,"surface":"GVL"}]},"CYFO":{"name":"Flin Flon","elev":997,"runways":[{"id":"19/01","length":5004,"surface":"ASP"}]},"CYGX":{"name":"Gillam","elev":476,"runways":[{"id":"05/23","length":5000,"surface":"GRAVEL"}]},"CYLR":{"name":"Leaf Rapids","elev":959,"runways":[{"id":"18/36","length":3000,"surface":"ASP"}]},"CZGR":{"name":"Little Grand Rapids","elev":1005,"runways":[{"id":"18/36","length":2800,"surface":"CRUSHED ROCK"}]},"CZFG":{"name":"Pukatawagan","elev":958,"runways":[{"id":"15/33","length":3000,"surface":"CRUSHED ROCK"}]},"CYYQ":{"name":"Churchill","elev":94,"runways":[{"id":"07/25","length":4000,"surface":"GVL"},{"id":"15/33","length":9200,"surface":"ASP"}]},"CYRT":{"name":"Rankin Inlet","elev":94,"runways":[{"id":"13T/31T","length":6000,"surface":"ASP"}]},"CYFB":{"name":"Iqaluit","elev":110,"runways":[{"id":"16/34","length":8605,"surface":"ASP"}]},"CYBK":{"name":"Baker Lake","elev":59,"runways":[{"id":"16T/34T","length":4200,"surface":"GVL"}]},"CYEK":{"name":"Arviat","elev":32,"runways":[{"id":"15T/33T","length":4000,"surface":"GVL"}]},"CYCB":{"name":"Cambridge Bay","elev":90,"runways":[{"id":"13T/31T","length":5000,"surface":"GVL"}]},"CYXP":{"name":"Pangnirtung","elev":75,"runways":[{"id":"06T/24T","length":2920,"surface":"GVL"}]},"CYCS":{"name":"Chesterfield Inlet","elev":32,"runways":[{"id":"12T/30T","length":3600,"surface":"UNK"}]},"CYTE":{"name":"Kinngait / Cape Dorset","elev":164,"runways":[{"id":"13T/31T","length":4000,"surface":"GVL"}]},"CYSK":{"name":"Sanikiluaq","elev":104,"runways":[{"id":"09/27","length":3800,"surface":"GRAVEL"}]},"CYUT":{"name":"Naujaat","elev":80,"runways":[{"id":"16T/34T","length":3400,"surface":"GVL"}]},"CYGT":{"name":"Igloolik","elev":174,"runways":[{"id":"15T/33T","length":4095,"surface":"GRAVEL"}]},"CYHK":{"name":"Gjoa Haven","elev":152,"runways":[{"id":"13T/31T","length":4400,"surface":"GVL"}]},"CYRB":{"name":"Resolute Bay","elev":215,"runways":[{"id":"17T/35T","length":6500,"surface":"GVL"}]},"CYZF":{"name":"Yellowknife","elev":675,"runways":[{"id":"10/28","length":5000,"surface":"ASP"},{"id":"16/34","length":7500,"surface":"ASP"}]},"CYEV":{"name":"Inuvik Mike Zubko","elev":224,"runways":[{"id":"06/24","length":6000,"surface":"ASP"}]},"CYYR":{"name":"Goose Bay","elev":160,"runways":[{"id":"08/26","length":11046,"surface":"ASP"},{"id":"15/33","length":9580,"surface":"ASP"}]},"CYYZ":{"name":"Toronto Pearson","elev":569,"runways":[{"id":"05/23","length":11120,"surface":"ASP/CONC"},{"id":"06L/24R","length":9697,"surface":"ASP"},{"id":"06R/24L","length":9000,"surface":"ASP"},{"id":"15L/33R","length":11050,"surface":"ASP"},{"id":"15R/33L","length":9088,"surface":"ASP"}]},"CYVR":{"name":"Vancouver International","elev":14,"runways":[{"id":"08L/26R","length":9940,"surface":"CONC"},{"id":"08R/26L","length":11500,"surface":"ASP"},{"id":"13/31","length":7300,"surface":"CONC"}]},"KBOS":{"name":"Boston Logan International","elev":20,"runways":[{"id":"04L/22R","length":7864,"surface":"ASP"},{"id":"04R/22L","length":10006,"surface":"ASP"},{"id":"09/27","length":7001,"surface":"ASP"},{"id":"14/32","length":5000,"surface":"ASP"},{"id":"15L/33R","length":2557,"surface":"ASP"},{"id":"15R/33L","length":10083,"surface":"ASP"}]}};
+
+const AIRPORT_ORDER = [
+  "CYWG","CYTH","CYFO","CYGX","CYLR","CZGR","CZFG","CYYQ","CYRT","CYFB","CYBK","CYEK",
+  "CYCB","CYXP","CYCS","CYTE","CYSK","CYUT","CYGT","CYHK","CYRB","CYZF","CYEV","CYYR",
+  "CYYZ","CYVR","KBOS"
+];
+
+function populateAirportSelect(selectId){
+  const s=$(selectId);
+  if(!s) return;
+  s.innerHTML="";
+  const first=document.createElement("option");
+  first.value="";
+  first.textContent="Select airport";
+  s.appendChild(first);
+
+  AIRPORT_ORDER.forEach(code=>{
+    const a=AIRPORT_DB[code];
+    if(!a) return;
+    const o=document.createElement("option");
+    o.value=code;
+    o.textContent=code+" — "+a.name;
+    s.appendChild(o);
+  });
+
+  const manual=document.createElement("option");
+  manual.value="MANUAL";
+  manual.textContent="Other / Manual";
+  s.appendChild(manual);
+}
+
+function rebuildRunways(prefix, preferredRunway=""){
+  const airportSel=$(prefix+"Airport");
+  const runwaySel=$(prefix+"RunwaySelect");
+  const elev=$(prefix+"Elev");
+  const runwayInput=$(prefix+"Runway");
+  if(!airportSel || !runwaySel) return;
+
+  const code=airportSel.value;
+  runwaySel.innerHTML="";
+
+  if(code==="MANUAL" || !AIRPORT_DB[code]){
+    const o=document.createElement("option");
+    o.value="";
+    o.textContent=code==="MANUAL" ? "Enter runway manually below" : "Select airport first";
+    runwaySel.appendChild(o);
+    runwaySel.disabled=true;
+    return;
+  }
+
+  const a=AIRPORT_DB[code];
+  runwaySel.disabled=false;
+  if(elev){
+    elev.value=a.elev ?? "";
+    localStorage.setItem("kew_"+prefix+"Elev",elev.value);
+  }
+
+  const first=document.createElement("option");
+  first.value="";
+  first.textContent="Select runway";
+  runwaySel.appendChild(first);
+
+  a.runways.forEach(r=>{
+    r.id.split("/").forEach(end=>{
+      const o=document.createElement("option");
+      o.value=end;
+      o.dataset.length=r.length;
+      o.textContent="RWY "+end+" — "+Number(r.length).toLocaleString()+" ft"+(r.surface ? " — "+r.surface : "");
+      runwaySel.appendChild(o);
+    });
+  });
+
+  if(preferredRunway && [...runwaySel.options].some(o=>o.value===preferredRunway)){
+    runwaySel.value=preferredRunway;
+  } else {
+    runwaySel.value="";
+  }
+
+  if(!runwaySel.value && runwayInput){
+    runwayInput.value="";
+    localStorage.setItem("kew_"+prefix+"Runway","");
+  }
+}
+
+function applyRunwaySelection(prefix){
+  const sel=$(prefix+"RunwaySelect");
+  const runwayInput=$(prefix+"Runway");
+  if(!sel || !runwayInput) return;
+  const opt=sel.options[sel.selectedIndex];
+  const len=opt && opt.dataset ? Number(opt.dataset.length) : NaN;
+  if(Number.isFinite(len) && len>0){
+    runwayInput.value=Math.round(len);
+    localStorage.setItem("kew_"+prefix+"Runway",runwayInput.value);
+  }
+  calcTakeoff();
+  calcLanding();
+}
+
+function setupAirportSelectors(){
+  ["to","ld"].forEach(prefix=>{
+    populateAirportSelect(prefix+"Airport");
+    const airportSel=$(prefix+"Airport");
+    const runwaySel=$(prefix+"RunwaySelect");
+
+    const savedAirport=localStorage.getItem("kew_"+prefix+"Airport") || "";
+    const savedRunway=localStorage.getItem("kew_"+prefix+"RunwaySelect") || "";
+    if([...airportSel.options].some(o=>o.value===savedAirport)) airportSel.value=savedAirport;
+    rebuildRunways(prefix,savedRunway);
+
+    if(savedRunway && [...runwaySel.options].some(o=>o.value===savedRunway)){
+      runwaySel.value=savedRunway;
+      applyRunwaySelection(prefix);
+    }
+
+    airportSel.addEventListener("change",()=>{
+      localStorage.setItem("kew_"+prefix+"Airport",airportSel.value);
+      localStorage.setItem("kew_"+prefix+"RunwaySelect","");
+      rebuildRunways(prefix,"");
+      calcTakeoff();
+      calcLanding();
+    });
+
+    runwaySel.addEventListener("change",()=>{
+      localStorage.setItem("kew_"+prefix+"RunwaySelect",runwaySel.value);
+      applyRunwaySelection(prefix);
+    });
+  });
+}
+
 const val = id => {
   const n = parseFloat($(id).value);
   return Number.isFinite(n) ? n : 0;
@@ -1043,6 +1193,8 @@ document.querySelectorAll(".temp-pad-key").forEach(btn=>{
 });
 tempPadBackdrop.addEventListener("click",e=>{ if(e.target===tempPadBackdrop) closeTempPad(); });
 
+setupAirportSelectors();
+
 ["distance","burn","minutes","zfw","tod","toWeight","toElev","toAltim","toOAT","toWind","toFlaps","toSlope","toRunway","ldWeight","ldElev","ldAltim","ldOAT","ldWind","ldSlope","ldFlaps","ldRunway"].forEach(id=>{
   const saved = localStorage.getItem("kew_"+id);
   if(saved !== null) $(id).value = saved;
@@ -1079,10 +1231,12 @@ $("newFlight").addEventListener("click",()=>{
 
   const clearIds=[
     "distance","fob","burn","minutes","altAir","zfw","tod","alt","rtFob",
-    "toWeight","toElev","toAltim","toOAT","toRunway",
-    "ldWeight","ldElev","ldAltim","ldOAT","ldRunway"
+    "toWeight","toElev","toAltim","toOAT","toRunway","toAirport","toRunwaySelect",
+    "ldWeight","ldElev","ldAltim","ldOAT","ldRunway","ldAirport","ldRunwaySelect"
   ];
   clearIds.forEach(id=>{ if($(id)) $(id).value=""; });
+  rebuildRunways("to","");
+  rebuildRunways("ld","");
 
   // Return signed/default controls to a clean, obvious starting state.
   [["toWind","0"],["toSlope","0"],["ldWind","0"],["ldSlope","0"],["toFlaps","15"],["ldFlaps","15"]]
