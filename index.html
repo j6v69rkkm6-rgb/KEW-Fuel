@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#ffffff">
 <title>KEW Fuel</title>
-
 <style>
 :root{
   --blue:#0b4aa2;
@@ -21,1318 +20,1098 @@
   --bg:#f6f7f9;
   --card:#fff;
 }
-
-*{
-  box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
+  margin:0;background:var(--bg);color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   -webkit-font-smoothing:antialiased;
 }
-
 .app{
-  max-width:520px;
-  margin:0 auto;
-  min-height:100vh;
-  background:#fff;
-  padding:calc(14px + env(safe-area-inset-top))
-          16px
-          calc(24px + env(safe-area-inset-bottom));
+  max-width:520px;margin:0 auto;min-height:100vh;background:#fff;
+  padding:calc(14px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
 }
-
 .topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:4px 0 12px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:12px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:4px 0 12px;border-bottom:1px solid var(--line);margin-bottom:12px;
 }
-
 .back{
-  border:0;
-  background:transparent;
-  color:var(--blue);
-  font-size:16px;
-  font-weight:750;
-  padding:8px 4px;
+  border:0;background:transparent;color:var(--blue);font-size:16px;font-weight:750;padding:8px 4px;
 }
-
 .title{
-  font-weight:900;
-  font-size:21px;
-  letter-spacing:.2px;
+  font-weight:900;font-size:21px;letter-spacing:.2px;
 }
-
 .home-brand{
-  text-align:center;
-  padding:18px 0 12px;
+  text-align:center;padding:18px 0 12px;
 }
-
 .home-brand h1{
-  margin:0;
-  font-size:44px;
-  line-height:1;
-  font-weight:950;
-  color:#08275c;
-  letter-spacing:-1px;
+  margin:0;font-size:44px;line-height:1;font-weight:950;color:#08275c;letter-spacing:-1px;
 }
-
 .home-brand .sub{
-  color:#657083;
-  font-size:18px;
-  font-weight:650;
-  margin-top:6px;
+  color:#657083;font-size:18px;font-weight:650;margin-top:6px;
 }
-
 .question{
-  font-size:23px;
-  font-weight:850;
-  margin:22px 0 14px;
+  font-size:23px;font-weight:850;margin:22px 0 14px;
 }
-
 .menu-card{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:16px;
-  text-align:left;
-  border-radius:18px;
-  padding:18px;
-  margin:12px 0;
-  background:#fff;
-  font:inherit;
+  width:100%;display:flex;align-items:center;gap:16px;text-align:left;
+  border-radius:18px;padding:18px;margin:12px 0;background:#fff;font:inherit;
 }
-
 .menu-card .icon{
-  width:52px;
-  height:52px;
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:28px;
-  flex:0 0 auto;
+  width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:28px;flex:0 0 auto;
 }
-
-.menu-card .text{
-  flex:1;
-}
-
-.menu-card .name{
-  font-size:20px;
-  font-weight:900;
-  line-height:1.15;
-}
-
-.menu-card .desc{
-  font-size:15px;
-  line-height:1.35;
-  margin-top:5px;
-  color:#273140;
-}
-
-.menu-card .arrow{
-  font-size:30px;
-  font-weight:800;
-}
-
-.menu-blue{
-  border:2px solid var(--blue);
-}
-
-.menu-blue .icon{
-  background:var(--blue2);
-  color:var(--blue);
-}
-
-.menu-blue .name,
-.menu-blue .arrow{
-  color:var(--blue);
-}
-
-.menu-green{
-  border:2px solid var(--green);
-}
-
-.menu-green .icon{
-  background:var(--green2);
-  color:var(--green);
-}
-
-.menu-green .name,
-.menu-green .arrow{
-  color:var(--green);
-}
-
-.menu-orange{
-  border:2px solid #f2a33c;
-}
-
-.menu-orange .icon{
-  background:var(--orange2);
-  color:var(--orange);
-}
-
-.menu-orange .name,
-.menu-orange .arrow{
-  color:var(--orange);
-}
-
+.menu-card .text{flex:1}
+.menu-card .name{font-size:20px;font-weight:900;line-height:1.15}
+.menu-card .desc{font-size:15px;line-height:1.35;margin-top:5px;color:#273140}
+.menu-card .arrow{font-size:30px;font-weight:800}
+.menu-blue{border:2px solid var(--blue)}
+.menu-blue .icon{background:var(--blue2);color:var(--blue)}
+.menu-blue .name,.menu-blue .arrow{color:var(--blue)}
+.menu-green{border:2px solid var(--green)}
+.menu-green .icon{background:var(--green2);color:var(--green)}
+.menu-green .name,.menu-green .arrow{color:var(--green)}
+.menu-orange{border:2px solid #f2a33c}
+.menu-orange .icon{background:var(--orange2);color:var(--orange)}
+.menu-orange .name,.menu-orange .arrow{color:var(--orange)}
+.menu-purple{border:2px solid var(--purple)}
+.menu-purple .icon{background:#f2edff;color:var(--purple)}
+.menu-purple .name,.menu-purple .arrow{color:var(--purple)}
 .notice{
-  margin-top:22px;
-  padding:14px 15px;
-  border-radius:12px;
-  background:#eef5fc;
-  border:1px solid #c7d8ea;
-  font-size:13px;
-  line-height:1.4;
-  color:#34465d;
+  margin-top:22px;padding:14px 15px;border-radius:12px;background:#eef5fc;
+  border:1px solid #c7d8ea;font-size:13px;line-height:1.4;color:#34465d;
 }
-
-.screen{
-  display:none;
-}
-
-.screen.active{
-  display:block;
-}
-
+.new-flight{width:100%;margin:14px 0 2px;border:1.5px solid #c8ced7;border-radius:12px;background:#f8fafc;color:#344054;padding:12px;font-size:14px;font-weight:850}
+.new-flight:active{transform:scale(.99);background:#eef2f6}
+.screen{display:none}
+.screen.active{display:block}
 .intro{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-  padding:2px 0 13px;
-  border-bottom:1px solid var(--line);
+  display:flex;gap:12px;align-items:flex-start;padding:2px 0 13px;border-bottom:1px solid var(--line);
 }
-
 .intro-icon{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:24px;
-  background:var(--blue);
-  color:#fff;
-  flex:0 0 auto;
+  width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:24px;background:var(--blue);color:#fff;flex:0 0 auto;
 }
-
-.intro strong{
-  display:block;
-  font-size:16px;
-}
-
-.intro span{
-  font-size:13px;
-  color:#425064;
-}
-
+.intro strong{display:block;font-size:16px}
+.intro span{font-size:13px;color:#425064}
 .section-label{
-  margin:16px 0 9px;
-  font-size:13px;
-  font-weight:900;
-  letter-spacing:.3px;
-  color:var(--blue);
+  margin:16px 0 9px;font-size:13px;font-weight:900;letter-spacing:.3px;color:var(--blue);
 }
-
 .field-row{
-  display:grid;
-  grid-template-columns:1fr 148px;
-  gap:12px;
-  align-items:center;
-  margin:9px 0;
+  display:grid;grid-template-columns:1fr 148px;gap:12px;align-items:center;margin:9px 0;
 }
-
-.field-label strong{
-  display:block;
-  font-size:15px;
-}
-
-.field-label span{
-  display:block;
-  font-size:12px;
-  color:var(--muted);
-  margin-top:2px;
-  line-height:1.25;
-}
-
+.field-label strong{display:block;font-size:15px}
+.field-label span{display:block;font-size:12px;color:var(--muted);margin-top:2px;line-height:1.25}
 .input-wrap{
   position:relative;
 }
-
-input{
-  width:100%;
-  border:1.5px solid #aeb7c1;
-  border-radius:9px;
-  background:#fff;
-  padding:10px 42px 10px 10px;
-  font-size:22px;
-  font-weight:800;
-  text-align:right;
-  color:#111827;
+input,select{
+  width:100%;border:1.5px solid #aeb7c1;border-radius:9px;background:#fff;
+  padding:10px 42px 10px 10px;font-size:22px;font-weight:800;text-align:right;color:#111827;
 }
-
 .unit{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:12px;
-  font-weight:800;
-  color:#303a46;
-  pointer-events:none;
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-size:12px;font-weight:800;color:#303a46;pointer-events:none;
 }
+
+.temp-control{display:grid;grid-template-columns:38px 1fr 38px;gap:6px;align-items:center}
+.temp-sign{border:1.5px solid #aeb7c1;border-radius:9px;background:#f7f9fc;color:#111827;font-size:24px;font-weight:900;height:46px;line-height:1;padding:0;touch-action:manipulation}
+.temp-sign:active{transform:scale(.97);background:#eef2f7}
+.temp-control .input-wrap input{padding-left:8px}
 
 .primary{
-  width:100%;
-  margin:16px 0 12px;
-  border:0;
-  border-radius:8px;
-  background:#0c56b8;
-  color:#fff;
-  padding:13px 12px;
-  font-size:16px;
-  font-weight:900;
+  width:100%;margin:16px 0 12px;border:0;border-radius:8px;background:#0c56b8;color:#fff;
+  padding:13px 12px;font-size:16px;font-weight:900;
 }
-
 .results{
-  border:1px solid #d7dce2;
-  border-radius:12px;
-  overflow:hidden;
-  background:#fff;
+  border:1px solid #d7dce2;border-radius:12px;overflow:hidden;background:#fff;
 }
-
 .result-row{
-  display:grid;
-  grid-template-columns:42px 1fr auto;
-  gap:10px;
-  align-items:center;
-  padding:12px 12px;
-  border-bottom:1px solid #e3e6ea;
+  display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;
+  padding:12px 12px;border-bottom:1px solid #e3e6ea;
 }
-
-.result-row:last-child{
-  border-bottom:0;
-}
-
+.result-row:last-child{border-bottom:0}
 .r-icon{
-  width:34px;
-  height:34px;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:20px;
-  background:#eef4ff;
-  color:var(--blue);
+  width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;background:#eef4ff;color:var(--blue);
 }
-
-.r-label strong{
-  display:block;
-  font-size:15px;
-}
-
-.r-label span{
-  display:block;
-  font-size:11px;
-  color:var(--muted);
-  margin-top:2px;
-}
-
+.r-label strong{display:block;font-size:15px}
+.r-label span{display:block;font-size:11px;color:var(--muted);margin-top:2px}
 .r-value{
-  font-size:25px;
-  font-weight:950;
-  white-space:nowrap;
+  font-size:25px;font-weight:950;white-space:nowrap;
 }
-
-.r-value.blue{
-  color:#134eb0;
-}
-
-.r-value.green{
-  color:#08793c;
-}
-
-.r-value.orange{
-  color:#e16d00;
-}
-
-.r-value.purple{
-  color:#5d34a4;
-}
-
+.r-value.blue{color:#134eb0}
+.r-value.green{color:#08793c}
+.r-value.orange{color:#e16d00}
+.r-value.purple{color:#5d34a4}
 .small-note{
-  font-size:11px;
-  color:#586575;
-  line-height:1.35;
-  text-align:center;
-  margin:9px 8px 0;
+  font-size:11px;color:#586575;line-height:1.35;text-align:center;margin:9px 8px 0;
 }
-
-.green-title{
-  color:var(--green);
-}
-
-.orange-title{
-  color:var(--orange);
-}
-
+.green-title{color:var(--green)}
+.orange-title{color:var(--orange)}
 .formula-box{
-  border:1.5px solid #efad58;
-  border-radius:12px;
-  overflow:hidden;
-  background:#fffaf4;
+  border:1.5px solid #efad58;border-radius:12px;overflow:hidden;background:#fffaf4;
 }
-
 .formula-item{
-  padding:11px 12px;
-  border-bottom:1px solid #f0c78e;
+  padding:11px 12px;border-bottom:1px solid #f0c78e;
 }
-
-.formula-item:last-child{
-  border-bottom:0;
-}
-
-.formula-item strong{
-  display:block;
-  font-size:15px;
-}
-
-.formula-item span{
-  display:block;
-  font-size:12px;
-  margin-top:2px;
-  color:#374151;
-  line-height:1.3;
-}
-
+.formula-item:last-child{border-bottom:0}
+.formula-item strong{display:block;font-size:15px}
+.formula-item span{display:block;font-size:12px;margin-top:2px;color:#374151;line-height:1.3}
 .fixed{
-  border:1.5px solid #efad58;
-  border-radius:12px;
-  overflow:hidden;
+  border:1.5px solid #efad58;border-radius:12px;overflow:hidden;
 }
-
 .fixed-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  padding:12px;
-  border-bottom:1px solid #f0c78e;
+  display:flex;justify-content:space-between;gap:12px;padding:12px;border-bottom:1px solid #f0c78e;
 }
-
-.fixed-row:last-child{
-  border-bottom:0;
-}
-
-.fixed-row strong{
-  font-size:15px;
-}
-
-.fixed-row span{
-  font-size:17px;
-  font-weight:900;
-}
-
+.fixed-row:last-child{border-bottom:0}
+.fixed-row strong{font-size:15px}
+.fixed-row span{font-size:17px;font-weight:900}
 .status-card{
-  margin-top:12px;
-  border-radius:12px;
-  padding:13px;
-  text-align:center;
-  font-weight:900;
-  border:1.5px solid #b9d9c5;
-  background:#eff9f2;
-  color:var(--green);
+  margin-top:12px;border-radius:12px;padding:13px;text-align:center;font-weight:900;
+  border:1.5px solid #b9d9c5;background:#eff9f2;color:var(--green);
 }
-
 .status-card.bad{
-  border-color:#efb4b0;
-  background:#fff1f0;
-  color:#b42318;
+  border-color:#efb4b0;background:#fff1f0;color:#b42318;
 }
-
 .status-sub{
-  display:block;
-  font-size:12px;
-  font-weight:650;
-  color:#354150;
-  margin-top:3px;
+  display:block;font-size:12px;font-weight:650;color:#354150;margin-top:3px;
 }
+.synced-note{font-size:11px;color:#0b4aa2;font-weight:700;margin-top:3px}
+
+.temp-keypad-input,.signed-keypad-input{cursor:pointer;background:#fff}
+.temp-pad-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.28);display:none;align-items:flex-end;justify-content:center;z-index:9999}
+.temp-pad-backdrop.open{display:flex}
+.temp-pad{width:min(100%,520px);background:#f6f7f9;border-radius:20px 20px 0 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(0,0,0,.18)}
+.temp-pad-display{background:#fff;border:1px solid #d8dde5;border-radius:14px;padding:12px 14px;margin-bottom:10px;text-align:right;font-size:30px;font-weight:900;min-height:58px}
+.temp-pad-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.temp-pad-key{border:0;border-radius:13px;background:#fff;padding:15px 8px;font-size:23px;font-weight:850;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.temp-pad-key:active{transform:scale(.98);background:#e9edf2}
+.temp-pad-key.sign{background:#eaf2ff;color:#0c56b8}
+.temp-pad-key.done{background:#0c56b8;color:#fff}
+.temp-pad-key.clear{background:#fff0ef;color:#b42318}
 
 @media(max-width:390px){
-  .app{
-    padding-left:12px;
-    padding-right:12px;
-  }
-
-  .field-row{
-    grid-template-columns:1fr 132px;
-    gap:8px;
-  }
-
-  .home-brand h1{
-    font-size:39px;
-  }
-
-  .menu-card{
-    padding:16px;
-  }
+  .app{padding-left:12px;padding-right:12px}
+  .field-row{grid-template-columns:1fr 132px;gap:8px}
+  .home-brand h1{font-size:39px}
+  .menu-card{padding:16px}
 }
 </style>
 </head>
-
 <body>
-
 <div class="app">
 
   <section id="home" class="screen active">
-
     <div class="home-brand">
       <h1>KEW FUEL</h1>
       <div class="sub">Cockpit Quick Reference</div>
     </div>
 
-    <div class="question">
-      What do you need?
-    </div>
-
-    <button class="menu-card menu-blue" data-go="airtrail">
-      <div class="icon">📋</div>
-
-      <div class="text">
-        <div class="name">
-          AIR TRAIL ENTRY
-        </div>
-
-        <div class="desc">
-          Get the numbers you enter into Air Trail
-        </div>
-      </div>
-
-      <div class="arrow">›</div>
-    </button>
+    <div class="question">What do you need?</div>
 
     <button class="menu-card menu-green" data-go="roundtrip">
       <div class="icon">↻</div>
-
       <div class="text">
-        <div class="name">
-          ROUND TRIP QUICK CHECK
-        </div>
-
-        <div class="desc">
-          Check total fuel required for a round trip
-        </div>
+        <div class="name">ROUND TRIP QUICK CHECK</div>
+        <div class="desc">Check total fuel required for a round trip</div>
       </div>
+      <div class="arrow">›</div>
+    </button>
 
+    <button class="menu-card menu-purple" data-go="takeoff">
+      <div class="icon">🛫</div>
+      <div class="text">
+        <div class="name">TAKE-OFF PERFORMANCE CHECK</div>
+        <div class="desc">Estimate take-off distance and runway margin</div>
+      </div>
+      <div class="arrow">›</div>
+    </button>
+
+    <button class="menu-card menu-blue" data-go="airtrail">
+      <div class="icon">📋</div>
+      <div class="text">
+        <div class="name">AIR TRAIL ENTRY</div>
+        <div class="desc">Get the numbers you enter into Air Trail</div>
+      </div>
+      <div class="arrow">›</div>
+    </button>
+
+    <button class="menu-card menu-orange" data-go="landingperf">
+      <div class="icon">🛬</div>
+      <div class="text">
+        <div class="name">LANDING PERFORMANCE CHECK</div>
+        <div class="desc">Estimate landing distance and runway margin</div>
+      </div>
       <div class="arrow">›</div>
     </button>
 
     <button class="menu-card menu-orange" data-go="quick">
       <div class="icon">📖</div>
-
       <div class="text">
-        <div class="name">
-          QUICK REFERENCE
-        </div>
-
-        <div class="desc">
-          Fixed fuel values and formulas
-        </div>
+        <div class="name">QUICK REFERENCE</div>
+        <div class="desc">Fixed fuel values and formulas</div>
       </div>
-
       <div class="arrow">›</div>
     </button>
 
-    <div class="notice">
-      For reference only. Does not replace Air Trail,
-      company SOP/COM, AFM/POH, QRH, approved flight planning,
-      or required crew calculations.
-    </div>
+    <button type="button" id="newFlight" class="new-flight">↻ NEW FLIGHT / CLEAR SAVED VALUES</button>
+    <div id="newFlightStatus" class="small-note" style="display:none;text-align:center;margin-top:8px;font-weight:800;color:var(--green)">NEW FLIGHT STARTED — SAVED VALUES CLEARED</div>
 
+    <div class="notice">
+      QUICK REFERENCE ONLY. Estimates and convenience calculations do not replace Air Trail, company SOP/COM, AFM/POH, QRH, approved flight planning, or required crew calculations.
+    </div>
   </section>
 
+  <section id="takeoff" class="screen">
+    <div class="topbar">
+      <button class="back" data-home>‹ Home</button>
+      <div class="title" style="color:var(--purple)">TAKE-OFF<br>PERFORMANCE CHECK</div>
+      <div style="width:54px"></div>
+    </div>
+
+    <div class="intro">
+      <div class="intro-icon" style="background:var(--purple)">🛫</div>
+      <div>
+        <strong>Quick-reference take-off estimate.</strong>
+        <span>Enter the conditions and the app estimates take-off distance, Vr and runway margin automatically.</span>
+      </div>
+    </div>
+
+    <div class="section-label" style="color:var(--purple)">PERFORMANCE INPUTS</div>
+
+    <div class="field-row">
+      <div class="field-label"><strong>Aircraft Weight</strong><span>Auto from ZFW + Fuel On Board − 44 lb</span><div class="synced-note">AUTO: uses ZFW + Fuel On Board − 44 lb when available; you can still override it</div></div>
+      <div class="input-wrap"><input id="toWeight" inputmode="decimal"><span class="unit">lb</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Airport Elevation</strong><span>Published field elevation</span></div>
+      <div class="input-wrap"><input id="toElev" inputmode="decimal"><span class="unit">ft</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Altimeter Setting</strong><span>Current airport altimeter</span></div>
+      <div class="input-wrap"><input id="toAltim" inputmode="decimal" placeholder="29.92"><span class="unit">inHg</span></div>
+    </div>
+    <div class="result-row" style="margin:10px 0 4px">
+      <div class="r-icon" style="color:var(--purple);background:#f2edff">↕</div>
+      <div class="r-label"><strong>Pressure Altitude</strong><span>Calculated automatically</span></div>
+      <div id="toPAResult" class="r-value purple">—</div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>OAT</strong><span>Outside air temperature</span></div>
+      <div class="input-wrap"><input id="toOAT" class="signed-keypad-input" inputmode="none" readonly placeholder="Tap to enter" data-unit="°C"><span class="unit">°C</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Headwind / Tailwind</strong><span>Headwind +; tailwind −; 0 = calm</span></div>
+      <div class="input-wrap"><input id="toWind" class="signed-keypad-input" inputmode="none" readonly placeholder="Tap to enter" data-unit="kt" value="0"><span class="unit">kt</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Take-Off Flaps</strong><span>Select planned take-off setting</span></div>
+      <div class="input-wrap"><select id="toFlaps"><option value="15">15°</option><option value="30">30°</option></select></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Runway Slope</strong><span>Uphill +; downhill −; 0 = level</span></div>
+      <div class="input-wrap"><input id="toSlope" class="signed-keypad-input" inputmode="none" readonly placeholder="Tap to enter" data-unit="%" value="0"><span class="unit">%</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Runway Available</strong><span>TORA / usable runway for take-off</span></div>
+      <div class="input-wrap"><input id="toRunway" inputmode="decimal"><span class="unit">ft</span></div>
+    </div>
+    <div class="small-note">No calculate button needed — results update automatically as you enter values.</div>
+
+    <div class="section-label" style="color:var(--purple)">RESULTS</div>
+    <div class="results">
+      <div class="result-row">
+        <div class="r-icon" style="color:var(--purple);background:#f2edff">V<sub>R</sub></div>
+        <div class="r-label"><strong>Rotation Speed (Vr)</strong><span>Auto from take-off weight + flap setting</span></div>
+        <div id="toVr" class="r-value purple">—</div>
+      </div>
+      <div class="result-row">
+        <div class="r-icon" style="color:var(--purple);background:#f2edff">📏</div>
+        <div class="r-label"><strong>Estimated Take-Off Distance</strong><span>Conservative quick-reference estimate over 50 ft</span></div>
+        <div id="toEstimated" class="r-value purple">—</div>
+      </div>
+      <div class="result-row">
+        <div class="r-icon" style="color:var(--purple);background:#f2edff">↔</div>
+        <div class="r-label"><strong>Runway Margin</strong><span>Runway available minus estimated distance</span></div>
+        <div id="toMargin" class="r-value purple">—</div>
+      </div>
+      <div class="result-row">
+        <div class="r-icon" style="color:var(--purple);background:#f2edff">%</div>
+        <div class="r-label"><strong>Runway Remaining %</strong><span>Remaining runway as a percentage</span></div>
+        <div id="toPercent" class="r-value purple">—</div>
+      </div>
+    </div>
+    <div id="toStatus" class="status-card" style="border-color:#cfc0ef;background:#f7f3ff;color:var(--purple)">ENTER CONDITIONS AND RUNWAY</div>
+
+    <div class="notice">
+      QUICK REFERENCE ONLY — NOT AN APPROVED PERFORMANCE CALCULATION. The take-off distance is a conservative planning estimate anchored to PC-12/47E AFM example data and adjusted for weight, pressure altitude, temperature, wind, slope and flap setting. Verify actual take-off performance with the current approved AFM/company source before flight.
+    </div>
+  </section>
+
+  <section id="landingperf" class="screen">
+    <div class="topbar">
+      <button class="back" data-home>‹ Home</button>
+      <div class="title orange-title">LANDING<br>PERFORMANCE CHECK</div>
+      <div style="width:54px"></div>
+    </div>
+
+    <div class="intro">
+      <div class="intro-icon" style="background:var(--orange)">🛬</div>
+      <div>
+        <strong>Quick-reference landing estimate.</strong>
+        <span>Enter the landing conditions and the app estimates landing distance, VAPP and runway margin automatically.</span>
+      </div>
+    </div>
+
+    <div class="section-label orange-title">PERFORMANCE INPUTS</div>
+
+    <div class="field-row">
+      <div class="field-label"><strong>Landing Weight</strong><span>Auto from Air Trail predicted landing weight</span><div class="synced-note">AUTO: uses predicted landing weight from Air Trail Entry when available; you can still override it</div></div>
+      <div class="input-wrap"><input id="ldWeight" inputmode="decimal"><span class="unit">lb</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Airport Elevation</strong><span>Field elevation</span></div>
+      <div class="input-wrap"><input id="ldElev" inputmode="decimal"><span class="unit">ft</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Altimeter Setting</strong><span>Current setting</span></div>
+      <div class="input-wrap"><input id="ldAltim" inputmode="decimal" placeholder="29.92"><span class="unit">inHg</span></div>
+    </div>
+    <div class="result-row" style="border:1px solid #f0d0a9;border-radius:10px;margin:10px 0">
+      <div class="r-icon" style="color:var(--orange);background:#fff4e8">PA</div>
+      <div class="r-label"><strong>Pressure Altitude</strong><span>Calculated automatically</span></div>
+      <div id="ldPAResult" class="r-value orange">—</div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>OAT</strong><span>Outside air temperature</span></div>
+      <div class="input-wrap"><input id="ldOAT" class="signed-keypad-input" inputmode="none" readonly placeholder="Tap to enter" data-unit="°C"><span class="unit">°C</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Headwind / Tailwind</strong><span>Headwind +; tailwind −; 0 = calm</span></div>
+      <div class="input-wrap"><input id="ldWind" class="signed-keypad-input" inputmode="none" readonly placeholder="Tap to enter" data-unit="kt" value="0"><span class="unit">kt</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Runway Slope</strong><span>Uphill +; downhill −; 0 = level</span></div>
+      <div class="input-wrap"><input id="ldSlope" class="signed-keypad-input" inputmode="none" readonly placeholder="Tap to enter" data-unit="%" value="0"><span class="unit">%</span></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Landing Flaps</strong><span>Select planned landing setting</span></div>
+      <div class="input-wrap"><select id="ldFlaps"><option value="15">15°</option><option value="30">30°</option><option value="40">40°</option></select></div>
+    </div>
+    <div class="field-row">
+      <div class="field-label"><strong>Runway Available</strong><span>LDA / usable runway for landing</span></div>
+      <div class="input-wrap"><input id="ldRunway" inputmode="decimal"><span class="unit">ft</span></div>
+    </div>
+    <div class="small-note">No calculate button needed — results update automatically as you enter values.</div>
+
+    <div class="section-label orange-title">RESULTS</div>
+    <div class="results">
+      <div class="result-row">
+        <div class="r-icon" style="color:var(--orange);background:#fff4e8">V<sub>APP</sub></div>
+        <div class="r-label"><strong>Quick-Reference VAPP</strong><span id="ldVappNote">Select flap setting — speed auto from landing weight</span></div>
+        <div id="ldVapp" class="r-value orange">—</div>
+      </div>
+      <div class="result-row">
+        <div class="r-icon" style="color:var(--orange);background:#fff4e8">↘</div>
+        <div class="r-label"><strong>Estimated Stopping Point</strong><span>Approximate distance used from threshold</span></div>
+        <div id="ldEstimated" class="r-value orange">—</div>
+      </div>
+      <div class="result-row">
+        <div class="r-icon" style="color:var(--orange);background:#fff4e8">↔</div>
+        <div class="r-label"><strong>Runway Remaining</strong><span>Runway available minus estimated stopping point</span></div>
+        <div id="ldMargin" class="r-value orange">—</div>
+      </div>
+      <div class="result-row">
+        <div class="r-icon" style="color:var(--orange);background:#fff4e8">%</div>
+        <div class="r-label"><strong>Runway Remaining %</strong><span>Remaining runway as a percentage</span></div>
+        <div id="ldPercent" class="r-value orange">—</div>
+      </div>
+    </div>
+    <div id="ldStatus" class="status-card" style="border-color:#efc38d;background:#fff8ef;color:var(--orange)">ENTER CONDITIONS AND RUNWAY</div>
+
+    <div class="notice">
+      QUICK REFERENCE ONLY — NOT AN APPROVED PERFORMANCE CALCULATION. Stopping point / landing distance is an estimate anchored to PC-12/47E reference performance and adjusted for landing weight, pressure altitude, temperature, wind, slope and flap setting. Verify actual landing performance with the current approved AFM/company source before flight.
+    </div>
+  </section>
 
   <section id="airtrail" class="screen">
-
     <div class="topbar">
-      <button class="back" data-home>
-        ‹ Home
-      </button>
-
-      <div class="title">
-        AIR TRAIL ENTRY
-      </div>
-
+      <button class="back" data-home>‹ Home</button>
+      <div class="title">AIR TRAIL ENTRY</div>
       <div style="width:54px"></div>
     </div>
 
-
     <div class="intro">
-
-      <div class="intro-icon">
-        ✈
-      </div>
-
+      <div class="intro-icon">✈</div>
       <div>
-        <strong>
-          Get the numbers you enter into Air Trail.
-        </strong>
-
-        <span>
-          Enter your trip information below.
-        </span>
+        <strong>Get the numbers you enter into Air Trail.</strong>
+        <span>Enter your trip information below.</span>
       </div>
-
     </div>
 
-
-    <div class="section-label">
-      ENTER TRIP INFORMATION
-    </div>
-
+    <div class="section-label">ENTER TRIP INFORMATION</div>
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Total Trip Distance</strong>
-        <span>Planned total distance</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="distance" inputmode="decimal">
-        <span class="unit">nm</span>
-      </div>
-
+      <div class="field-label"><strong>Total Trip Distance</strong><span>Planned total distance</span></div>
+      <div class="input-wrap"><input id="distance" inputmode="decimal"><span class="unit">nm</span></div>
     </div>
-
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Fuel On Board NOW</strong>
-        <span>Usable fuel on board now</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="fob" inputmode="decimal">
-        <span class="unit">lb</span>
-      </div>
-
+      <div class="field-label"><strong>Fuel On Board NOW</strong><span>Usable fuel on board now</span><div class="synced-note">Shared with Round Trip</div></div>
+      <div class="input-wrap"><input id="fob" inputmode="decimal"><span class="unit">lb</span></div>
     </div>
-
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Current Fuel Burn</strong>
-        <span>From APEX — current fuel flow</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="burn" inputmode="decimal">
-        <span class="unit">lb/hr</span>
-      </div>
-
+      <div class="field-label"><strong>Current Fuel Burn</strong><span>From APEX — current fuel flow</span></div>
+      <div class="input-wrap"><input id="burn" inputmode="decimal"><span class="unit">lb/hr</span></div>
     </div>
-
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Minutes to Destination</strong>
-        <span>Time remaining to destination</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="minutes" inputmode="decimal">
-        <span class="unit">min</span>
-      </div>
-
+      <div class="field-label"><strong>Minutes to Destination</strong><span>Time remaining to destination</span></div>
+      <div class="input-wrap"><input id="minutes" inputmode="decimal"><span class="unit">min</span></div>
     </div>
-
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Planned Reserve Fuel</strong>
-        <span>From Air Trail plan</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="reserve" inputmode="decimal" value="413">
-        <span class="unit">lb</span>
-      </div>
-
+      <div class="field-label"><strong>Alternate Fuel</strong><span>From Air Trail plan</span><div class="synced-note">Entered once — shared with Round Trip</div></div>
+      <div class="input-wrap"><input id="altAir" inputmode="decimal"><span class="unit">lb</span></div>
     </div>
-
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Zero Fuel Weight (ZFW)</strong>
-        <span>From Air Trail</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="zfw" inputmode="decimal">
-        <span class="unit">lb</span>
-      </div>
-
+      <div class="field-label"><strong>Zero Fuel Weight (ZFW)</strong><span>From Air Trail</span></div>
+      <div class="input-wrap"><input id="zfw" inputmode="decimal"><span class="unit">lb</span></div>
     </div>
 
+    <div class="small-note">No calculate button needed — results update automatically as you enter values.</div>
 
-    <button class="primary" id="calcAir">
-      CALCULATE AIR TRAIL NUMBERS
-    </button>
-
-
-    <div class="section-label">
-      RESULTS — ENTER THESE NUMBERS INTO AIR TRAIL
-    </div>
-
+    <div class="section-label">RESULTS — ENTER THESE NUMBERS INTO AIR TRAIL</div>
 
     <div class="results">
-
       <div class="result-row">
-
-        <div class="r-icon">
-          📍
-        </div>
-
-        <div class="r-label">
-          <strong>Halfway Distance</strong>
-          <span>Enter this distance in Air Trail</span>
-        </div>
-
-        <div id="halfDist" class="r-value blue">
-          —
-        </div>
-
+        <div class="r-icon">📍</div>
+        <div class="r-label"><strong>Halfway Distance</strong><span>Enter this distance in Air Trail</span></div>
+        <div id="halfDist" class="r-value blue">—</div>
       </div>
-
-
       <div class="result-row">
-
-        <div class="r-icon">
-          ⛽
-        </div>
-
-        <div class="r-label">
-          <strong>Halfway Fuel</strong>
-          <span>Enter this fuel in Air Trail</span>
-        </div>
-
-        <div id="halfFuel" class="r-value green">
-          —
-        </div>
-
+        <div class="r-icon">⛽</div>
+        <div class="r-label"><strong>Halfway Fuel</strong><span>Enter this fuel in Air Trail</span></div>
+        <div id="halfFuel" class="r-value green">—</div>
       </div>
-
-
       <div class="result-row">
-
-        <div class="r-icon">
-          💧
-        </div>
-
-        <div class="r-label">
-          <strong>Predicted Landing Fuel</strong>
-          <span>Enter this fuel in Air Trail</span>
-        </div>
-
-        <div id="landingFuel" class="r-value orange">
-          —
-        </div>
-
+        <div class="r-icon">🛡️</div>
+        <div class="r-label"><strong>HWP Required Fuel</strong><span>To destination + descent + alternate + reserve</span></div>
+        <div id="hwpRequired" class="r-value blue">—</div>
       </div>
-
-
       <div class="result-row">
-
-        <div class="r-icon">
-          ⚖️
-        </div>
-
-        <div class="r-label">
-          <strong>Predicted Landing Weight</strong>
-          <span>Enter this weight in Air Trail</span>
-        </div>
-
-        <div id="landingWeight" class="r-value purple">
-          —
-        </div>
-
+        <div class="r-icon">✓</div>
+        <div class="r-label"><strong>HWP Fuel Margin</strong><span>Halfway fuel minus required fuel</span></div>
+        <div id="hwpMargin" class="r-value green">—</div>
       </div>
-
+      <div class="result-row">
+        <div class="r-icon">💧</div>
+        <div class="r-label"><strong>Predicted Landing Fuel</strong><span>Enter this fuel in Air Trail</span></div>
+        <div id="landingFuel" class="r-value orange">—</div>
+      </div>
+      <div class="result-row">
+        <div class="r-icon">⚖️</div>
+        <div class="r-label"><strong>Predicted Landing Weight</strong><span>Enter this weight in Air Trail</span></div>
+        <div id="landingWeight" class="r-value purple">—</div>
+      </div>
     </div>
 
-
-    <div class="small-note">
-      Calculations use the displayed formulas below.
-      Verify all values against current approved sources before operational use.
-    </div>
-
+    <div class="small-note">Calculations use the displayed formulas below. Verify all values against current approved sources before operational use.</div>
   </section>
-
 
   <section id="roundtrip" class="screen">
-
     <div class="topbar">
-
-      <button class="back" data-home>
-        ‹ Home
-      </button>
-
-      <div class="title green-title">
-        ROUND TRIP<br>
-        QUICK CHECK
-      </div>
-
+      <button class="back" data-home>‹ Home</button>
+      <div class="title green-title">ROUND TRIP<br>QUICK CHECK</div>
       <div style="width:54px"></div>
-
     </div>
-
 
     <div class="intro">
-
-      <div class="intro-icon" style="background:var(--green)">
-        ↻
-      </div>
-
-      <div>
-        <strong>
-          Check the total fuel required for a round trip.
-        </strong>
-      </div>
-
+      <div class="intro-icon" style="background:var(--green)">↻</div>
+      <div><strong>Check the total fuel required for a round trip.</strong></div>
     </div>
 
-
-    <div class="section-label green-title">
-      ENTER INFORMATION
-    </div>
-
+    <div class="section-label green-title">ENTER INFORMATION</div>
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Fuel To TOD (One Way)</strong>
-        <span>From Air Trail plan</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="tod" inputmode="decimal">
-        <span class="unit">lb</span>
-      </div>
-
+      <div class="field-label"><strong>Fuel To TOD (One Way)</strong><span>From Air Trail plan</span></div>
+      <div class="input-wrap"><input id="tod" inputmode="decimal"><span class="unit">lb</span></div>
     </div>
-
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Alternate Fuel</strong>
-        <span>From Air Trail plan</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="alt" inputmode="decimal">
-        <span class="unit">lb</span>
-      </div>
-
+      <div class="field-label"><strong>Alternate Fuel</strong><span>From Air Trail plan</span><div class="synced-note">Shared with Air Trail Entry</div></div>
+      <div class="input-wrap"><input id="alt" inputmode="decimal"><span class="unit">lb</span></div>
     </div>
-
 
     <div class="field-row">
-
-      <div class="field-label">
-        <strong>Fuel On Board NOW</strong>
-        <span>Usable fuel on board now</span>
-      </div>
-
-      <div class="input-wrap">
-        <input id="rtFob" inputmode="decimal">
-        <span class="unit">lb</span>
-      </div>
-
+      <div class="field-label"><strong>Fuel On Board NOW</strong><span>Usable fuel on board now</span><div class="synced-note">Shared with Air Trail Entry</div></div>
+      <div class="input-wrap"><input id="rtFob" inputmode="decimal"><span class="unit">lb</span></div>
     </div>
 
+    <div class="small-note">No calculate button needed — results update automatically as you enter values.</div>
 
-    <button
-      class="primary"
-      id="calcRound"
-      style="background:var(--green)"
-    >
-      CALCULATE ROUND TRIP
-    </button>
-
-
-    <div class="section-label green-title">
-      RESULTS
-    </div>
-
-
+    <div class="section-label green-title">RESULTS</div>
     <div class="results">
-
       <div class="result-row">
-
-        <div
-          class="r-icon"
-          style="color:var(--green);background:var(--green2)"
-        >
-          🧮
-        </div>
-
-        <div class="r-label">
-          <strong>Total Fuel Required</strong>
-          <span>(44 + TOD + 70) × 2 + Alternate + 413</span>
-        </div>
-
-        <div id="rtRequired" class="r-value green">
-          —
-        </div>
-
+        <div class="r-icon" style="color:var(--green);background:var(--green2)">🧮</div>
+        <div class="r-label"><strong>Total Fuel Required</strong><span>(44 + TOD + 70) × 2 + Alternate + 350</span></div>
+        <div id="rtRequired" class="r-value green">—</div>
       </div>
-
-
       <div class="result-row">
-
-        <div
-          class="r-icon"
-          style="color:var(--green);background:var(--green2)"
-        >
-          ✓
-        </div>
-
-        <div class="r-label">
-          <strong>Fuel Margin</strong>
-          <span>On board minus required</span>
-        </div>
-
-        <div id="rtMargin" class="r-value green">
-          —
-        </div>
-
+        <div class="r-icon" style="color:var(--green);background:var(--green2)">✓</div>
+        <div class="r-label"><strong>Fuel Margin</strong><span>On board minus required</span></div>
+        <div id="rtMargin" class="r-value green">—</div>
       </div>
-
     </div>
-
-
-    <div id="rtStatus" class="status-card">
-      ENTER VALUES ABOVE
-    </div>
-
+    <div id="rtStatus" class="status-card">ENTER VALUES ABOVE</div>
   </section>
 
-
   <section id="quick" class="screen">
-
     <div class="topbar">
-
-      <button class="back" data-home>
-        ‹ Home
-      </button>
-
-      <div class="title orange-title">
-        QUICK REFERENCE
-      </div>
-
+      <button class="back" data-home>‹ Home</button>
+      <div class="title orange-title">QUICK REFERENCE</div>
       <div style="width:54px"></div>
-
     </div>
 
-
-    <div class="section-label orange-title">
-      FIXED FUEL VALUES
-    </div>
-
-
+    <div class="section-label orange-title">FIXED FUEL VALUES</div>
     <div class="fixed">
-
-      <div class="fixed-row">
-        <strong>Taxi / Takeoff Fuel</strong>
-        <span>44 lb</span>
-      </div>
-
-      <div class="fixed-row">
-        <strong>Descent Fuel</strong>
-        <span>70 lb</span>
-      </div>
-
-      <div class="fixed-row">
-        <strong>Reserve Fuel</strong>
-        <span>413 lb</span>
-      </div>
-
+      <div class="fixed-row"><strong>Taxi / Takeoff Fuel</strong><span>44 lb</span></div>
+      <div class="fixed-row"><strong>Descent Fuel</strong><span>70 lb</span></div>
+      <div class="fixed-row"><strong>Reserve Fuel</strong><span>350 lb</span></div>
     </div>
 
-
-    <div class="section-label orange-title">
-      FORMULAS WE USE
-    </div>
-
-
+    <div class="section-label orange-title">FORMULAS WE USE</div>
     <div class="formula-box">
-
       <div class="formula-item">
         <strong>Halfway Distance</strong>
-        <span>
-          Total Trip Distance ÷ 2
-        </span>
+        <span>Total Trip Distance ÷ 2</span>
       </div>
-
       <div class="formula-item">
         <strong>Halfway Fuel</strong>
-        <span>
-          Fuel On Board −
-          (Current Burn × Minutes to Halfway ÷ 60)
-        </span>
+        <span>Fuel On Board − (Current Burn × Minutes to Halfway ÷ 60)</span>
       </div>
-
+      <div class="formula-item">
+        <strong>HWP Required Fuel</strong>
+        <span>(Current Burn × Minutes from HWP to Destination ÷ 60) + 70 descent + Alternate + 350 reserve</span>
+      </div>
+      <div class="formula-item">
+        <strong>HWP Fuel Margin</strong>
+        <span>Halfway Fuel − HWP Required Fuel</span>
+      </div>
       <div class="formula-item">
         <strong>Predicted Landing Fuel</strong>
-        <span>
-          Fuel On Board −
-          (Current Burn × Minutes to Destination ÷ 60)
-          + 70 descent fuel
-        </span>
+        <span>Fuel On Board − (Current Burn × Minutes to Destination ÷ 60) + 70 descent fuel</span>
       </div>
-
       <div class="formula-item">
         <strong>Predicted Landing Weight</strong>
-        <span>
-          ZFW + Predicted Landing Fuel
-        </span>
+        <span>ZFW + Predicted Landing Fuel</span>
       </div>
-
+      <div class="formula-item">
+        <strong>Take-Off Vr</strong>
+        <span>Automatically estimated from take-off weight and selected flap schedule</span>
+      </div>
+      <div class="formula-item">
+        <strong>Landing Quick-Reference VAPP</strong>
+        <span>Automatically estimated from landing weight + selected flap setting</span>
+      </div>
+      <div class="formula-item">
+        <strong>Take-Off Quick Estimate</strong>
+        <span>Weight + pressure altitude + OAT + wind + slope + flaps → estimated distance and runway margin</span>
+      </div>
+      <div class="formula-item">
+        <strong>Landing Quick Estimate</strong>
+        <span>Landing weight + pressure altitude + OAT + wind + slope + flaps → estimated distance and runway margin</span>
+      </div>
       <div class="formula-item">
         <strong>Round Trip Fuel Required</strong>
-        <span>
-          (44 + Fuel to TOD + 70) × 2
-          + Alternate + 413
-        </span>
+        <span>(44 + Fuel to TOD + 70) × 2 + Alternate + 350</span>
       </div>
-
     </div>
-
 
     <div class="notice">
-      Use current APEX fuel burn and Air Trail planned values.
-      Always verify against company SOP/COM and aircraft documents.
+      Use current APEX fuel burn and Air Trail planned values. Always verify against company SOP/COM and aircraft documents.
     </div>
-
   </section>
 
 </div>
 
 
+<div id="tempPadBackdrop" class="temp-pad-backdrop" aria-hidden="true">
+  <div class="temp-pad" role="dialog" aria-label="Signed numeric keypad">
+    <div id="tempPadDisplay" class="temp-pad-display">—</div>
+    <div class="temp-pad-grid">
+      <button type="button" class="temp-pad-key" data-key="1">1</button>
+      <button type="button" class="temp-pad-key" data-key="2">2</button>
+      <button type="button" class="temp-pad-key" data-key="3">3</button>
+      <button type="button" class="temp-pad-key" data-key="4">4</button>
+      <button type="button" class="temp-pad-key" data-key="5">5</button>
+      <button type="button" class="temp-pad-key" data-key="6">6</button>
+      <button type="button" class="temp-pad-key" data-key="7">7</button>
+      <button type="button" class="temp-pad-key" data-key="8">8</button>
+      <button type="button" class="temp-pad-key" data-key="9">9</button>
+      <button type="button" class="temp-pad-key sign" data-key="sign">±</button>
+      <button type="button" class="temp-pad-key" data-key="0">0</button>
+      <button type="button" class="temp-pad-key" data-key=".">.</button>
+      <button type="button" class="temp-pad-key clear" data-key="clear">Clear</button>
+      <button type="button" class="temp-pad-key" data-key="back">⌫</button>
+      <button type="button" class="temp-pad-key done" data-key="done">Done</button>
+    </div>
+  </div>
+</div>
+
 <script>
-
-const $ = id =>
-  document.getElementById(id);
-
-
+const $ = id => document.getElementById(id);
 const val = id => {
-
-  const n =
-    parseFloat(
-      $(id).value
-    );
-
-  return Number.isFinite(n)
-    ? n
-    : 0;
-
+  const n = parseFloat($(id).value);
+  return Number.isFinite(n) ? n : 0;
 };
-
-
-const fmt = (n,unit) =>
-  Number.isFinite(n)
-    ? Math.round(n).toLocaleString() +
-      " " +
-      unit
-    : "—";
-
+const rawVal = id => {
+  const s = $(id).value.trim();
+  if(s === "") return NaN;
+  const n = parseFloat(s);
+  return Number.isFinite(n) ? n : NaN;
+};
+const fmt = (n, unit) => Number.isFinite(n) ? Math.round(n).toLocaleString() + " " + unit : "—";
 
 function showScreen(id){
-
-  document
-    .querySelectorAll(".screen")
-    .forEach(
-      s =>
-        s.classList.remove("active")
-    );
-
-  $(id)
-    .classList.add("active");
-
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
   window.scrollTo(0,0);
+}
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showScreen(b.dataset.go)));
+document.querySelectorAll("[data-home]").forEach(b=>b.addEventListener("click",()=>showScreen("home")));
 
+function interpSchedule(weight, weights, speeds){
+  if(!Number.isFinite(weight) || weight <= 0) return NaN;
+  if(weight <= weights[0]) return speeds[0];
+  if(weight >= weights[weights.length-1]) return speeds[speeds.length-1];
+  for(let i=0;i<weights.length-1;i++){
+    if(weight >= weights[i] && weight <= weights[i+1]){
+      const f=(weight-weights[i])/(weights[i+1]-weights[i]);
+      return speeds[i] + f*(speeds[i+1]-speeds[i]);
+    }
+  }
+  return NaN;
+}
+
+function updateTakeoffVr(){
+  const flaps = $("toFlaps").value;
+  const weight = val("toWeight");
+  let vr;
+  if(flaps === "30") {
+    vr = interpSchedule(weight,[6400,7300,8200,9100,10000,10450],[59,63,67,71,75,77]);
+  } else {
+    vr = interpSchedule(weight,[6400,7300,8200,9100,10000,10450],[65,69,74,78,82,84]);
+  }
+  $("toVr").textContent = Number.isFinite(vr) ? Math.round(vr) + " KIAS" : "—";
+}
+
+function updateLandingVapp(){
+  const flaps = $("ldFlaps").value;
+  const weight = val("ldWeight");
+  const out = $("ldVapp");
+  const note = $("ldVappNote");
+  let vapp = NaN;
+
+  // Quick-reference schedules by landing weight.
+  // Flaps 40° uses the AFM VAPP schedule available in the reference data.
+  // Flaps 15° uses the available weight-based VAPP schedule.
+  // Flaps 30° is a quick-reference estimate interpolated between the 15° and 40° schedules.
+  if(flaps === "40") {
+    vapp = interpSchedule(weight,[6400,7300,8200,9100,9920],[69,74,78,83,87]);
+    note.textContent = "Flaps 40° — weight-based reference";
+  } else if(flaps === "15") {
+    vapp = interpSchedule(weight,[6393,7275,8157,9039,9921],[84,90,95,100,105]);
+    note.textContent = "Flaps 15° — quick-reference weight schedule";
+  } else if(flaps === "30") {
+    vapp = interpSchedule(weight,[6400,7300,8200,9100,9920],[77,82,87,92,96]);
+    note.textContent = "Flaps 30° — estimated quick-reference speed";
+  }
+
+  out.textContent = Number.isFinite(vapp) ? Math.round(vapp) + " KIAS" : "—";
+}
+
+function calcPressureAltitude(){
+  const elev = rawVal("toElev");
+  const altim = rawVal("toAltim");
+  if(Number.isFinite(elev) && altim > 0){
+    const pa = elev + (29.92 - altim) * 1000;
+    $("toPAResult").textContent = Math.round(pa).toLocaleString() + " ft";
+    $("toPAResult").dataset.value = pa;
+    return pa;
+  }
+  $("toPAResult").textContent = "—";
+  delete $("toPAResult").dataset.value;
+  return NaN;
+}
+
+function estimateTakeoffDistance(){
+  const weight = val("toWeight");
+  const pa = calcPressureAltitude();
+  const oat = rawVal("toOAT");
+  const windEntered = rawVal("toWind");
+  const slopeEntered = rawVal("toSlope");
+  const wind = Number.isFinite(windEntered) ? windEntered : 0;
+  const slope = Number.isFinite(slopeEntered) ? slopeEntered : 0;
+  const flaps = $("toFlaps").value;
+  if(!(weight > 0) || !Number.isFinite(pa) || !Number.isFinite(oat)) return NaN;
+
+  // Quick-reference model anchored to the AFM example conditions:
+  // ~7718 lb, PA 6000 ft, OAT 18 C, 8 kt headwind, 1% uphill.
+  // AFM example total distance over 50 ft: about 2200 ft (Flaps 15) / 2050 ft (Flaps 30).
+  const base = flaps === "30" ? 2050 : 2200;
+  const refWeight = 7718;
+  const weightFactor = Math.pow(weight / refWeight, 1.55);
+
+  const isa = 15 - 0.0019812 * pa;
+  const isaDev = oat - isa;
+  const refIsa = 15 - 0.0019812 * 6000;
+  const refIsaDev = 18 - refIsa;
+  const altitudeFactor = Math.max(0.70, 1 + 0.000025 * (pa - 6000));
+  const tempFactor = Math.max(0.80, 1 + 0.006 * (isaDev - refIsaDev));
+
+  const windRaw = wind >= 0 ? Math.max(0.65, 1 - 0.010 * wind) : 1 + 0.025 * Math.abs(wind);
+  const refWindRaw = 1 - 0.010 * 8;
+  const windFactor = windRaw / refWindRaw;
+
+  const slopeRaw = Math.max(0.75, 1 + 0.08 * slope);
+  const refSlopeRaw = 1.08;
+  const slopeFactor = slopeRaw / refSlopeRaw;
+
+  // Small conservative buffer because this is a planning estimator, not chart interpolation.
+  const conservativeBuffer = 1.10;
+  return base * weightFactor * altitudeFactor * tempFactor * windFactor * slopeFactor * conservativeBuffer;
+}
+
+function calcTakeoff(){
+  calcPressureAltitude();
+  updateTakeoffVr();
+  const runway = val("toRunway");
+  const estimated = estimateTakeoffDistance();
+  const margin = runway - estimated;
+  const pct = runway > 0 && Number.isFinite(estimated) ? (margin / runway) * 100 : NaN;
+
+  $("toEstimated").textContent = Number.isFinite(estimated) ? fmt(estimated,"ft") : "—";
+
+  if(runway > 0 && Number.isFinite(estimated)){
+    $("toMargin").textContent = (margin >= 0 ? "+" : "") + fmt(margin,"ft");
+    $("toPercent").textContent = Number.isFinite(pct) ? Math.round(pct) + "%" : "—";
+    $("toMargin").className = "r-value " + (margin >= 0 ? "purple" : "orange");
+    const card = $("toStatus");
+    if(margin >= 0){
+      card.className = "status-card";
+      card.style.borderColor = "#cfc0ef";
+      card.style.background = "#f7f3ff";
+      card.style.color = "var(--purple)";
+      card.innerHTML = "QUICK ESTIMATE: RUNWAY MARGIN +" + Math.round(margin).toLocaleString() + " ft<span class='status-sub'>Planning reference only — verify approved take-off performance before flight.</span>";
+    }else{
+      card.className = "status-card bad";
+      card.removeAttribute("style");
+      card.innerHTML = "QUICK ESTIMATE: RUNWAY SHORT " + Math.abs(Math.round(margin)).toLocaleString() + " ft<span class='status-sub'>Planning estimate exceeds runway available. Verify with approved performance data.</span>";
+    }
+  }else{
+    $("toMargin").textContent = "—";
+    $("toPercent").textContent = "—";
+    $("toStatus").textContent = "ENTER CONDITIONS AND RUNWAY";
+  }
+}
+
+function calcLandingPressureAltitude(){
+  const elev = rawVal("ldElev");
+  const altim = rawVal("ldAltim");
+  if(Number.isFinite(elev) && altim > 0){
+    const pa = elev + (29.92 - altim) * 1000;
+    $("ldPAResult").textContent = Math.round(pa).toLocaleString() + " ft";
+    $("ldPAResult").dataset.value = pa;
+    return pa;
+  }
+  $("ldPAResult").textContent = "—";
+  delete $("ldPAResult").dataset.value;
+  return NaN;
+}
+
+function estimateLandingDistance(){
+  const weight = val("ldWeight");
+  const pa = calcLandingPressureAltitude();
+  const oat = rawVal("ldOAT");
+  const windEntered = rawVal("ldWind");
+  const slopeEntered = rawVal("ldSlope");
+  const wind = Number.isFinite(windEntered) ? windEntered : 0;
+  const slope = Number.isFinite(slopeEntered) ? slopeEntered : 0;
+  const flaps = $("ldFlaps").value;
+  if(!(weight > 0) || !Number.isFinite(pa) || !Number.isFinite(oat)) return NaN;
+
+  // Quick-reference model. Flaps 40 is anchored to the AFM example:
+  // ~7716 lb, PA 6000 ft, OAT 18 C, 8 kt headwind, 1% uphill -> ~1900 ft total distance from 50 ft.
+  // Flaps 30/15 use conservative quick-reference configuration factors.
+  const base40 = 1900;
+  const flapFactor = flaps === "15" ? 1.20 : (flaps === "30" ? 1.10 : 1.00);
+  const refWeight = 7716;
+  const weightFactor = Math.pow(weight / refWeight, 1.35);
+
+  const isa = 15 - 0.0019812 * pa;
+  const isaDev = oat - isa;
+  const refIsa = 15 - 0.0019812 * 6000;
+  const refIsaDev = 18 - refIsa;
+  const altitudeFactor = Math.max(0.75, 1 + 0.000020 * (pa - 6000));
+  const tempFactor = Math.max(0.85, 1 + 0.0045 * (isaDev - refIsaDev));
+
+  const windRaw = wind >= 0 ? Math.max(0.70, 1 - 0.008 * wind) : 1 + 0.020 * Math.abs(wind);
+  const refWindRaw = 1 - 0.008 * 8;
+  const windFactor = windRaw / refWindRaw;
+
+  const slopeRaw = 1 + 0.025 * slope;
+  const refSlopeRaw = 1 + 0.025 * 1;
+  const slopeFactor = Math.max(0.80, slopeRaw / refSlopeRaw);
+
+  // Small conservative planning buffer because this is intentionally an estimator.
+  return base40 * flapFactor * weightFactor * altitudeFactor * tempFactor * windFactor * slopeFactor * 1.05;
+}
+
+function calcLanding(){
+  updateLandingVapp();
+  const runway = val("ldRunway");
+  const required = estimateLandingDistance();
+  if(Number.isFinite(required)) $("ldEstimated").textContent = fmt(required,"ft");
+  else $("ldEstimated").textContent = "—";
+  const margin = runway - required;
+  const pct = runway > 0 ? (margin / runway) * 100 : NaN;
+
+  if(runway > 0 && required > 0){
+    $("ldMargin").textContent = (margin >= 0 ? "+" : "") + fmt(margin,"ft");
+    $("ldPercent").textContent = Number.isFinite(pct) ? Math.round(pct) + "%" : "—";
+    const card = $("ldStatus");
+    if(margin >= 0){
+      card.className = "status-card";
+      card.style.borderColor = "#efc38d";
+      card.style.background = "#fff8ef";
+      card.style.color = "var(--orange)";
+      card.innerHTML = "EST. STOPPED BY " + Math.round(required).toLocaleString() + " ft<span class='status-sub'>Runway remaining: " + Math.round(margin).toLocaleString() + " ft. Quick-reference estimate — verify approved performance data.</span>";
+    }else{
+      card.className = "status-card bad";
+      card.removeAttribute("style");
+      card.innerHTML = "EST. STOPPING POINT " + Math.round(required).toLocaleString() + " ft<span class='status-sub'>Short by " + Math.abs(Math.round(margin)).toLocaleString() + " ft. Estimated landing distance exceeds runway available.</span>";
+    }
+  }else{
+    $("ldMargin").textContent = "—";
+    $("ldPercent").textContent = "—";
+    $("ldStatus").textContent = "ENTER CONDITIONS AND RUNWAY";
+  }
+}
+
+function calcAir(){
+  const distance = val("distance");
+  const fob = val("fob");
+  const burn = val("burn");
+  const minutes = val("minutes");
+  const alt = val("altAir");
+  const zfw = val("zfw");
+
+  if(distance>0) $("halfDist").textContent = fmt(distance/2,"nm"); else $("halfDist").textContent="—";
+  if(fob>0 && burn>0 && minutes>0){
+    const minutesToHalfway = minutes / 2;
+    const halfwayFuel = fob - (burn * minutesToHalfway / 60);
+    const hwpRequiredFuel = (burn * minutesToHalfway / 60) + 70 + alt + 350;
+    const hwpFuelMargin = halfwayFuel - hwpRequiredFuel;
+    const predictedLandingFuel = fob - (burn * minutes / 60) + 70;
+    const predictedLandingWeight = zfw > 0 ? zfw + predictedLandingFuel : NaN;
+    $("halfFuel").textContent = fmt(halfwayFuel,"lb");
+    $("hwpRequired").textContent = fmt(hwpRequiredFuel,"lb");
+    $("hwpMargin").textContent = (hwpFuelMargin >= 0 ? "+" : "") + fmt(hwpFuelMargin,"lb");
+    $("hwpMargin").className = "r-value " + (hwpFuelMargin >= 0 ? "green" : "orange");
+    $("landingFuel").textContent = fmt(predictedLandingFuel,"lb");
+    $("landingWeight").textContent = Number.isFinite(predictedLandingWeight) ? fmt(predictedLandingWeight,"lb") : "—";
+    if(Number.isFinite(predictedLandingWeight) && !$("ldWeight").dataset.manual){
+      $("ldWeight").value = Math.round(predictedLandingWeight);
+      localStorage.setItem("kew_ldWeight", $("ldWeight").value);
+    }
+    calcLanding();
+  }else{
+    ["halfFuel","hwpRequired","hwpMargin","landingFuel","landingWeight"].forEach(id=>$(id).textContent="—");
+  }
+}
+
+function calcRound(){
+  const tod = val("tod");
+  const alt = val("alt");
+  const fob = val("rtFob");
+  if(tod>0 && fob>0){
+    const required = (44 + tod + 70) * 2 + alt + 350;
+    const margin = fob - required;
+    $("rtRequired").textContent = fmt(required,"lb");
+    $("rtMargin").textContent = (margin >= 0 ? "+" : "") + fmt(margin,"lb");
+    const card = $("rtStatus");
+    if(margin >= 0){
+      card.className = "status-card";
+      card.innerHTML = "STATUS: FUEL OK<span class='status-sub'>You have a positive fuel margin.</span>";
+    }else{
+      card.className = "status-card bad";
+      card.innerHTML = "STATUS: SHORT " + Math.abs(Math.round(margin)).toLocaleString() + " lb<span class='status-sub'>Review the plan and required fuel.</span>";
+    }
+  }else{
+    $("rtRequired").textContent="—"; $("rtMargin").textContent="—"; $("rtStatus").className="status-card"; $("rtStatus").textContent="ENTER VALUES ABOVE";
+  }
+}
+
+function autoTakeoffWeight(){
+  const zfw = val("zfw");
+  const fob = val("fob");
+  if(zfw>0 && fob>0 && !$("toWeight").dataset.manual){
+    $("toWeight").value = Math.round(zfw + fob - 44);
+    localStorage.setItem("kew_toWeight",$("toWeight").value);
+  }
 }
 
 
-document
-  .querySelectorAll("[data-go]")
-  .forEach(
-    b =>
-      b.addEventListener(
-        "click",
-        () =>
-          showScreen(
-            b.dataset.go
-          )
-      )
-  );
+const syncPairs = [
+  ["fob","rtFob","kew_shared_fob"],
+  ["altAir","alt","kew_shared_alt"]
+];
 
+function wireSync(a,b,key){
+  const saved = localStorage.getItem(key);
+  if(saved !== null){ $(a).value = saved; $(b).value = saved; }
+  const sync = (from,to)=>{
+    $(to).value = $(from).value;
+    localStorage.setItem(key,$(from).value);
+    if(key === "kew_shared_fob") $("toWeight").dataset.manual = "";
+    if(["kew_shared_fob","kew_shared_alt"].includes(key)) $("ldWeight").dataset.manual = "";
+    autoTakeoffWeight();
+    calcAir();
+    calcRound();
+    calcTakeoff();
+    calcLanding();
+  };
+  $(a).addEventListener("input",()=>sync(a,b));
+  $(b).addEventListener("input",()=>sync(b,a));
+}
 
-document
-  .querySelectorAll("[data-home]")
-  .forEach(
-    b =>
-      b.addEventListener(
-        "click",
-        () =>
-          showScreen("home")
-      )
-  );
+syncPairs.forEach(([a,b,key])=>wireSync(a,b,key));
 
-
-$("calcAir")
-  .addEventListener(
-    "click",
-    () => {
-
-      const distance =
-        val("distance");
-
-      const fob =
-        val("fob");
-
-      const burn =
-        val("burn");
-
-      const minutes =
-        val("minutes");
-
-      const zfw =
-        val("zfw");
-
-
-      const halfwayDistance =
-        distance / 2;
-
-
-      const minutesToHalfway =
-        minutes / 2;
-
-
-      const halfwayFuel =
-        fob -
-        (
-          burn *
-          minutesToHalfway /
-          60
-        );
-
-
-      const predictedLandingFuel =
-        fob -
-        (
-          burn *
-          minutes /
-          60
-        ) +
-        70;
-
-
-      const predictedLandingWeight =
-        zfw +
-        predictedLandingFuel;
-
-
-      $("halfDist").textContent =
-        fmt(
-          halfwayDistance,
-          "nm"
-        );
-
-
-      $("halfFuel").textContent =
-        fmt(
-          halfwayFuel,
-          "lb"
-        );
-
-
-      $("landingFuel").textContent =
-        fmt(
-          predictedLandingFuel,
-          "lb"
-        );
-
-
-      $("landingWeight").textContent =
-        fmt(
-          predictedLandingWeight,
-          "lb"
-        );
-
-
-      [
-        "distance",
-        "fob",
-        "burn",
-        "minutes",
-        "reserve",
-        "zfw"
-      ]
-      .forEach(
-        id =>
-          localStorage.setItem(
-            "kew_" + id,
-            $(id).value
-          )
-      );
-
+// Custom signed numeric keypad for iPhone. Used for OAT and headwind/tailwind; includes an explicit ± key.
+let activeTempInput=null;
+let tempPadBuffer="";
+const tempPadBackdrop=$("tempPadBackdrop");
+const tempPadDisplay=$("tempPadDisplay");
+function refreshTempPad(){
+  const unit=(activeTempInput && activeTempInput.dataset.unit) ? " "+activeTempInput.dataset.unit : "";
+  tempPadDisplay.textContent=(tempPadBuffer===""?"—":tempPadBuffer)+unit;
+}
+function openTempPad(input){
+  activeTempInput=input;
+  tempPadBuffer=input.value || "";
+  refreshTempPad();
+  tempPadBackdrop.classList.add("open");
+  tempPadBackdrop.setAttribute("aria-hidden","false");
+}
+function closeTempPad(){
+  tempPadBackdrop.classList.remove("open");
+  tempPadBackdrop.setAttribute("aria-hidden","true");
+  activeTempInput=null;
+}
+document.querySelectorAll(".signed-keypad-input").forEach(input=>{
+  input.addEventListener("click",()=>openTempPad(input));
+  input.addEventListener("focus",()=>openTempPad(input));
+});
+document.querySelectorAll(".temp-pad-key").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    if(!activeTempInput) return;
+    const key=btn.dataset.key;
+    if(/^\d$/.test(key)){
+      if(tempPadBuffer==="0") tempPadBuffer=key;
+      else if(tempPadBuffer==="-0") tempPadBuffer="-"+key;
+      else tempPadBuffer+=key;
+    } else if(key==="."){
+      if(!tempPadBuffer.includes(".")) tempPadBuffer+=(tempPadBuffer===""||tempPadBuffer==="-"?"0.":".");
+    } else if(key==="sign"){
+      tempPadBuffer=tempPadBuffer.startsWith("-")?tempPadBuffer.slice(1):"-"+tempPadBuffer;
+    } else if(key==="back"){
+      tempPadBuffer=tempPadBuffer.slice(0,-1);
+    } else if(key==="clear"){
+      tempPadBuffer="";
+    } else if(key==="done"){
+      activeTempInput.value=(tempPadBuffer==="-"?"":tempPadBuffer);
+      activeTempInput.dispatchEvent(new Event("input",{bubbles:true}));
+      activeTempInput.dispatchEvent(new Event("change",{bubbles:true}));
+      closeTempPad();
+      return;
     }
-  );
+    refreshTempPad();
+  });
+});
+tempPadBackdrop.addEventListener("click",e=>{ if(e.target===tempPadBackdrop) closeTempPad(); });
 
+["distance","burn","minutes","zfw","tod","toWeight","toElev","toAltim","toOAT","toWind","toFlaps","toSlope","toRunway","ldWeight","ldElev","ldAltim","ldOAT","ldWind","ldSlope","ldFlaps","ldRunway"].forEach(id=>{
+  const saved = localStorage.getItem("kew_"+id);
+  if(saved !== null) $(id).value = saved;
+  const updateField = ()=>{
+    localStorage.setItem("kew_"+id,$(id).value);
+    if(id === "toWeight") $("toWeight").dataset.manual = $("toWeight").value ? "1" : "";
+    if(id === "ldWeight") $("ldWeight").dataset.manual = $("ldWeight").value ? "1" : "";
+    if(id === "zfw") { $("toWeight").dataset.manual = ""; autoTakeoffWeight(); }
+    if(["distance","burn","minutes","zfw"].includes(id)) $("ldWeight").dataset.manual = "";
+    calcAir(); calcRound(); calcTakeoff(); calcLanding();
+  };
+  $(id).addEventListener("input",updateField);
+  $(id).addEventListener("change",updateField);
+});
 
-$("calcRound")
-  .addEventListener(
-    "click",
-    () => {
-
-      const tod =
-        val("tod");
-
-      const alt =
-        val("alt");
-
-      const fob =
-        val("rtFob");
-
-
-      const required =
-        (
-          44 +
-          tod +
-          70
-        ) *
-        2 +
-        alt +
-        413;
-
-
-      const margin =
-        fob -
-        required;
-
-
-      $("rtRequired").textContent =
-        fmt(
-          required,
-          "lb"
-        );
-
-
-      $("rtMargin").textContent =
-        (
-          margin >= 0
-            ? "+"
-            : ""
-        ) +
-        fmt(
-          margin,
-          "lb"
-        );
-
-
-      const card =
-        $("rtStatus");
-
-
-      if(margin >= 0){
-
-        card.className =
-          "status-card";
-
-        card.innerHTML =
-          "STATUS: FUEL OK" +
-          "<span class='status-sub'>" +
-          "You have a positive fuel margin." +
-          "</span>";
-
-      }
-      else{
-
-        card.className =
-          "status-card bad";
-
-        card.innerHTML =
-          "STATUS: SHORT " +
-          Math.abs(
-            Math.round(margin)
-          ).toLocaleString() +
-          " lb" +
-          "<span class='status-sub'>" +
-          "Review the plan and required fuel." +
-          "</span>";
-
-      }
-
-
-      [
-        "tod",
-        "alt",
-        "rtFob"
-      ]
-      .forEach(
-        id =>
-          localStorage.setItem(
-            "kew_" + id,
-            $(id).value
-          )
-      );
-
-    }
-  );
-
-
-[
-  "distance",
-  "fob",
-  "burn",
-  "minutes",
-  "reserve",
-  "zfw",
-  "tod",
-  "alt",
-  "rtFob"
-]
-.forEach(
-  id => {
-
-    const saved =
-      localStorage.getItem(
-        "kew_" + id
-      );
-
-    if(saved !== null){
-      $(id).value =
-        saved;
-    }
-
+// Migrate values saved by the previous version.
+if(!localStorage.getItem("kew_shared_alt") && localStorage.getItem("kew_alt")){
+  $("alt").value = localStorage.getItem("kew_alt");
+  $("altAir").value = localStorage.getItem("kew_alt");
+  localStorage.setItem("kew_shared_alt",localStorage.getItem("kew_alt"));
+}
+if(!localStorage.getItem("kew_shared_fob")){
+  const priorFob = localStorage.getItem("kew_fob") || localStorage.getItem("kew_rtFob");
+  if(priorFob !== null){
+    $("fob").value = priorFob; $("rtFob").value = priorFob;
+    localStorage.setItem("kew_shared_fob",priorFob);
   }
-);
+}
 
+// Start a fresh flight without removing the app itself or fixed reference values.
+$("newFlight").addEventListener("click",()=>{
+  // Clear all KEW saved state immediately. Avoid browser confirm(), which can be unreliable in iOS Home Screen web apps.
+  Object.keys(localStorage).filter(k=>k.startsWith("kew_")).forEach(k=>localStorage.removeItem(k));
+
+  const clearIds=[
+    "distance","fob","burn","minutes","altAir","zfw","tod","alt","rtFob",
+    "toWeight","toElev","toAltim","toOAT","toRunway",
+    "ldWeight","ldElev","ldAltim","ldOAT","ldRunway"
+  ];
+  clearIds.forEach(id=>{ if($(id)) $(id).value=""; });
+
+  // Return signed/default controls to a clean, obvious starting state.
+  [["toWind","0"],["toSlope","0"],["ldWind","0"],["ldSlope","0"],["toFlaps","15"],["ldFlaps","15"]]
+    .forEach(([id,v])=>{ if($(id)) $(id).value=v; });
+
+  $("toWeight").dataset.manual="";
+  $("ldWeight").dataset.manual="";
+
+  // Recalculate after the reset so no old result remains visible.
+  calcAir();
+  calcRound();
+  calcTakeoff();
+  calcLanding();
+
+  const status=$("newFlightStatus");
+  if(status){
+    status.style.display="block";
+    clearTimeout(window.kewNewFlightStatusTimer);
+    window.kewNewFlightStatusTimer=setTimeout(()=>{ status.style.display="none"; },3000);
+  }
+  showScreen("home");
+});
+
+// Recalculate immediately from any saved/shared values.
+if(!localStorage.getItem("kew_toWeight")) autoTakeoffWeight();
+calcAir();
+calcRound();
+calcTakeoff();
+calcLanding();
 </script>
-
 </body>
 </html>
