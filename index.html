@@ -262,6 +262,7 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
     <div class="row"><span>Fuel margin</span><strong id="rtMargin">Enter FOB</strong></div>
   </div>
   <div class="small">Formula: (44 + Destination Fuel) × 2 + Alternate Fuel once + 413 + Contingency.</div>
+  <div class="small" style="margin-top:6px">Departure FOB is shared between Round Trip and Weight &amp; Balance. Air Trail FOB is entered separately for the progressive / halfway check.</div>
 </section>
 
 
@@ -338,28 +339,11 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
   </div>
 
   <div class="card">
-    <h3>Zero Fuel Weight</h3>
-    <div class="grid2">
-      <label>BEW<input id="bew" readonly></label>
-      <label>Crew <span class="small">(lb)</span><input id="crew" type="number" value="460"></label>
-      <label>Survival Gear <span class="small">(lb)</span><input id="survival" type="number" value="45"></label>
-      <label>Medical Gear
-        <select id="medicalPreset">
-          <option value="0">None — 0 lb</option>
-          <option value="435">Neonatal — 435 lb</option>
-          <option value="330">Pediatric Sled & EQP — 330 lb</option>
-          <option value="277">APRT Team with EQP — 277 lb</option>
-          <option value="360" selected>STARS Medical Team — 360 lb</option>
-          <option value="custom">Custom</option>
-        </select>
-        <input id="medicalCustom" class="hidden" type="number" placeholder="Custom medical gear lb">
-      </label>
-      <label>Passengers <span class="small">(lb)</span><input id="pax" type="number"></label>
-      <label>Baggage / Cargo <span class="small">(lb)</span><input id="cargo" type="number"></label>
-    </div>
+    <h3>Flight Weight Reference</h3>
+    <div class="row"><span>Zero Fuel Weight<br><span class="small">From Weight &amp; Balance</span></span><strong id="airZfw">—</strong></div>
+    <div class="row"><span>Max Zero Fuel Weight</span><strong>9,039 lb</strong></div>
   </div>
-
-  <div class="card">
+<div class="card">
     <div class="row"><span>Zero Fuel Weight</span><strong id="zfw">—</strong></div>
     <div class="row"><span>Estimated Takeoff Weight</span><strong id="airTow">—</strong></div>
     <div class="row"><span>MTOW Margin</span><strong id="mtowMargin">—</strong></div>
@@ -373,7 +357,8 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
     <div class="row"><span>MLW Margin</span><strong id="mlwMargin">—</strong></div>
     <div id="weightStatus" class="status good">Enter flight values to check weight margins.</div>
   </div>
-  <div class="small">Progressive check uses current fuel flow and minutes remaining. Alternate is Destination → Alternate and counted once.</div>
+  <div class="small">Progressive check uses the fixed flight ZFW from Weight &amp; Balance, current fuel flow and minutes remaining. Alternate is Destination → Alternate and counted once.</div>
+  <div class="small" style="margin-top:6px">Air Trail FOB is independent from departure FOB because it represents the fuel remaining at the progressive / halfway check.</div>
 </section>
 
 <section id="takeoff" class="screen">
@@ -385,7 +370,7 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
       <label>Takeoff Airport<select id="toAirport"></select></label>
       <label>Runway<select id="toRunwaySelect"></select></label>
       <label>Runway Available <span class="small">(ft)</span><input id="toRunway" type="number"></label>
-      <label>Aircraft Weight <span class="small">(lb)</span><input id="toWeight" type="number"></label>
+      <label>Aircraft Weight <span class="small">(auto — lb)</span><input id="toWeight" type="number" readonly></label>
       <label>Airport Elevation <span class="small">(ft)</span><input id="toElev" type="number"></label>
       <label>Altimeter <span class="small">(inHg)</span><input id="toAltim" type="number" step="0.01" value="29.92"></label>
       <label>OAT <span class="small">(°C)</span><input id="toOAT" type="number"></label>
@@ -400,6 +385,8 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
     <div class="row"><span>Runway margin</span><strong id="toMargin">—</strong></div>
     <div id="toStatus" class="status warn">Enter conditions and runway.</div>
   </div>
+  <div class="small">Aircraft weight is automatically calculated from ZFW + departure FOB − 44 lb taxi fuel.</div>
+  <div class="small">Landing weight is automatically pulled from the Air Trail predicted landing weight.</div>
   <div class="small">Quick-reference estimator only. Not approved performance data.</div>
 </section>
 
@@ -412,7 +399,7 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
       <label>Landing Airport<select id="ldAirport"></select></label>
       <label>Runway<select id="ldRunwaySelect"></select></label>
       <label>Runway Available <span class="small">(ft)</span><input id="ldRunway" type="number"></label>
-      <label>Landing Weight <span class="small">(lb)</span><input id="ldWeight" type="number"></label>
+      <label>Landing Weight <span class="small">(auto from Air Trail — lb)</span><input id="ldWeight" type="number" readonly></label>
       <label>Airport Elevation <span class="small">(ft)</span><input id="ldElev" type="number"></label>
       <label>Altimeter <span class="small">(inHg)</span><input id="ldAltim" type="number" step="0.01" value="29.92"></label>
       <label>OAT <span class="small">(°C)</span><input id="ldOAT" type="number"></label>
@@ -539,6 +526,25 @@ function syncTrip(){
 }
 ["tripAircraft","tripDep","tripDest","tripAlt"].forEach(id=>$(id).addEventListener("change",syncTrip));
 
+
+let syncingFob=false;
+function setSharedFob(sourceId){
+  if(syncingFob) return;
+  syncingFob=true;
+  const source=$(sourceId);
+  const value=source ? source.value : "";
+  ["rtFob","wbFob"].forEach(id=>{
+    const el=$(id);
+    if(el && id!==sourceId) el.value=value;
+  });
+  if($("wbFob")) $("wbFob").dataset.manual=value?"1":"";
+  syncingFob=false;
+  calcRound();
+  if($("wbZfw")) calcWeight();
+  calcTakeoff();
+  calcLanding();
+}
+
 function calcRound(){
   const t=currentTrip(),dep=airport(t.dep),dest=airport(t.dest),alt=airport(t.alt);
   const gs=Math.max(50,num("rtGs")||249),burn=Math.max(50,num("rtBurn")||500),cont=Math.max(0,num("rtCont")),fob=num("rtFob"),rtZfw=zfw();
@@ -575,7 +581,7 @@ function syncWeightScreen(){
   $("wbMedicalCustom").classList.toggle("hidden",$("wbMedicalPreset").value!=="custom");
   $("wbPax").value=$("pax").value;
   $("wbCargo").value=$("cargo").value;
-  if(!$("wbFob").dataset.manual) $("wbFob").value=$("airFob").value || $("rtFob").value || "";
+  if(!$("wbFob").dataset.manual) $("wbFob").value=$("rtFob").value || "";
 }
 
 function calcWeight(){
@@ -665,7 +671,16 @@ function pressureAltitude(elevId,altId){
   const elev=raw(elevId),alt=raw(altId);
   return Number.isFinite(elev)&&alt>0?elev+(29.92-alt)*1000:NaN;
 }
+
+function updateTakeoffWeight(){
+  const fob=num("rtFob");
+  const tow=fob>0 ? zfw()+Math.max(0,fob-TAXI) : NaN;
+  $("toWeight").value=Number.isFinite(tow)?Math.round(tow):"";
+  return tow;
+}
+
 function calcTakeoff(){
+  updateTakeoffWeight();
   const weight=num("toWeight"),pa=pressureAltitude("toElev","toAltim"),oat=raw("toOAT"),wind=Number.isFinite(raw("toWind"))?raw("toWind"):0,flaps=$("toFlaps").value,runway=num("toRunway");
   $("toPA").textContent=fmt(pa,"ft");
   const vr=flaps==="30"?interp(weight,[6400,7300,8200,9100,10000,10450],[59,63,67,71,75,77]):interp(weight,[6400,7300,8200,9100,10000,10450],[65,69,74,78,82,84]);
@@ -679,7 +694,24 @@ function calcTakeoff(){
   $("toEstimated").textContent=fmt(estimated,"ft");$("toMargin").textContent=runway>0?`${margin>=0?"+":""}${fmt(margin,"ft")}`:"—";
   const s=$("toStatus");if(runway>0){s.className="status "+(margin>=0?"good":"bad");s.textContent=margin>=0?`Quick estimate: ${Math.round(margin).toLocaleString()} ft runway margin.`:`Quick estimate exceeds runway by ${Math.abs(Math.round(margin)).toLocaleString()} ft.`;}
 }
+
+function updateLandingWeight(){
+  const fob=num("airFob");
+  const burn=Math.max(0,num("airBurn"));
+  const mins=Math.max(0,num("airMinutes"));
+  if(!(fob>0 && mins>=0)){
+    $("ldWeight").value="";
+    return NaN;
+  }
+  const remainingDestFuel=burn*(mins/60);
+  const landingFuel=fob-TAXI-remainingDestFuel;
+  const lw=landingFuel>=0 ? zfw()+landingFuel : NaN;
+  $("ldWeight").value=Number.isFinite(lw)?Math.round(lw):"";
+  return lw;
+}
+
 function calcLanding(){
+  updateLandingWeight();
   const weight=num("ldWeight"),pa=pressureAltitude("ldElev","ldAltim"),oat=raw("ldOAT"),wind=Number.isFinite(raw("ldWind"))?raw("ldWind"):0,flaps=$("ldFlaps").value,runway=num("ldRunway");
   $("ldPA").textContent=fmt(pa,"ft");
   let vapp=NaN;if(flaps==="40")vapp=interp(weight,[6400,7300,8200,9100,9920],[69,74,78,83,87]);else if(flaps==="15")vapp=interp(weight,[6393,7275,8157,9039,9921],[84,90,95,100,105]);else vapp=interp(weight,[6400,7300,8200,9100,9920],[77,82,87,92,96]);
@@ -695,11 +727,11 @@ function calcLanding(){
 }
 function calcAll(){calcRound();calcAir();calcTakeoff();calcLanding();calcWeight();}
 
-["rtFob","rtCont","rtGs","rtBurn"].forEach(id=>$(id).addEventListener("input",calcRound));
+["rtCont","rtGs","rtBurn"].forEach(id=>$(id).addEventListener("input",calcRound));
 ["airFob","airBurn","airMinutes","airCont","crew","survival","pax","cargo","medicalCustom"].forEach(id=>$(id).addEventListener("input",()=>{calcAir();calcRound();calcTakeoff();calcLanding();calcWeight();}));
 $("medicalPreset").addEventListener("change",()=>{const custom=$("medicalPreset").value==="custom";$("medicalCustom").classList.toggle("hidden",!custom);calcAir();calcRound();calcTakeoff();calcLanding();calcWeight();});
-["toWeight","toElev","toAltim","toOAT","toWind","toFlaps","toRunway"].forEach(id=>$(id).addEventListener("input",calcTakeoff));
-["ldWeight","ldElev","ldAltim","ldOAT","ldWind","ldFlaps","ldRunway"].forEach(id=>$(id).addEventListener("input",calcLanding));
+["toElev","toAltim","toOAT","toWind","toFlaps","toRunway"].forEach(id=>$(id).addEventListener("input",calcTakeoff));
+["ldElev","ldAltim","ldOAT","ldWind","ldFlaps","ldRunway"].forEach(id=>$(id).addEventListener("input",calcLanding));
 $("toAirport").addEventListener("change",()=>{updateRunways("to");calcTakeoff();});
 $("ldAirport").addEventListener("change",()=>{updateRunways("ld");calcLanding();});
 $("toRunwaySelect").addEventListener("change",()=>runwayChange("to"));
@@ -711,13 +743,12 @@ $("wbMedicalPreset").addEventListener("change",()=>{
   $("wbMedicalCustom").classList.toggle("hidden",$("wbMedicalPreset").value!=="custom");
   pullWeightScreenToShared();
 });
-$("wbFob").addEventListener("input",()=>{
-  $("wbFob").dataset.manual=$("wbFob").value?"1":"";
-  calcWeight();
-});
+$("wbFob").addEventListener("input",()=>setSharedFob("wbFob"));
 
+
+$("rtFob").addEventListener("input",()=>setSharedFob("rtFob"));
 $("newFlight").addEventListener("click",()=>{
-  ["rtFob","airFob","airMinutes","pax","cargo","toOAT","ldOAT"].forEach(id=>$(id).value="");
+  ["rtFob","airFob","wbFob","airMinutes","pax","cargo","toOAT","ldOAT"].forEach(id=>$(id).value="");
   ["rtCont","airCont"].forEach(id=>$(id).value="0");
   $("airBurn").value="500";$("rtGs").value="249";$("rtBurn").value="500";
   $("crew").value="460";$("survival").value="45";$("medicalPreset").value="360";$("medicalCustom").value="";$("medicalCustom").classList.add("hidden");
