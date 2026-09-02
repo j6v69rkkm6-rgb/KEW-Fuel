@@ -283,15 +283,15 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
     <h3>Weight Build-Up</h3>
     <div class="grid2">
       <label>BEW<input id="wbBewInput" readonly></label>
-      <label>Crew <span class="small">(lb)</span><input id="wbCrew" type="number"></label>
-      <label>Survival Gear <span class="small">(lb)</span><input id="wbSurvival" type="number"></label>
+      <label>Crew <span class="small">(lb)</span><input id="wbCrew" type="number" value="460"></label>
+      <label>Survival Gear <span class="small">(lb)</span><input id="wbSurvival" type="number" value="45"></label>
       <label>Medical Gear
         <select id="wbMedicalPreset">
           <option value="0">None — 0 lb</option>
           <option value="435">Neonatal — 435 lb</option>
           <option value="330">Pediatric Sled &amp; EQP — 330 lb</option>
           <option value="277">APRT Team with EQP — 277 lb</option>
-          <option value="360">STARS Medical Team — 360 lb</option>
+          <option value="360" selected>STARS Medical Team — 360 lb</option>
           <option value="custom">Custom</option>
         </select>
         <input id="wbMedicalCustom" class="hidden" type="number" placeholder="Custom medical gear lb">
@@ -338,11 +338,12 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
     </div>
   </div>
 
-  <div class="card">
+    <div class="card">
     <h3>Flight Weight Reference</h3>
     <div class="row"><span>Zero Fuel Weight<br><span class="small">From Weight &amp; Balance</span></span><strong id="airZfw">—</strong></div>
     <div class="row"><span>Max Zero Fuel Weight</span><strong>9,039 lb</strong></div>
   </div>
+
 <div class="card">
     <div class="row"><span>Zero Fuel Weight</span><strong id="zfw">—</strong></div>
     <div class="row"><span>Estimated Takeoff Weight</span><strong id="airTow">—</strong></div>
@@ -473,7 +474,7 @@ function distanceNm(a,b){
 function airport(code){return AIRPORT_DB[code]}
 function airportLabel(code){const a=airport(code);return a?`${code} — ${a.name}`:code}
 function currentTrip(){return {reg:$("tripAircraft").value,dep:$("tripDep").value,dest:$("tripDest").value,alt:$("tripAlt").value}}
-function medicalWeight(){return $("medicalPreset").value==="custom"?num("medicalCustom"):Number($("medicalPreset").value)||0}
+function medicalWeight(){const p=$("wbMedicalPreset").value;return p==="custom"?num("wbMedicalCustom"):Number(p)||0;}
 
 function showScreen(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
@@ -515,7 +516,6 @@ function runwayChange(prefix){
 
 function syncTrip(){
   const t=currentTrip(),bew=AIRCRAFT[t.reg];
-  $("bew").value=bew;
   $("airReg").textContent=t.reg;
   $("airBew").textContent=fmt(bew);
   $("tripSummary").textContent=`${t.reg} • ${t.dep} → ${t.dest} • ALT ${t.alt}`;
@@ -564,23 +564,14 @@ function calcRound(){
   $("rtTowMargin").textContent=Number.isFinite(rtTowMargin)?`${rtTowMargin>=0?"+":""}${fmt(rtTowMargin)}`:"Enter ZFW & FOB";
 }
 
-function zfw(){
-  const t=currentTrip();
-  return AIRCRAFT[t.reg]+num("crew")+num("survival")+medicalWeight()+num("pax")+num("cargo");
-}
+function zfw(){const t=currentTrip();return AIRCRAFT[t.reg]+num("wbCrew")+num("wbSurvival")+medicalWeight()+num("wbPax")+num("wbCargo");}
 
 function syncWeightScreen(){
   const t=currentTrip();
   $("wbReg").textContent=t.reg;
   $("wbBew").textContent=fmt(AIRCRAFT[t.reg]);
   $("wbBewInput").value=Math.round(AIRCRAFT[t.reg]).toLocaleString()+" lb";
-  $("wbCrew").value=$("crew").value;
-  $("wbSurvival").value=$("survival").value;
-  $("wbMedicalPreset").value=$("medicalPreset").value;
-  $("wbMedicalCustom").value=$("medicalCustom").value;
   $("wbMedicalCustom").classList.toggle("hidden",$("wbMedicalPreset").value!=="custom");
-  $("wbPax").value=$("pax").value;
-  $("wbCargo").value=$("cargo").value;
   if(!$("wbFob").dataset.manual) $("wbFob").value=$("rtFob").value || "";
 }
 
@@ -617,15 +608,8 @@ function calcWeight(){
   else{s.className="status warn";s.textContent="Enter fuel on board to complete weight checks.";}
 }
 
-function pullWeightScreenToShared(){
-  $("crew").value=$("wbCrew").value;
-  $("survival").value=$("wbSurvival").value;
-  $("medicalPreset").value=$("wbMedicalPreset").value;
-  $("medicalCustom").value=$("wbMedicalCustom").value;
-  $("medicalCustom").classList.toggle("hidden",$("medicalPreset").value!=="custom");
-  $("pax").value=$("wbPax").value;
-  $("cargo").value=$("wbCargo").value;
-  calcAir();calcRound();calcTakeoff();calcLanding();calcWeight();
+function refreshFromWeightBalance(){
+  calcWeight();calcRound();calcAir();calcTakeoff();calcLanding();
 }
 
 function calcAir(){
@@ -728,8 +712,7 @@ function calcLanding(){
 function calcAll(){calcRound();calcAir();calcTakeoff();calcLanding();calcWeight();}
 
 ["rtCont","rtGs","rtBurn"].forEach(id=>$(id).addEventListener("input",calcRound));
-["airFob","airBurn","airMinutes","airCont","crew","survival","pax","cargo","medicalCustom"].forEach(id=>$(id).addEventListener("input",()=>{calcAir();calcRound();calcTakeoff();calcLanding();calcWeight();}));
-$("medicalPreset").addEventListener("change",()=>{const custom=$("medicalPreset").value==="custom";$("medicalCustom").classList.toggle("hidden",!custom);calcAir();calcRound();calcTakeoff();calcLanding();calcWeight();});
+["airFob","airBurn","airMinutes","airCont"].forEach(id=>$(id).addEventListener("input",()=>{calcAir();calcLanding();calcWeight();}));
 ["toElev","toAltim","toOAT","toWind","toFlaps","toRunway"].forEach(id=>$(id).addEventListener("input",calcTakeoff));
 ["ldElev","ldAltim","ldOAT","ldWind","ldFlaps","ldRunway"].forEach(id=>$(id).addEventListener("input",calcLanding));
 $("toAirport").addEventListener("change",()=>{updateRunways("to");calcTakeoff();});
@@ -738,20 +721,20 @@ $("toRunwaySelect").addEventListener("change",()=>runwayChange("to"));
 $("ldRunwaySelect").addEventListener("change",()=>runwayChange("ld"));
 
 
-["wbCrew","wbSurvival","wbPax","wbCargo","wbMedicalCustom"].forEach(id=>$(id).addEventListener("input",pullWeightScreenToShared));
+["wbCrew","wbSurvival","wbPax","wbCargo","wbMedicalCustom"].forEach(id=>$(id).addEventListener("input",refreshFromWeightBalance));
 $("wbMedicalPreset").addEventListener("change",()=>{
   $("wbMedicalCustom").classList.toggle("hidden",$("wbMedicalPreset").value!=="custom");
-  pullWeightScreenToShared();
+  refreshFromWeightBalance();
 });
 $("wbFob").addEventListener("input",()=>setSharedFob("wbFob"));
 
 
 $("rtFob").addEventListener("input",()=>setSharedFob("rtFob"));
 $("newFlight").addEventListener("click",()=>{
-  ["rtFob","airFob","wbFob","airMinutes","pax","cargo","toOAT","ldOAT"].forEach(id=>$(id).value="");
+  ["rtFob","airFob","wbFob","airMinutes","wbPax","wbCargo","toOAT","ldOAT"].forEach(id=>$(id).value="");
   ["rtCont","airCont"].forEach(id=>$(id).value="0");
   $("airBurn").value="500";$("rtGs").value="249";$("rtBurn").value="500";
-  $("crew").value="460";$("survival").value="45";$("medicalPreset").value="360";$("medicalCustom").value="";$("medicalCustom").classList.add("hidden");
+  $("wbCrew").value="460";$("wbSurvival").value="45";$("wbMedicalPreset").value="360";$("wbMedicalCustom").value="";$("wbMedicalCustom").classList.add("hidden");
   $("wbFob").value="";$("wbFob").dataset.manual="";
   calcAll();showScreen("home");
 });
