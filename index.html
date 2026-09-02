@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f7f7">
+<title>KEW Fuel Master</title>
+<style>
+:root{--bg:#f7f7f7;--card:#fff;--text:#161616;--muted:#666;--line:#d8d8d8;--accent:#245b9f;--good:#176b3a;--warn:#9a4f00;--bad:#a32626}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px}
+main{max-width:760px;margin:auto;padding:14px 14px 40px}
+h1{font-size:28px;margin:4px 0} h2{font-size:22px;margin:0 0 4px} h3{font-size:17px;margin:0 0 8px}
+.small{font-size:13px;color:var(--muted)} .muted{color:var(--muted)} .hidden{display:none!important}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px} .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+label{display:block;font-weight:600;font-size:14px} input,select,button{font:inherit}
+input,select{width:100%;margin-top:5px;border:1px solid #bfbfbf;border-radius:11px;background:#fff;color:#111;padding:11px 12px;min-height:46px}
+input[readonly]{background:#f1f1f1;color:#555}
+button{border:1px solid var(--line);background:#fff;border-radius:13px;padding:12px 14px;min-height:46px;color:var(--text);font-weight:700}
+button.primary{background:var(--accent);color:white;border-color:var(--accent)} button.link{border:0;background:transparent;color:var(--accent);padding-left:0}
+.navgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px} .navbtn{text-align:left;min-height:78px}
+.row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #ececec} .row:last-child{border-bottom:0}
+.row strong{text-align:right} .big{font-size:23px;font-weight:800}
+.status{border-radius:12px;padding:10px 12px;margin-top:10px;font-weight:700} .good{background:#edf7f0;color:var(--good)} .warn{background:#fff5e8;color:var(--warn)} .bad{background:#fdeeee;color:var(--bad)}
+.screen{display:none} .screen.active{display:block}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:8px} .tripchip{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff} summary{font-weight:700;cursor:pointer}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+@media(max-width:540px){.grid2,.grid3,.navgrid{grid-template-columns:1fr} main{padding:10px 10px 32px} .row{gap:8px}}
+</style>
+</head>
+<body>
+<main>
+<section id="home" class="screen active">
+  <div style="text-align:center;padding:6px 0 2px">
+    <div class="small" style="font-weight:800;letter-spacing:.08em">COCKPIT QUICK REFERENCE</div>
+    <h1>KEW FUEL</h1>
+    <div class="muted">PC-12 MB Medevac • Master Clean Build • Complete Runway Lengths</div>
+  </div>
+
+  <div class="card">
+    <h2>Trip Setup</h2>
+    <div class="small">Select once. Aircraft and airports are shared throughout the app.</div>
+    <div class="grid2" style="margin-top:12px">
+      <label>Aircraft
+        <select id="tripAircraft">
+          <option value="C-GKAO">C-GKAO — BEW 6,784 lb</option>
+          <option value="C-GKAU">C-GKAU — BEW 6,725 lb</option>
+          <option value="C-GKAY">C-GKAY — BEW 6,742 lb</option>
+        </select>
+      </label>
+      <label>Departure<select id="tripDep"></select></label>
+      <label>Destination<select id="tripDest"></select></label>
+      <label>Alternate<select id="tripAlt"></select></label>
+    </div>
+    <div class="status good" id="tripSummary"></div>
+    <button type="button" id="newFlight" style="width:100%;margin-top:10px">New Flight / Clear Flight Values</button>
+  </div>
+
+  <div class="navgrid">
+    <button class="navbtn" data-go="round">↻ <b>Round Trip Quick Check</b><div class="small">Starting fuel estimate</div></button>
+    <button class="navbtn" data-go="air">✈ <b>Air Trail Entry</b><div class="small">Halfway, landing fuel & weight</div></button>
+    <button class="navbtn" data-go="takeoff">↑ <b>Takeoff Performance</b><div class="small">Runway quick estimate</div></button>
+    <button class="navbtn" data-go="landing">↓ <b>Landing Performance</b><div class="small">Stopping quick estimate</div></button>
+    <button class="navbtn" data-go="quick">☰ <b>Quick Reference</b><div class="small">Fuel, weights & formulas</div></button>
+  </div>
+  <div class="small" style="margin-top:14px;text-align:center">Quick-reference estimates only. Verify Air Trail, COM, SOP, AFM and approved performance data.<br>Runway lengths were completed from current public aviation references. Verify current published runway data and NOTAMs before operational use.</div>
+</section>
+
+<section id="round" class="screen">
+  <button class="link" data-home>‹ Home</button>
+  <h2>Round Trip Quick Check</h2>
+  <div class="tripchip" data-tripline></div>
+  <div class="card">
+    <div class="grid2">
+      <label>Fuel on Board <span class="small">(lb)</span><input id="rtFob" type="number" inputmode="decimal"></label>
+      <label>Contingency <span class="small">(lb)</span><input id="rtCont" type="number" value="0" inputmode="decimal"></label>
+    </div>
+    <details style="margin-top:10px">
+      <summary>Adjust assumptions — <span id="rtAssumptions">249 kt • 500 lb/hr</span></summary>
+      <div class="grid2" style="margin-top:10px">
+        <label>Planning Groundspeed <span class="small">(kt)</span><input id="rtGs" type="number" value="249"></label>
+        <label>Planning Burn <span class="small">(lb/hr)</span><input id="rtBurn" type="number" value="500"></label>
+      </div>
+    </details>
+  </div>
+  <div class="card">
+    <div class="row"><span>One-way distance</span><strong id="rtDistance">—</strong></div>
+    <div class="row"><span>Round-trip distance</span><strong id="rtRoundDistance">—</strong></div>
+    <div class="row"><span>Destination Fuel / leg</span><strong id="rtDestFuel">—</strong></div>
+    <div class="row"><span>Alternate distance<br><span class="small">Destination → Alternate</span></span><strong id="rtAltDistance">—</strong></div>
+    <div class="row"><span>Alternate fuel — once</span><strong id="rtAltFuel">—</strong></div>
+    <div class="row"><span>Reserve</span><strong>413 lb</strong></div>
+    <div class="row"><span>Total fuel required</span><strong id="rtRequired" class="big">—</strong></div>
+    <div class="row"><span>Fuel margin</span><strong id="rtMargin">Enter FOB</strong></div>
+  </div>
+  <div class="small">Formula: (44 + Destination Fuel) × 2 + Alternate Fuel once + 413 + Contingency.</div>
+</section>
+
+<section id="air" class="screen">
+  <button class="link" data-home>‹ Home</button>
+  <h2>Air Trail Entry</h2>
+  <div class="tripchip" data-tripline></div>
+
+  <div class="card">
+    <div class="row"><span>Aircraft</span><strong id="airReg">—</strong></div>
+    <div class="row"><span>Basic Empty Weight</span><strong id="airBew">—</strong></div>
+    <div class="row"><span>MTOW / MLW</span><strong>10,450 / 9,921 lb</strong></div>
+  </div>
+
+  <div class="card">
+    <h3>Progressive Fuel Check</h3>
+    <div class="grid2">
+      <label>Fuel on Board <span class="small">(lb)</span><input id="airFob" type="number" inputmode="decimal"></label>
+      <label>Current Fuel Flow <span class="small">(lb/hr)</span><input id="airBurn" type="number" value="500" inputmode="decimal"></label>
+      <label>Minutes Remaining to Destination<input id="airMinutes" type="number" inputmode="decimal"></label>
+      <label>Contingency <span class="small">(lb)</span><input id="airCont" type="number" value="0" inputmode="decimal"></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Zero Fuel Weight</h3>
+    <div class="grid2">
+      <label>BEW<input id="bew" readonly></label>
+      <label>Crew <span class="small">(lb)</span><input id="crew" type="number" value="460"></label>
+      <label>Survival Gear <span class="small">(lb)</span><input id="survival" type="number" value="45"></label>
+      <label>Medical Gear
+        <select id="medicalPreset">
+          <option value="0">None — 0 lb</option>
+          <option value="435">Neonatal — 435 lb</option>
+          <option value="330">Pediatric Sled & EQP — 330 lb</option>
+          <option value="277">APRT Team with EQP — 277 lb</option>
+          <option value="360" selected>STARS Medical Team — 360 lb</option>
+          <option value="custom">Custom</option>
+        </select>
+        <input id="medicalCustom" class="hidden" type="number" placeholder="Custom medical gear lb">
+      </label>
+      <label>Passengers <span class="small">(lb)</span><input id="pax" type="number"></label>
+      <label>Baggage / Cargo <span class="small">(lb)</span><input id="cargo" type="number"></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row"><span>Zero Fuel Weight</span><strong id="zfw">—</strong></div>
+    <div class="row"><span>Estimated Takeoff Weight</span><strong id="airTow">—</strong></div>
+    <div class="row"><span>MTOW Margin</span><strong id="mtowMargin">—</strong></div>
+    <div class="row"><span>Halfway distance</span><strong id="halfDistance">—</strong></div>
+    <div class="row"><span>Estimated FOB at halfway</span><strong id="halfFuel">—</strong></div>
+    <div class="row"><span>Alternate fuel — once</span><strong id="airAltFuel">—</strong></div>
+    <div class="row"><span>HWP Required Fuel</span><strong id="hwpRequired">—</strong></div>
+    <div class="row"><span>HWP Fuel Margin</span><strong id="hwpMargin">—</strong></div>
+    <div class="row"><span>Predicted Landing Fuel</span><strong id="landingFuel">—</strong></div>
+    <div class="row"><span>Predicted Landing Weight</span><strong id="airLw">—</strong></div>
+    <div class="row"><span>MLW Margin</span><strong id="mlwMargin">—</strong></div>
+    <div id="weightStatus" class="status good">Enter flight values to check weight margins.</div>
+  </div>
+  <div class="small">Progressive check uses current fuel flow and minutes remaining. Alternate is Destination → Alternate and counted once.</div>
+</section>
+
+<section id="takeoff" class="screen">
+  <button class="link" data-home>‹ Home</button>
+  <h2>Takeoff Performance Check</h2>
+  <div class="tripchip" data-tripline></div>
+  <div class="card">
+    <div class="grid2">
+      <label>Takeoff Airport<select id="toAirport"></select></label>
+      <label>Runway<select id="toRunwaySelect"></select></label>
+      <label>Runway Available <span class="small">(ft)</span><input id="toRunway" type="number"></label>
+      <label>Aircraft Weight <span class="small">(lb)</span><input id="toWeight" type="number"></label>
+      <label>Airport Elevation <span class="small">(ft)</span><input id="toElev" type="number"></label>
+      <label>Altimeter <span class="small">(inHg)</span><input id="toAltim" type="number" step="0.01" value="29.92"></label>
+      <label>OAT <span class="small">(°C)</span><input id="toOAT" type="number"></label>
+      <label>Wind <span class="small">+ head / − tail kt</span><input id="toWind" type="number" value="0"></label>
+      <label>Flaps<select id="toFlaps"><option value="15">15°</option><option value="30">30°</option></select></label>
+    </div>
+  </div>
+  <div class="card">
+    <div class="row"><span>Pressure Altitude</span><strong id="toPA">—</strong></div>
+    <div class="row"><span>Approx. Vr</span><strong id="toVr">—</strong></div>
+    <div class="row"><span>Estimated distance over 50 ft</span><strong id="toEstimated">—</strong></div>
+    <div class="row"><span>Runway margin</span><strong id="toMargin">—</strong></div>
+    <div id="toStatus" class="status warn">Enter conditions and runway.</div>
+  </div>
+  <div class="small">Quick-reference estimator only. Not approved performance data.</div>
+</section>
+
+<section id="landing" class="screen">
+  <button class="link" data-home>‹ Home</button>
+  <h2>Landing Performance Check</h2>
+  <div class="tripchip" data-tripline></div>
+  <div class="card">
+    <div class="grid2">
+      <label>Landing Airport<select id="ldAirport"></select></label>
+      <label>Runway<select id="ldRunwaySelect"></select></label>
+      <label>Runway Available <span class="small">(ft)</span><input id="ldRunway" type="number"></label>
+      <label>Landing Weight <span class="small">(lb)</span><input id="ldWeight" type="number"></label>
+      <label>Airport Elevation <span class="small">(ft)</span><input id="ldElev" type="number"></label>
+      <label>Altimeter <span class="small">(inHg)</span><input id="ldAltim" type="number" step="0.01" value="29.92"></label>
+      <label>OAT <span class="small">(°C)</span><input id="ldOAT" type="number"></label>
+      <label>Wind <span class="small">+ head / − tail kt</span><input id="ldWind" type="number" value="0"></label>
+      <label>Flaps<select id="ldFlaps"><option value="40">40°</option><option value="30">30°</option><option value="15">15°</option></select></label>
+    </div>
+  </div>
+  <div class="card">
+    <div class="row"><span>Pressure Altitude</span><strong id="ldPA">—</strong></div>
+    <div class="row"><span>Approx. VAPP</span><strong id="ldVapp">—</strong></div>
+    <div class="row"><span>Estimated distance over 50 ft</span><strong id="ldEstimated">—</strong></div>
+    <div class="row"><span>Runway margin</span><strong id="ldMargin">—</strong></div>
+    <div id="ldStatus" class="status warn">Enter conditions and runway.</div>
+  </div>
+  <div class="small">Quick-reference estimator only. Not approved performance data.</div>
+</section>
+
+<section id="quick" class="screen">
+  <button class="link" data-home>‹ Home</button>
+  <h2>Quick Reference</h2>
+  <div class="card">
+    <div class="row"><span>Taxi fuel</span><strong>44 lb</strong></div>
+    <div class="row"><span>Reserve fuel</span><strong>413 lb</strong></div>
+    <div class="row"><span>MTOW</span><strong>10,450 lb</strong></div>
+    <div class="row"><span>MLW</span><strong>9,921 lb</strong></div>
+    <div class="row"><span>Max Zero Fuel Weight</span><strong>9,039 lb</strong></div>
+    <div class="row"><span>Max Ramp Weight</span><strong>10,495 lb</strong></div>
+  </div>
+  <div class="card">
+    <h3>Aircraft Basic Empty Weight</h3>
+    <div class="row"><span>C-GKAO</span><strong>6,784 lb</strong></div>
+    <div class="row"><span>C-GKAU</span><strong>6,725 lb</strong></div>
+    <div class="row"><span>C-GKAY</span><strong>6,742 lb</strong></div>
+  </div>
+  <div class="card">
+    <h3>Medical Gear — MB Medevac</h3>
+    <div class="row"><span>Neonatal</span><strong>435 lb</strong></div>
+    <div class="row"><span>Pediatric Sled & EQP</span><strong>330 lb</strong></div>
+    <div class="row"><span>APRT Team with EQP</span><strong>277 lb</strong></div>
+    <div class="row"><span>STARS Medical Team</span><strong>360 lb</strong></div>
+  </div>
+  <div class="card">
+    <h3>Fuel Logic</h3>
+    <p><b>Round trip:</b><br>(44 + Destination Fuel) × 2 + Alternate Fuel once + 413 + Contingency.</p>
+    <p><b>Alternate:</b><br>Destination → selected Alternate. Count once.</p>
+    <p><b>Predicted landing fuel:</b><br>FOB − 44 − estimated remaining destination fuel.</p>
+    <p><b>ZFW:</b><br>BEW + Crew + Survival + Medical + Passengers + Baggage/Cargo.</p>
+  </div>
+</section>
+</main>
+
+<script>
+const AIRPORT_DB={"CYWG":{"name":"Winnipeg / James Armstrong Richardson International Airport","elev":783,"runways":[{"id":"13/31","length":8841,"surface":"ASP"},{"id":"18/36","length":11000,"surface":"ASP"}],"lat":49.91,"lon":-97.239899},"CYAV":{"name":"Winnipeg / St. Andrews Airport","elev":760,"runways":[{"id":"04/22","length":2850,"surface":"ASP"},{"id":"13/31","length":3000,"surface":"ASP"},{"id":"18/36","length":3000,"surface":"ASP"}],"lat":50.0564,"lon":-97.032501},"CYPG":{"name":"Portage-la-Prairie / Southport Airport","elev":885,"runways":[{"id":"02/20","length":3045,"surface":"ASP"},{"id":"09/27","length":2670,"surface":"ASP"},{"id":"13L/31R","length":3130,"surface":"ASP"},{"id":"13R/31L","length":7000,"surface":"ASP"}],"lat":49.903099,"lon":-98.273817},"CYBR":{"name":"Brandon Municipal Airport","elev":1343,"runways":[{"id":"08/26","length":6500,"surface":"ASP"},{"id":"14/32","length":3000,"surface":"GVL"}],"lat":49.91,"lon":-99.951897},"CYDN":{"name":"Dauphin Barker Airport","elev":999,"runways":[{"id":"02/20","length":2000,"surface":"GVL"},{"id":"08/26","length":2700,"surface":"ASP"},{"id":"14/32","length":5000,"surface":"ASP"}],"lat":51.1008,"lon":-100.052002},"CYGM":{"name":"Gimli Industrial Park Airport","elev":753,"runways":[{"id":"15/33","length":6800,"surface":"ASP"}],"lat":50.628101,"lon":-97.043297},"CYQD":{"name":"The Pas Airport","elev":887,"runways":[{"id":"13/31","length":5901,"surface":"ASP"}],"lat":53.971401,"lon":-101.091003},"CYFO":{"name":"Flin Flon Airport","elev":997,"runways":[{"id":"19/01","length":5004,"surface":"ASP"}],"lat":54.678101,"lon":-101.681999},"CYTH":{"name":"Thompson Airport","elev":729,"runways":[{"id":"06/24","length":5800,"surface":"ASP"},{"id":"15/33","length":5079,"surface":"GVL"}],"lat":55.801102,"lon":-97.864197},"CYYQ":{"name":"Churchill Airport","elev":94,"runways":[{"id":"07/25","length":4000,"surface":"GVL"},{"id":"15/33","length":9200,"surface":"ASP"}],"lat":58.739201,"lon":-94.065002},"CYBV":{"name":"Berens River Airport","elev":728,"runways":[{"id":"09/27","length":2900,"surface":"CRUSHED ROCK"}],"lat":52.358898,"lon":-97.018303},"CYBQ":{"name":"Tadoule Lake Airport","elev":923,"runways":[{"id":"07/25","length":3201,"surface":"GRAVEL"}],"lat":58.706308,"lon":-98.511057},"CYBT":{"name":"Brochet Airport","elev":1136,"runways":[{"id":"03/21","length":3500,"surface":"CRUSHED ROCK"}],"lat":57.8894,"lon":-101.679001},"CYCR":{"name":"Cross Lake (Charlie Sinclair Memorial) Airport","elev":709,"runways":[{"id":"05/23","length":3990,"surface":"CRUSHED ROCK"}],"lat":54.609758,"lon":-97.762442},"CYGO":{"name":"Gods Lake Narrows Airport","elev":617,"runways":[{"id":"14/32","length":3810,"surface":"CRUSHED ROCK"}],"lat":54.55768,"lon":-94.490061},"CYGX":{"name":"Gillam Airport","elev":476,"runways":[{"id":"05/23","length":5000,"surface":"GRAVEL"}],"lat":56.35712,"lon":-94.711504},"CYIV":{"name":"Island Lake Airport","elev":770,"runways":[{"id":"12/30","length":4000,"surface":"CRUSHED ROCK"}],"lat":53.857201,"lon":-94.653603},"CYNE":{"name":"Norway House Airport","elev":734,"runways":[{"id":"06/24","length":3902,"surface":"GRAVEL"}],"lat":53.958302,"lon":-97.8442},"CYOH":{"name":"Oxford House Airport","elev":663,"runways":[{"id":"04/22","length":3828,"surface":"CRUSHED ROCK"}],"lat":54.9333,"lon":-95.2789},"CYRS":{"name":"Red Sucker Lake Airport","elev":729,"runways":[{"id":"09/27","length":3555,"surface":"CRUSHED ROCK"}],"lat":54.167198,"lon":-93.557198},"CYST":{"name":"St. Theresa Point Airport","elev":773,"runways":[{"id":"04/22","length":3400,"surface":"CRUSHED ROCK"}],"lat":53.845261,"lon":-94.851966},"CYYL":{"name":"Lynn Lake Airport","elev":1170,"runways":[{"id":"08/26","length":2520,"surface":"GVL"},{"id":"17/35","length":5000,"surface":"ASP"}],"lat":56.863899,"lon":-101.075996},"CZBD":{"name":"Ilford Airport","elev":642,"runways":[{"id":"09/27","length":3000,"surface":"CRUSHED ROCK"}],"lat":56.051622,"lon":-95.61882},"CZFG":{"name":"Pukatawagan Airport","elev":958,"runways":[{"id":"15/33","length":3000,"surface":"CRUSHED ROCK"}],"lat":55.749199,"lon":-101.265999},"CZGI":{"name":"Gods River Airport","elev":627,"runways":[{"id":"09/27","length":3540,"surface":"CRUSHED ROCK"}],"lat":54.839699,"lon":-94.078598},"CZSN":{"name":"South Indian Lake Airport","elev":951,"runways":[{"id":"18/36","length":3509,"surface":"CRUSHED ROCK"}],"lat":56.792801,"lon":-98.907204},"CZTA":{"name":"Bloodvein River Airport","elev":721,"runways":[{"id":"18/36","length":3000,"surface":"CRUSHED ROCK"}],"lat":51.784568,"lon":-96.692305},"CZTM":{"name":"Shamattawa Airport","elev":289,"runways":[{"id":"01/19","length":4006,"surface":"GRAVEL"}],"lat":55.86356,"lon":-92.081137},"CZWH":{"name":"Lac Brochet Airport","elev":1211,"runways":[{"id":"03/21","length":3500,"surface":"CRUSHED ROCK"}],"lat":58.614279,"lon":-101.468954},"CJB6":{"name":"Gods Lake Airport","elev":605,"runways":[{"id":"16/34","length":2500,"surface":"GRAVEL/SAND"}],"lat":54.780469,"lon":-93.718228},"CYLR":{"name":"Leaf Rapids Airport","elev":959,"runways":[{"id":"18/36","length":3000,"surface":"ASP"}],"lat":56.513302,"lon":-99.985298},"CZGR":{"name":"Little Grand Rapids Airport","elev":1005,"runways":[{"id":"18/36","length":2800,"surface":"CRUSHED ROCK"}],"lat":52.045417,"lon":-95.46617},"CZNG":{"name":"Poplar River Airport","elev":728,"runways":[{"id":"10/28","length":2500,"surface":"CRUSHED ROCK"}],"lat":52.996526,"lon":-97.274194},"CZMN":{"name":"Pikwitonei Airport","elev":630,"runways":[{"id":"05/23","length":2200,"surface":"CRUSHED ROCK"}],"lat":55.588902,"lon":-97.1642},"CZJN":{"name":"Swan River Airport","elev":1100,"runways":[{"id":"02/20","length":3933,"surface":"ASP"},{"id":"08/26","length":1950,"surface":"GRS"}],"lat":52.120602,"lon":-101.236},"CZLQ":{"name":"Thicket Portage Airport","elev":678,"runways":[{"id":"12/30","length":2220,"surface":"CRUSHED ROCK"}],"lat":55.318901,"lon":-97.707802},"CZAC":{"name":"York Landing Airport","elev":621,"runways":[{"id":"10/28","length":3395,"surface":"CRUSHED ROCK"}],"lat":56.089401,"lon":-96.089203},"CZEE":{"name":"Kelsey Airport","elev":600,"runways":[{"id":"12/30","length":2590,"surface":"GRAVEL"}],"lat":56.037498,"lon":-96.509697},"CJE4":{"name":"Snow Lake Airport","elev":993,"runways":[{"id":"03/21","length":3510,"surface":"GRAVEL"}],"lat":54.897202,"lon":-99.818901},"CJV8":{"name":"Grand Rapids Airport","elev":860,"runways":[{"id":"13/31","length":3119,"surface":"GRAVEL"}],"lat":53.172501,"lon":-99.323097},"CYVD":{"name":"Virden / RJ (Bob) Andrew Field Regional Aerodrome","elev":1454,"runways":[{"id":"08/26","length":4000,"surface":"ASPHALT"}],"lat":49.8783,"lon":-100.917999},"CJL6":{"name":"Altona Municipal Airport","elev":806,"runways":[{"id":"17/35","length":3248,"surface":"ASP"},{"id":"08/26","length":2000,"surface":"GRASS"}],"lat":49.0931,"lon":-97.5293},"CJU6":{"name":"Arborg Airport","elev":765,"runways":[{"id":"17/35","length":3250,"surface":""}],"lat":50.91278,"lon":-97.30444},"CJE7":{"name":"Ashern Airport","elev":976,"runways":[{"id":"14/32","length":3551,"surface":""}],"lat":51.15861,"lon":-98.33194},"CJB2":{"name":"Carman / Friendship Field Airport","elev":882,"runways":[{"id":"17/35","length":2300,"surface":"GRASS"},{"id":"09/27","length":1900,"surface":"GRASS"}],"lat":49.49139,"lon":-98.01861},"CJS7":{"name":"Carman (South) Airport","elev":876,"runways":[{"id":"08/26","length":2600,"surface":"GRASS"}],"lat":49.48028,"lon":-98.015},"CCC3":{"name":"Cooks Creek Aerodrome","elev":785,"runways":[{"id":"09/27","length":1800,"surface":"GRASS"}],"lat":50.03194,"lon":-96.73278},"CKZ6":{"name":"Crystal City-Pilot Mound / Louise Municipal Airport","elev":1525,"runways":[{"id":"08/26","length":2950,"surface":"GRASS"}],"lat":49.14722,"lon":-98.88083},"CJJ4":{"name":"Deloraine Airport","elev":1686,"runways":[{"id":"08/26","length":3981,"surface":"ASPH"},{"id":"17/35","length":2218,"surface":""}],"lat":49.15056,"lon":-100.50056},"CKM6":{"name":"Easterville Airport","elev":881,"runways":[{"id":"12/30","length":2602,"surface":"GRAVEL/CLAY"}],"lat":53.10861,"lon":-99.79778},"CKZ3":{"name":"Elk Island Airport","elev":625,"runways":[{"id":"06/24","length":3805,"surface":"GRVL"}],"lat":54.67056,"lon":-94.14556},"CKQ6":{"name":"Erickson Municipal Airport","elev":2114,"runways":[{"id":"09/27","length":3000,"surface":""}],"lat":50.49944,"lon":-99.89778},"CKX4":{"name":"Fisher Branch Airport","elev":825,"runways":[{"id":"17/35","length":1600,"surface":"GRASS"}],"lat":51.08333,"lon":-97.48333},"CTR8":{"name":"Fraserwood / Tribble Ranch Field Aerodrome","elev":861,"runways":[{"id":"18/36","length":2129,"surface":"GRASS"}],"lat":50.5925,"lon":-97.29972},"CJR5":{"name":"Gladstone Aerodrome","elev":900,"runways":[{"id":"18/36","length":2695,"surface":"ASPH/GRASS"}],"lat":50.16361,"lon":-98.9425},"CJJ2":{"name":"Glenboro Airport","elev":1240,"runways":[{"id":"17/35","length":2650,"surface":"GRASS"}],"lat":49.55,"lon":-99.33333},"CJK2":{"name":"Gunisao Lake Airport","elev":886,"runways":[{"id":"12/30","length":3600,"surface":"SAND/GRVL"}],"lat":53.52,"lon":-96.37111},"CJT8":{"name":"Homewood Airport","elev":815,"runways":[{"id":"08/26","length":3000,"surface":"GRASS"}],"lat":49.50917,"lon":-97.85056},"CZJG":{"name":"Jenpeg Airport","elev":729,"runways":[{"id":"15/33","length":3796,"surface":"GRVL"}],"lat":54.51889,"lon":-98.04611},"CAS3":{"name":"Kaskattama River Aerodrome","elev":30,"runways":[{"id":"12/30","length":3174,"surface":"GRVL"}],"lat":57.04139,"lon":-90.11278},"CJS5":{"name":"Killarney Municipal Airport","elev":1680,"runways":[{"id":"12/30","length":3342,"surface":"GRVL/ASPH"},{"id":"17/35","length":1950,"surface":"GRASS"}],"lat":49.15167,"lon":-99.69028},"CJT3":{"name":"Knee Lake Airport","elev":625,"runways":[{"id":"03/21","length":3950,"surface":"CRUSHED ROCK"}],"lat":54.91528,"lon":-94.79806},"CJP7":{"name":"Bird River (Lac du Bonnet) Airport","elev":950,"runways":[{"id":"07/25","length":4250,"surface":"GRASS/GRVL"}],"lat":50.39667,"lon":-95.735},"CYAX":{"name":"Lac du Bonnet Airport","elev":850,"runways":[{"id":"18/36","length":3609,"surface":"ASPH"}],"lat":50.29444,"lon":-96.01},"CJC8":{"name":"Laurie River Airport","elev":1200,"runways":[{"id":"17/35","length":2220,"surface":"GRVL"}],"lat":56.24861,"lon":-101.30417},"CJN7":{"name":"Little Churchill River / Dunlop's Fly In Lodge Aerodrome","elev":700,"runways":[{"id":"10/28","length":2625,"surface":"CLAY/GRVL/GRASS"}],"lat":56.58,"lon":-96.2475},"CKR4":{"name":"Lundar Airport","elev":830,"runways":[{"id":"12/30","length":3850,"surface":"GRASS"},{"id":"06/24","length":2680,"surface":"GRASS"}],"lat":50.70333,"lon":-98.05667},"CJL5":{"name":"Winnipeg / Lyncrest Airport","elev":775,"runways":[{"id":"09/27","length":3000,"surface":"GRASS"},{"id":"17/35","length":2500,"surface":"GRASS"}],"lat":49.8525,"lon":-96.97361},"CJU3":{"name":"Macdonald Airport","elev":840,"runways":[{"id":"16/34","length":2400,"surface":""}],"lat":50.09639,"lon":-98.50083},"CKF6":{"name":"MacGregor Airfield","elev":950,"runways":[{"id":"08/26","length":2270,"surface":"GRASS"}],"lat":49.9675,"lon":-98.76028},"CKG5":{"name":"Manitou Airport","elev":1592,"runways":[{"id":"08/26","length":2570,"surface":"GRASS"}],"lat":49.25,"lon":-98.53333},"CJR8":{"name":"McCreary Airport","elev":1000,"runways":[{"id":"17/35","length":2600,"surface":""}],"lat":50.76444,"lon":-99.49694},"CJT5":{"name":"Melita Airport","elev":1475,"runways":[{"id":"17/35","length":2250,"surface":"GRASS"},{"id":"08/26","length":2000,"surface":"GRASS"}],"lat":49.26167,"lon":-101.01389},"CJU5":{"name":"Minnedosa Airport","elev":1840,"runways":[{"id":"10/28","length":2750,"surface":"GRASS/SNOW"}],"lat":50.27194,"lon":-99.76306},"CKJ8":{"name":"Molson Lake Airport","elev":750,"runways":[{"id":"09/27","length":4360,"surface":"GRVL"}],"lat":54.25806,"lon":-97.01111},"CJA3":{"name":"Morden Regional Aerodrome","elev":957,"runways":[{"id":"10/28","length":3937,"surface":"ASPH"},{"id":"18/36","length":2089,"surface":"GRASS"}],"lat":49.21056,"lon":-98.06056},"CJV5":{"name":"Neepawa Airport","elev":1277,"runways":[{"id":"04/22","length":3507,"surface":""}],"lat":50.23278,"lon":-99.51056},"CYNN":{"name":"Nejanilini Lake Airport","elev":964,"runways":[{"id":"18/36","length":3442,"surface":"GRVL/SAND"}],"lat":59.48528,"lon":-97.78111},"CEG8":{"name":"North Seal River Airport","elev":962,"runways":[{"id":"03/21","length":4738,"surface":"CLAY/SAND"}],"lat":58.96944,"lon":-99.975},"CNL9":{"name":"Nueltin Lake Airport","elev":971,"runways":[{"id":"02/20","length":4700,"surface":"CLAY"}],"lat":59.70806,"lon":-100.12722},"CAV9":{"name":"Oak Hammock Air Park Airport","elev":755,"runways":[{"id":"18/36","length":2600,"surface":"GRASS"}],"lat":50.13778,"lon":-97.06139},"CRP2":{"name":"Reston / R.M. of Pipestone Airport","elev":1488,"runways":[{"id":"08/26","length":3000,"surface":"GRVL"}],"lat":49.58056,"lon":-101.05278},"CJZ2":{"name":"Portage la Prairie (North) Airport","elev":860,"runways":[{"id":"18/36","length":2048,"surface":"GRASS"},{"id":"14/32","length":2971,"surface":"GRASS"},{"id":"09/27","length":1952,"surface":"GRASS"}],"lat":49.9925,"lon":-98.30306},"CRM2":{"name":"Riding Mountain Airport","elev":1016,"runways":[{"id":"09/27","length":2274,"surface":"GRASS"}],"lat":50.57361,"lon":-99.36139},"CKG2":{"name":"Riverton Airport","elev":725,"runways":[{"id":"17/35","length":3000,"surface":""}],"lat":50.97167,"lon":-97.01111},"CKB7":{"name":"Roblin Airport","elev":1821,"runways":[{"id":"13/31","length":3510,"surface":"ASPH"}],"lat":51.23444,"lon":-101.3925},"CKD7":{"name":"Roland (Graham Field) Airport","elev":865,"runways":[{"id":"17/35","length":3500,"surface":"GRASS"}],"lat":49.40833,"lon":-97.99056},"CKJ2":{"name":"Rosenort Airport","elev":779,"runways":[{"id":"17/35","length":1850,"surface":"GRASS/GRVL"}],"lat":49.45306,"lon":-97.4225},"CJW5":{"name":"Russell Airport","elev":1824,"runways":[{"id":"17/35","length":4003,"surface":"ASPH"},{"id":"14/32","length":1900,"surface":"GRASS/SNOW"}],"lat":50.76583,"lon":-101.295},"CKA8":{"name":"St. Francois Xavier Airport","elev":798,"runways":[{"id":"01/19","length":3000,"surface":"GRASS/EARTH/GRVL"}],"lat":49.92444,"lon":-97.54889},"CPJ6":{"name":"St-Pierre-Jolys (Carl's Field) Aerodrome","elev":824,"runways":[{"id":"18/36","length":2700,"surface":"GRASS"}],"lat":49.43611,"lon":-96.92694},"CJQ9":{"name":"Big Sand Lake Airport","elev":1050,"runways":[{"id":"17/35","length":3450,"surface":"CLAY/SAND"}],"lat":57.61944,"lon":-99.87528},"CKL2":{"name":"Selkirk Airport","elev":747,"runways":[{"id":"11/29","length":3000,"surface":"GRVL"}],"lat":50.17222,"lon":-96.87222},"CKL5":{"name":"Shoal Lake Airport","elev":1836,"runways":[{"id":"10/28","length":3304,"surface":"ASPH"}],"lat":50.4575,"lon":-100.60861},"CKB8":{"name":"Silver Falls Airport","elev":775,"runways":[{"id":"14/32","length":2575,"surface":"GRASS/SNOW"}],"lat":50.5,"lon":-96.09806},"CKC8":{"name":"Somerset Aerodrome","elev":1563,"runways":[{"id":"08/26","length":2500,"surface":""}],"lat":49.40028,"lon":-98.6925},"CJX5":{"name":"Souris Glenwood Industrial Air Park","elev":1480,"runways":[{"id":"08/26","length":2200,"surface":"GRASS"},{"id":"14/32","length":2900,"surface":"ASPH"}],"lat":49.63333,"lon":-100.2},"CKJ7":{"name":"Starbuck Aerodrome","elev":785,"runways":[{"id":"09/27","length":1900,"surface":"GRASS"},{"id":"13/31","length":3000,"surface":"GRASS"},{"id":"18/36","length":2550,"surface":"GRASS"}],"lat":49.70611,"lon":-97.68056},"CJB3":{"name":"Steinbach Airport","elev":849,"runways":[{"id":"15/33","length":3037,"surface":"ASPH"}],"lat":49.55083,"lon":-96.68056},"CKK7":{"name":"Steinbach (South) Airport","elev":888,"runways":[{"id":"18/36","length":3112,"surface":"ASPH/GRASS"},{"id":"07/25","length":1834,"surface":"GRASS"}],"lat":49.49389,"lon":-96.69889},"CJY5":{"name":"Strathclair Airport","elev":1875,"runways":[{"id":"17/35","length":2950,"surface":""}],"lat":50.39611,"lon":-100.42528},"CSR2":{"name":"Swan River / PVA1 Aerodrome","elev":1420,"runways":[{"id":"13/31","length":3506,"surface":"GRVL"}],"lat":52.16833,"lon":-101.59111},"CJR3":{"name":"The Pas / Grace Lake Airport","elev":873,"runways":[{"id":"08/26","length":3265,"surface":"GRVL"},{"id":"17/35","length":2853,"surface":"GRVL"}],"lat":53.82639,"lon":-101.20528},"CKU2":{"name":"Treherne Airport","elev":1200,"runways":[{"id":"09/27","length":2600,"surface":"GRASS"},{"id":"17/35","length":1750,"surface":"GRASS"}],"lat":49.63111,"lon":-98.66639},"CTN6":{"name":"Treherne (South Norfolk Airpark) Aerodrome","elev":1169,"runways":[{"id":"17/35","length":3115,"surface":"TREATED GRVL/GRASS"}],"lat":49.65972,"lon":-98.66528},"CDP3":{"name":"Utik Lake / Dennis G Punches Field Aerodrome","elev":675,"runways":[{"id":"09/27","length":4476,"surface":"GRVL"}],"lat":55.29056,"lon":-95.80306},"CKR7":{"name":"Virden (Gabrielle Farm) Airport","elev":1440,"runways":[{"id":"08/26","length":2665,"surface":"GRASS/SNOW"}],"lat":49.78472,"lon":-100.95611},"CRS5":{"name":"Wheatland / Spud Plains Aerodrome","elev":1542,"runways":[{"id":"09/27","length":3360,"surface":"TURF/CONC"}],"lat":49.99139,"lon":-100.31333},"CKZ7":{"name":"Winkler Aerodrome","elev":890,"runways":[{"id":"09/27","length":2708,"surface":"GRASS/ASPH"},{"id":"17/35","length":1540,"surface":"GRASS"}],"lat":49.17056,"lon":-97.92},"CWL4":{"name":"Woodland / Kendall Farm Aerodrome","elev":860,"runways":[{"id":"18/36","length":2500,"surface":"GRASS"}],"lat":50.255,"lon":-97.60333},"CJG4":{"name":"Wrong Lake Airport","elev":840,"runways":[{"id":"10/28","length":3396,"surface":"GRVL"}],"lat":52.61556,"lon":-96.185},"CKA4":{"name":"Zhoda Airport","elev":950,"runways":[{"id":"12/30","length":2875,"surface":"GRASS/GRVL/CLAY"}],"lat":49.28083,"lon":-96.50111}};
+const AIRPORT_ORDER=["CYWG","CYTH","CYQD","CYFO","CYYQ","CYIV","CYOH","CYRS","CYST","CYBV","CZTA","CZTM","CZSN","CZFG","CZAC","CZWH","CYBQ","CYBT","CYCR","CYGO","CYGX","CYNE","CZGR","CZNG","CZGI","CZBD","CZMN","CZLQ","CYYL","CYLR","CZEE","CYBR","CYPG","CYAV","CYGM","CYDN","CZJN","CYVD","CJL6","CJU6","CJE7","CJQ9","CJP7","CJS7","CJB2","CCC3","CKZ6","CJJ4","CKM6","CKZ3","CKQ6","CKX4","CTR8","CJR5","CJJ2","CJB6","CJV8","CJK2","CJT8","CZJG","CAS3","CJS5","CJT3","CYAX","CJC8","CJN7","CKR4","CKF6","CJU3","CKG5","CJR8","CJT5","CJU5","CKJ8","CJA3","CJV5","CYNN","CEG8","CNL9","CAV9","CJZ2","CRP2","CRM2","CKG2","CKB7","CKD7","CKJ2","CJW5","CKL2","CKL5","CKB8","CJE4","CKC8","CJX5","CPJ6","CKA8","CKJ7","CKK7","CJB3","CJY5","CSR2","CJR3","CTN6","CKU2","CDP3","CKR7","CRS5","CKZ7","CJL5","CWL4","CJG4","CKA4"];
+const AIRCRAFT={"C-GKAO":6784,"C-GKAU":6725,"C-GKAY":6742};
+const MTOW=10450, MLW=9921, MZFW=9039, MRW=10495, TAXI=44, RESERVE=413;
+
+const $=id=>document.getElementById(id);
+const num=id=>{const el=$(id);const v=el?Number(el.value):NaN;return Number.isFinite(v)?v:0};
+const raw=id=>{const el=$(id);const v=el?Number(el.value):NaN;return Number.isFinite(v)?v:NaN};
+const fmt=(v,u="lb")=>Number.isFinite(v)?Math.round(v).toLocaleString()+" "+u:"—";
+const rad=x=>x*Math.PI/180;
+
+function distanceNm(a,b){
+  if(!a||!b)return NaN;
+  const R=3440.065,dLat=rad(b.lat-a.lat),dLon=rad(b.lon-a.lon);
+  const h=Math.sin(dLat/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.min(1,Math.sqrt(h)));
+}
+function airport(code){return AIRPORT_DB[code]}
+function airportLabel(code){const a=airport(code);return a?`${code} — ${a.name}`:code}
+function currentTrip(){return {reg:$("tripAircraft").value,dep:$("tripDep").value,dest:$("tripDest").value,alt:$("tripAlt").value}}
+function medicalWeight(){return $("medicalPreset").value==="custom"?num("medicalCustom"):Number($("medicalPreset").value)||0}
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"auto"});
+}
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showScreen(b.dataset.go)));
+document.querySelectorAll("[data-home]").forEach(b=>b.addEventListener("click",()=>showScreen("home")));
+
+function populateAirportSelect(select){
+  select.innerHTML="";
+  AIRPORT_ORDER.forEach(code=>{
+    if(!AIRPORT_DB[code])return;
+    const o=document.createElement("option");o.value=code;o.textContent=airportLabel(code);select.appendChild(o);
+  });
+}
+["tripDep","tripDest","tripAlt","toAirport","ldAirport"].forEach(id=>populateAirportSelect($(id)));
+
+function updateRunways(prefix){
+  const apCode=$(prefix+"Airport").value;
+  const a=airport(apCode);
+  const sel=$(prefix+"RunwaySelect");
+  sel.innerHTML="";
+  const manual=document.createElement("option");manual.value="manual";manual.textContent="Manual runway length";sel.appendChild(manual);
+  if(a&&Array.isArray(a.runways)){
+    a.runways.forEach((r,i)=>{
+      const o=document.createElement("option");o.value=String(i);o.textContent=`${r.id} — ${r.length} ft ${r.surface||""}`;sel.appendChild(o);
+    });
+  }
+  $(prefix+"Elev").value=a&&Number.isFinite(a.elev)?a.elev:"";
+  if(a&&a.runways&&a.runways.length){sel.value="0";$(prefix+"Runway").value=a.runways[0].length;}
+  else{sel.value="manual";$(prefix+"Runway").value="";}
+}
+function runwayChange(prefix){
+  const a=airport($(prefix+"Airport").value),v=$(prefix+"RunwaySelect").value;
+  if(v!=="manual"&&a&&a.runways&&a.runways[Number(v)])$(prefix+"Runway").value=a.runways[Number(v)].length;
+  calcTakeoff();calcLanding();
+}
+
+function syncTrip(){
+  const t=currentTrip(),bew=AIRCRAFT[t.reg];
+  $("bew").value=bew;
+  $("airReg").textContent=t.reg;
+  $("airBew").textContent=fmt(bew);
+  $("tripSummary").textContent=`${t.reg} • ${t.dep} → ${t.dest} • ALT ${t.alt}`;
+  document.querySelectorAll("[data-tripline]").forEach(el=>el.textContent=`${t.reg} • ${t.dep} → ${t.dest} • ALT ${t.alt}`);
+  $("toAirport").value=t.dep;$("ldAirport").value=t.dest;
+  updateRunways("to");updateRunways("ld");
+  calcAll();
+}
+["tripAircraft","tripDep","tripDest","tripAlt"].forEach(id=>$(id).addEventListener("change",syncTrip));
+
+function calcRound(){
+  const t=currentTrip(),dep=airport(t.dep),dest=airport(t.dest),alt=airport(t.alt);
+  const gs=Math.max(50,num("rtGs")||249),burn=Math.max(50,num("rtBurn")||500),cont=Math.max(0,num("rtCont")),fob=num("rtFob");
+  const d=distanceNm(dep,dest),ad=distanceNm(dest,alt);
+  const destinationFuel=d/gs*burn;
+  const alternateFuel=ad<0.5?0:ad/gs*burn;
+  const required=(TAXI+destinationFuel)*2+alternateFuel+RESERVE+cont;
+  $("rtAssumptions").textContent=`${Math.round(gs)} kt • ${Math.round(burn)} lb/hr`;
+  $("rtDistance").textContent=fmt(d,"NM");$("rtRoundDistance").textContent=fmt(d*2,"NM");
+  $("rtDestFuel").textContent=fmt(destinationFuel);$("rtAltDistance").textContent=fmt(ad,"NM");$("rtAltFuel").textContent=fmt(alternateFuel);
+  $("rtRequired").textContent=fmt(required);
+  $("rtMargin").textContent=fob>0?`${fob-required>=0?"+":""}${fmt(fob-required)}`:"Enter FOB";
+}
+
+function zfw(){
+  const t=currentTrip();
+  return AIRCRAFT[t.reg]+num("crew")+num("survival")+medicalWeight()+num("pax")+num("cargo");
+}
+function calcAir(){
+  const t=currentTrip(),dep=airport(t.dep),dest=airport(t.dest),alt=airport(t.alt);
+  const fob=num("airFob"),flow=Math.max(0,num("airBurn")),mins=Math.max(0,num("airMinutes")),cont=Math.max(0,num("airCont"));
+  const z=zfw(),d=distanceNm(dep,dest),ad=distanceNm(dest,alt);
+  const remaining=flow*mins/60;
+  const altFuel=ad<0.5?0:ad/249*Math.max(flow||500,1);
+  const halfFuel=fob-flow*(mins/2)/60;
+  const hwpReq=remaining+altFuel+RESERVE+cont;
+  const landFuel=fob>0?fob-TAXI-remaining:NaN;
+  const tow=fob>0?z+Math.max(0,fob-TAXI):NaN;
+  const lw=Number.isFinite(landFuel)?z+landFuel:NaN;
+  $("zfw").textContent=fmt(z);$("airTow").textContent=fmt(tow);
+  $("mtowMargin").textContent=Number.isFinite(tow)?`${MTOW-tow>=0?"+":""}${fmt(MTOW-tow)}`:"—";
+  $("halfDistance").textContent=fmt(d/2,"NM");$("halfFuel").textContent=fob>0?fmt(halfFuel):"—";
+  $("airAltFuel").textContent=fmt(altFuel);$("hwpRequired").textContent=flow>0&&mins>0?fmt(hwpReq):"—";
+  $("hwpMargin").textContent=fob>0&&flow>0&&mins>0?`${halfFuel-hwpReq>=0?"+":""}${fmt(halfFuel-hwpReq)}`:"—";
+  $("landingFuel").textContent=fmt(landFuel);$("airLw").textContent=fmt(lw);
+  $("mlwMargin").textContent=Number.isFinite(lw)?`${MLW-lw>=0?"+":""}${fmt(MLW-lw)}`:"—";
+  $("toWeight").value=Number.isFinite(tow)?Math.round(tow):"";
+  $("ldWeight").value=Number.isFinite(lw)?Math.round(lw):"";
+  const issues=[];
+  if(z>MZFW)issues.push(`OVER MZFW by ${fmt(z-MZFW)}`);
+  if(Number.isFinite(tow)&&tow>MTOW)issues.push(`OVER MTOW by ${fmt(tow-MTOW)}`);
+  if(Number.isFinite(lw)&&lw>MLW)issues.push(`OVER MLW by ${fmt(lw-MLW)}`);
+  const status=$("weightStatus");
+  if(issues.length){status.className="status bad";status.textContent=issues.join(" • ");}
+  else if(fob>0){status.className="status good";status.textContent="Within MZFW, MTOW and MLW based on current entries.";}
+  else{status.className="status warn";status.textContent="Enter flight values to check weight margins.";}
+}
+
+function interp(weight,weights,speeds){
+  if(!(weight>0))return NaN;
+  if(weight<=weights[0])return speeds[0];if(weight>=weights[weights.length-1])return speeds[speeds.length-1];
+  for(let i=0;i<weights.length-1;i++)if(weight>=weights[i]&&weight<=weights[i+1]){
+    const f=(weight-weights[i])/(weights[i+1]-weights[i]);return speeds[i]+f*(speeds[i+1]-speeds[i]);
+  }
+  return NaN;
+}
+function pressureAltitude(elevId,altId){
+  const elev=raw(elevId),alt=raw(altId);
+  return Number.isFinite(elev)&&alt>0?elev+(29.92-alt)*1000:NaN;
+}
+function calcTakeoff(){
+  const weight=num("toWeight"),pa=pressureAltitude("toElev","toAltim"),oat=raw("toOAT"),wind=Number.isFinite(raw("toWind"))?raw("toWind"):0,flaps=$("toFlaps").value,runway=num("toRunway");
+  $("toPA").textContent=fmt(pa,"ft");
+  const vr=flaps==="30"?interp(weight,[6400,7300,8200,9100,10000,10450],[59,63,67,71,75,77]):interp(weight,[6400,7300,8200,9100,10000,10450],[65,69,74,78,82,84]);
+  $("toVr").textContent=Number.isFinite(vr)?Math.round(vr)+" KIAS":"—";
+  if(!(weight>0)||!Number.isFinite(pa)||!Number.isFinite(oat)){$("toEstimated").textContent="—";$("toMargin").textContent="—";return;}
+  const base=flaps==="30"?2050:2200,refWeight=7718,weightFactor=Math.pow(weight/refWeight,1.55);
+  const isa=15-.0019812*pa,isaDev=oat-isa,refIsa=15-.0019812*6000,refIsaDev=18-refIsa;
+  const altitudeFactor=Math.max(.70,1+.000025*(pa-6000)),tempFactor=Math.max(.80,1+.006*(isaDev-refIsaDev));
+  const windRaw=wind>=0?Math.max(.65,1-.010*wind):1+.025*Math.abs(wind),windFactor=windRaw/(1-.010*8);
+  const estimated=base*weightFactor*altitudeFactor*tempFactor*windFactor*1.10,margin=runway-estimated;
+  $("toEstimated").textContent=fmt(estimated,"ft");$("toMargin").textContent=runway>0?`${margin>=0?"+":""}${fmt(margin,"ft")}`:"—";
+  const s=$("toStatus");if(runway>0){s.className="status "+(margin>=0?"good":"bad");s.textContent=margin>=0?`Quick estimate: ${Math.round(margin).toLocaleString()} ft runway margin.`:`Quick estimate exceeds runway by ${Math.abs(Math.round(margin)).toLocaleString()} ft.`;}
+}
+function calcLanding(){
+  const weight=num("ldWeight"),pa=pressureAltitude("ldElev","ldAltim"),oat=raw("ldOAT"),wind=Number.isFinite(raw("ldWind"))?raw("ldWind"):0,flaps=$("ldFlaps").value,runway=num("ldRunway");
+  $("ldPA").textContent=fmt(pa,"ft");
+  let vapp=NaN;if(flaps==="40")vapp=interp(weight,[6400,7300,8200,9100,9920],[69,74,78,83,87]);else if(flaps==="15")vapp=interp(weight,[6393,7275,8157,9039,9921],[84,90,95,100,105]);else vapp=interp(weight,[6400,7300,8200,9100,9920],[77,82,87,92,96]);
+  $("ldVapp").textContent=Number.isFinite(vapp)?Math.round(vapp)+" KIAS":"—";
+  if(!(weight>0)||!Number.isFinite(pa)||!Number.isFinite(oat)){$("ldEstimated").textContent="—";$("ldMargin").textContent="—";return;}
+  const base40=1900,flapFactor=flaps==="15"?1.20:(flaps==="30"?1.10:1),refWeight=7716,weightFactor=Math.pow(weight/refWeight,1.35);
+  const isa=15-.0019812*pa,isaDev=oat-isa,refIsa=15-.0019812*6000,refIsaDev=18-refIsa;
+  const altitudeFactor=Math.max(.75,1+.000020*(pa-6000)),tempFactor=Math.max(.85,1+.0045*(isaDev-refIsaDev));
+  const windRaw=wind>=0?Math.max(.70,1-.008*wind):1+.020*Math.abs(wind),windFactor=windRaw/(1-.008*8);
+  const required=base40*flapFactor*weightFactor*altitudeFactor*tempFactor*windFactor*1.05,margin=runway-required;
+  $("ldEstimated").textContent=fmt(required,"ft");$("ldMargin").textContent=runway>0?`${margin>=0?"+":""}${fmt(margin,"ft")}`:"—";
+  const s=$("ldStatus");if(runway>0){s.className="status "+(margin>=0?"good":"bad");s.textContent=margin>=0?`Estimated stop by ${Math.round(required).toLocaleString()} ft; ${Math.round(margin).toLocaleString()} ft remaining.`:`Estimated stopping distance exceeds runway by ${Math.abs(Math.round(margin)).toLocaleString()} ft.`;}
+}
+function calcAll(){calcRound();calcAir();calcTakeoff();calcLanding();}
+
+["rtFob","rtCont","rtGs","rtBurn"].forEach(id=>$(id).addEventListener("input",calcRound));
+["airFob","airBurn","airMinutes","airCont","crew","survival","pax","cargo","medicalCustom"].forEach(id=>$(id).addEventListener("input",()=>{calcAir();calcTakeoff();calcLanding();}));
+$("medicalPreset").addEventListener("change",()=>{const custom=$("medicalPreset").value==="custom";$("medicalCustom").classList.toggle("hidden",!custom);calcAir();calcTakeoff();calcLanding();});
+["toWeight","toElev","toAltim","toOAT","toWind","toFlaps","toRunway"].forEach(id=>$(id).addEventListener("input",calcTakeoff));
+["ldWeight","ldElev","ldAltim","ldOAT","ldWind","ldFlaps","ldRunway"].forEach(id=>$(id).addEventListener("input",calcLanding));
+$("toAirport").addEventListener("change",()=>{updateRunways("to");calcTakeoff();});
+$("ldAirport").addEventListener("change",()=>{updateRunways("ld");calcLanding();});
+$("toRunwaySelect").addEventListener("change",()=>runwayChange("to"));
+$("ldRunwaySelect").addEventListener("change",()=>runwayChange("ld"));
+
+$("newFlight").addEventListener("click",()=>{
+  ["rtFob","airFob","airMinutes","pax","cargo","toOAT","ldOAT"].forEach(id=>$(id).value="");
+  ["rtCont","airCont"].forEach(id=>$(id).value="0");
+  $("airBurn").value="500";$("rtGs").value="249";$("rtBurn").value="500";
+  $("crew").value="460";$("survival").value="45";$("medicalPreset").value="360";$("medicalCustom").value="";$("medicalCustom").classList.add("hidden");
+  calcAll();showScreen("home");
+});
+
+// Defaults
+$("tripAircraft").value="C-GKAO";$("tripDep").value="CYWG";$("tripDest").value="CJR3";$("tripAlt").value="CYWG";
+syncTrip();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+}
+</script>
+</body></html>
