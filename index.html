@@ -4,38 +4,200 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f7f7">
-<title>KEW Fuel Master</title>
+<title>KEW Fuel Master Colour</title>
 <style>
-:root{--bg:#f7f7f7;--card:#fff;--text:#161616;--muted:#666;--line:#d8d8d8;--accent:#245b9f;--good:#176b3a;--warn:#9a4f00;--bad:#a32626}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px}
-main{max-width:760px;margin:auto;padding:14px 14px 40px}
-h1{font-size:28px;margin:4px 0} h2{font-size:22px;margin:0 0 4px} h3{font-size:17px;margin:0 0 8px}
-.small{font-size:13px;color:var(--muted)} .muted{color:var(--muted)} .hidden{display:none!important}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px} .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-label{display:block;font-weight:600;font-size:14px} input,select,button{font:inherit}
-input,select{width:100%;margin-top:5px;border:1px solid #bfbfbf;border-radius:11px;background:#fff;color:#111;padding:11px 12px;min-height:46px}
-input[readonly]{background:#f1f1f1;color:#555}
-button{border:1px solid var(--line);background:#fff;border-radius:13px;padding:12px 14px;min-height:46px;color:var(--text);font-weight:700}
-button.primary{background:var(--accent);color:white;border-color:var(--accent)} button.link{border:0;background:transparent;color:var(--accent);padding-left:0}
-.navgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px} .navbtn{text-align:left;min-height:78px}
-.row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #ececec} .row:last-child{border-bottom:0}
-.row strong{text-align:right} .big{font-size:23px;font-weight:800}
-.status{border-radius:12px;padding:10px 12px;margin-top:10px;font-weight:700} .good{background:#edf7f0;color:var(--good)} .warn{background:#fff5e8;color:var(--warn)} .bad{background:#fdeeee;color:var(--bad)}
-.screen{display:none} .screen.active{display:block}
-.topline{display:flex;justify-content:space-between;align-items:center;gap:8px} .tripchip{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
-details{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff} summary{font-weight:700;cursor:pointer}
+:root{
+  --bg:#eef3f8;--card:#ffffff;--text:#16202a;--muted:#5e6a76;--line:#d8e0e8;--accent:#245b9f;
+  --good:#176b3a;--warn:#9a4f00;--bad:#a32626;
+  --shadow:0 10px 22px rgba(18,34,54,.08);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#eef3f8 0%,#f7fafc 100%);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  font-size:16px;
+}
+main{max-width:780px;margin:auto;padding:14px 14px 40px}
+h1{font-size:30px;margin:4px 0}
+h2{font-size:23px;margin:0 0 4px}
+h3{font-size:17px;margin:0 0 8px}
+.small{font-size:13px;color:var(--muted)}
+.muted{color:var(--muted)}
+.hidden{display:none!important}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+  margin:12px 0;
+  box-shadow:var(--shadow);
+}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+label{display:block;font-weight:600;font-size:14px}
+input,select,button{font:inherit}
+input,select{
+  width:100%;
+  margin-top:5px;
+  border:1px solid #bfd0e0;
+  border-radius:12px;
+  background:#fff;
+  color:#102030;
+  padding:11px 12px;
+  min-height:46px;
+}
+input[readonly]{background:#f4f7fa;color:#4a5b6b}
+input:focus,select:focus{
+  outline:none;
+  border-color:#5d92d4;
+  box-shadow:0 0 0 3px rgba(93,146,212,.18);
+}
+button{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:14px;
+  padding:12px 14px;
+  min-height:46px;
+  color:var(--text);
+  font-weight:700;
+  transition:transform .08s ease, box-shadow .12s ease;
+}
+button:hover{transform:translateY(-1px);box-shadow:0 8px 16px rgba(19,37,61,.08)}
+button.primary{background:var(--accent);color:white;border-color:var(--accent)}
+button.link{
+  border:0;background:transparent;
+  color:var(--section,#245b9f);
+  padding-left:0;
+  box-shadow:none;
+}
+button.link:hover{transform:none;box-shadow:none;text-decoration:underline}
+
+.navgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.navbtn{
+  text-align:left;
+  min-height:82px;
+  box-shadow:var(--shadow);
+}
+.navbtn b{display:block;margin-bottom:4px}
+
+.row{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  padding:9px 0;border-bottom:1px solid #e9eef4
+}
+.row:last-child{border-bottom:0}
+.row strong{text-align:right}
+.big{font-size:23px;font-weight:800}
+
+.status{
+  border-radius:12px;padding:10px 12px;margin-top:10px;font-weight:700;
+  border:1px solid transparent;
+}
+.good{background:#edf7f0;color:var(--good);border-color:#cce7d6}
+.warn{background:#fff5e8;color:var(--warn);border-color:#f3d5b0}
+.bad{background:#fdeeee;color:var(--bad);border-color:#efc2c2}
+
+.screen{display:none}
+.screen.active{display:block}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tripchip{
+  font-size:13px;color:var(--section,#245b9f);overflow-wrap:anywhere;
+  background:var(--section-soft,#eef5ff);
+  border:1px solid var(--section-line,#d7e6ff);
+  border-radius:999px;
+  padding:8px 12px;
+  display:inline-block;
+  margin:2px 0 8px;
+}
+details{
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 12px;
+  background:#fff;
+}
+summary{font-weight:700;cursor:pointer}
 hr{border:0;border-top:1px solid var(--line);margin:12px 0}
-@media(max-width:540px){.grid2,.grid3,.navgrid{grid-template-columns:1fr} main{padding:10px 10px 32px} .row{gap:8px}}
+
+.hero{
+  text-align:center;
+  padding:18px 16px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#1d4f8b 0%,#3677c9 100%);
+  color:#fff;
+  box-shadow:0 14px 28px rgba(27,59,102,.18);
+}
+.hero .small,.hero .muted{color:rgba(255,255,255,.88)}
+
+.screen:not(#home){
+  --section:#245b9f;
+  --section-soft:#eef5ff;
+  --section-line:#d7e6ff;
+}
+.screen:not(#home) h2{
+  display:inline-block;
+  background:var(--section-soft);
+  color:var(--section);
+  border:1px solid var(--section-line);
+  border-radius:14px;
+  padding:8px 12px;
+  margin-bottom:8px;
+}
+.screen:not(#home) .card{
+  border-top:5px solid var(--section);
+}
+.screen:not(#home) h3{color:var(--section)}
+
+#round{--section:#2e6fd1;--section-soft:#edf4ff;--section-line:#d3e2ff}
+#weight{--section:#6a48c6;--section-soft:#f3efff;--section-line:#ddd3fb}
+#air{--section:#0b8a7a;--section-soft:#e8fbf7;--section-line:#c7efe7}
+#takeoff{--section:#c97900;--section-soft:#fff6db;--section-line:#f2d28a}
+#landing{--section:#b4233c;--section-soft:#fff0f4;--section-line:#f0c3d0}
+#quick{--section:#44546a;--section-soft:#eef1f5;--section-line:#d4dbe4}
+
+#home .card:first-of-type{border-top:5px solid #245b9f}
+#home .card:nth-of-type(2){border-top:5px solid #6a48c6}
+
+.navbtn[data-go="round"]{background:#edf4ff;border-color:#d3e2ff}
+.navbtn[data-go="weight"]{background:#f3efff;border-color:#ddd3fb}
+.navbtn[data-go="air"]{background:#e8fbf7;border-color:#c7efe7}
+.navbtn[data-go="takeoff"]{background:#fff6db;border-color:#f2d28a}
+.navbtn[data-go="landing"]{background:#fff0f4;border-color:#f0c3d0}
+.navbtn[data-go="quick"]{background:#eef1f5;border-color:#d4dbe4}
+
+.navbtn[data-go="round"] b{color:#2e6fd1}
+.navbtn[data-go="weight"] b{color:#6a48c6}
+.navbtn[data-go="air"] b{color:#0b8a7a}
+.navbtn[data-go="takeoff"] b{color:#c97900}
+.navbtn[data-go="landing"] b{color:#b4233c}
+.navbtn[data-go="quick"] b{color:#44546a}
+
+.footer-note{
+  margin-top:14px;
+  text-align:center;
+  background:rgba(255,255,255,.72);
+  border:1px solid #dbe3eb;
+  border-radius:16px;
+  padding:12px 14px;
+}
+
+@media(max-width:540px){
+  .grid2,.grid3,.navgrid{grid-template-columns:1fr}
+  main{padding:10px 10px 32px}
+  .row{gap:8px}
+}
 </style>
 </head>
 <body>
 <main>
 <section id="home" class="screen active">
-  <div style="text-align:center;padding:6px 0 2px">
+  <div class="hero">
     <div class="small" style="font-weight:800;letter-spacing:.08em">COCKPIT QUICK REFERENCE</div>
     <h1>KEW FUEL</h1>
-    <div class="muted">PC-12 MB Medevac • Master Clean Build • Complete Runway Lengths</div>
+    <div class="muted">PC-12 MB Medevac • Colour-Coded Master</div>
   </div>
 
   <div class="card">
@@ -60,11 +222,12 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
   <div class="navgrid">
     <button class="navbtn" data-go="round">↻ <b>Round Trip Quick Check</b><div class="small">Starting fuel estimate</div></button>
     <button class="navbtn" data-go="air">✈ <b>Air Trail Entry</b><div class="small">Halfway, landing fuel & weight</div></button>
+    <button class="navbtn" data-go="weight">⚖ <b>Weight & Balance</b><div class="small">ZFW and weight margins</div></button>
     <button class="navbtn" data-go="takeoff">↑ <b>Takeoff Performance</b><div class="small">Runway quick estimate</div></button>
     <button class="navbtn" data-go="landing">↓ <b>Landing Performance</b><div class="small">Stopping quick estimate</div></button>
     <button class="navbtn" data-go="quick">☰ <b>Quick Reference</b><div class="small">Fuel, weights & formulas</div></button>
   </div>
-  <div class="small" style="margin-top:14px;text-align:center">Quick-reference estimates only. Verify Air Trail, COM, SOP, AFM and approved performance data.<br>Runway lengths were completed from current public aviation references. Verify current published runway data and NOTAMs before operational use.</div>
+  <div class="small footer-note">Quick-reference estimates only. Verify Air Trail, COM, SOP, AFM and approved performance data.<br>Runway lengths were completed from current public aviation references. Verify current published runway data and NOTAMs before operational use.</div>
 </section>
 
 <section id="round" class="screen">
@@ -99,6 +262,58 @@ hr{border:0;border-top:1px solid var(--line);margin:12px 0}
     <div class="row"><span>Fuel margin</span><strong id="rtMargin">Enter FOB</strong></div>
   </div>
   <div class="small">Formula: (44 + Destination Fuel) × 2 + Alternate Fuel once + 413 + Contingency.</div>
+</section>
+
+
+<section id="weight" class="screen">
+  <button class="link" data-home>‹ Home</button>
+  <h2>Weight &amp; Balance</h2>
+  <div class="tripchip" data-tripline></div>
+
+  <div class="card">
+    <div class="row"><span>Aircraft</span><strong id="wbReg">—</strong></div>
+    <div class="row"><span>Basic Empty Weight</span><strong id="wbBew">—</strong></div>
+    <div class="row"><span>Max Zero Fuel Weight</span><strong>9,039 lb</strong></div>
+    <div class="row"><span>Normal MTOW / MLW</span><strong>10,450 / 9,921 lb</strong></div>
+    <div class="row"><span>Round Trip Max T/O Weight</span><strong>9,921 lb</strong></div>
+  </div>
+
+  <div class="card">
+    <h3>Weight Build-Up</h3>
+    <div class="grid2">
+      <label>BEW<input id="wbBewInput" readonly></label>
+      <label>Crew <span class="small">(lb)</span><input id="wbCrew" type="number"></label>
+      <label>Survival Gear <span class="small">(lb)</span><input id="wbSurvival" type="number"></label>
+      <label>Medical Gear
+        <select id="wbMedicalPreset">
+          <option value="0">None — 0 lb</option>
+          <option value="435">Neonatal — 435 lb</option>
+          <option value="330">Pediatric Sled &amp; EQP — 330 lb</option>
+          <option value="277">APRT Team with EQP — 277 lb</option>
+          <option value="360">STARS Medical Team — 360 lb</option>
+          <option value="custom">Custom</option>
+        </select>
+        <input id="wbMedicalCustom" class="hidden" type="number" placeholder="Custom medical gear lb">
+      </label>
+      <label>Passengers <span class="small">(lb)</span><input id="wbPax" type="number"></label>
+      <label>Baggage / Cargo <span class="small">(lb)</span><input id="wbCargo" type="number"></label>
+      <label>Fuel on Board <span class="small">(lb)</span><input id="wbFob" type="number" inputmode="decimal"></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row"><span>Zero Fuel Weight</span><strong id="wbZfw">—</strong></div>
+    <div class="row"><span>MZFW Margin</span><strong id="wbMzfwMargin">—</strong></div>
+    <div class="row"><span>Estimated Ramp Weight<br><span class="small">ZFW + FOB</span></span><strong id="wbRamp">—</strong></div>
+    <div class="row"><span>Ramp Weight Margin</span><strong id="wbRampMargin">—</strong></div>
+    <div class="row"><span>Estimated Takeoff Weight<br><span class="small">ZFW + FOB − 44 taxi</span></span><strong id="wbTow">—</strong></div>
+    <div class="row"><span>Normal MTOW Margin</span><strong id="wbMtowMargin">—</strong></div>
+    <div class="row"><span>Round Trip T/O Margin<br><span class="small">Fixed max 9,921 lb</span></span><strong id="wbRoundTripMargin">—</strong></div>
+    <div class="row"><span>Predicted Landing Weight<br><span class="small">Uses Air Trail predicted landing fuel when available</span></span><strong id="wbLandingWeight">—</strong></div>
+    <div class="row"><span>MLW Margin</span><strong id="wbMlwMargin">—</strong></div>
+    <div id="wbStatus" class="status warn">Enter fuel on board to complete weight checks.</div>
+  </div>
+  <div class="small">Weight-side quick check only. Use Air Trail / approved company data for the operational weight-and-balance determination.</div>
 </section>
 
 <section id="air" class="screen">
@@ -347,6 +562,66 @@ function zfw(){
   const t=currentTrip();
   return AIRCRAFT[t.reg]+num("crew")+num("survival")+medicalWeight()+num("pax")+num("cargo");
 }
+
+function syncWeightScreen(){
+  const t=currentTrip();
+  $("wbReg").textContent=t.reg;
+  $("wbBew").textContent=fmt(AIRCRAFT[t.reg]);
+  $("wbBewInput").value=Math.round(AIRCRAFT[t.reg]).toLocaleString()+" lb";
+  $("wbCrew").value=$("crew").value;
+  $("wbSurvival").value=$("survival").value;
+  $("wbMedicalPreset").value=$("medicalPreset").value;
+  $("wbMedicalCustom").value=$("medicalCustom").value;
+  $("wbMedicalCustom").classList.toggle("hidden",$("wbMedicalPreset").value!=="custom");
+  $("wbPax").value=$("pax").value;
+  $("wbCargo").value=$("cargo").value;
+  if(!$("wbFob").dataset.manual) $("wbFob").value=$("airFob").value || $("rtFob").value || "";
+}
+
+function calcWeight(){
+  syncWeightScreen();
+  const z=zfw(),fob=num("wbFob");
+  const ramp=fob>0?z+fob:NaN;
+  const tow=fob>0?z+Math.max(0,fob-TAXI):NaN;
+  const landFuelText=$("landingFuel").textContent||"";
+  const landFuelMatch=landFuelText.replace(/,/g,"").match(/-?\d+(?:\.\d+)?/);
+  const landFuel=landFuelMatch?Number(landFuelMatch[0]):NaN;
+  const lw=Number.isFinite(landFuel)?z+landFuel:NaN;
+
+  $("wbZfw").textContent=fmt(z);
+  $("wbMzfwMargin").textContent=`${MZFW-z>=0?"+":""}${fmt(MZFW-z)}`;
+  $("wbRamp").textContent=fmt(ramp);
+  $("wbRampMargin").textContent=Number.isFinite(ramp)?`${MRW-ramp>=0?"+":""}${fmt(MRW-ramp)}`:"—";
+  $("wbTow").textContent=fmt(tow);
+  $("wbMtowMargin").textContent=Number.isFinite(tow)?`${MTOW-tow>=0?"+":""}${fmt(MTOW-tow)}`:"—";
+  $("wbRoundTripMargin").textContent=Number.isFinite(tow)?`${ROUND_TRIP_MAX_TOW-tow>=0?"+":""}${fmt(ROUND_TRIP_MAX_TOW-tow)}`:"—";
+  $("wbLandingWeight").textContent=fmt(lw);
+  $("wbMlwMargin").textContent=Number.isFinite(lw)?`${MLW-lw>=0?"+":""}${fmt(MLW-lw)}`:"—";
+
+  const issues=[];
+  if(z>MZFW)issues.push(`OVER MZFW by ${fmt(z-MZFW)}`);
+  if(Number.isFinite(ramp)&&ramp>MRW)issues.push(`OVER MAX RAMP by ${fmt(ramp-MRW)}`);
+  if(Number.isFinite(tow)&&tow>MTOW)issues.push(`OVER MTOW by ${fmt(tow-MTOW)}`);
+  if(Number.isFinite(tow)&&tow>ROUND_TRIP_MAX_TOW)issues.push(`OVER ROUND TRIP 9,921 by ${fmt(tow-ROUND_TRIP_MAX_TOW)}`);
+  if(Number.isFinite(lw)&&lw>MLW)issues.push(`OVER MLW by ${fmt(lw-MLW)}`);
+
+  const s=$("wbStatus");
+  if(issues.length){s.className="status bad";s.textContent=issues.join(" • ");}
+  else if(fob>0){s.className="status good";s.textContent="Within entered weight limits based on current values.";}
+  else{s.className="status warn";s.textContent="Enter fuel on board to complete weight checks.";}
+}
+
+function pullWeightScreenToShared(){
+  $("crew").value=$("wbCrew").value;
+  $("survival").value=$("wbSurvival").value;
+  $("medicalPreset").value=$("wbMedicalPreset").value;
+  $("medicalCustom").value=$("wbMedicalCustom").value;
+  $("medicalCustom").classList.toggle("hidden",$("medicalPreset").value!=="custom");
+  $("pax").value=$("wbPax").value;
+  $("cargo").value=$("wbCargo").value;
+  calcAir();calcRound();calcTakeoff();calcLanding();calcWeight();
+}
+
 function calcAir(){
   const t=currentTrip(),dep=airport(t.dep),dest=airport(t.dest),alt=airport(t.alt);
   const fob=num("airFob"),flow=Math.max(0,num("airBurn")),mins=Math.max(0,num("airMinutes")),cont=Math.max(0,num("airCont"));
@@ -375,6 +650,7 @@ function calcAir(){
   if(issues.length){status.className="status bad";status.textContent=issues.join(" • ");}
   else if(fob>0){status.className="status good";status.textContent="Within MZFW, MTOW and MLW based on current entries.";}
   else{status.className="status warn";status.textContent="Enter flight values to check weight margins.";}
+  if($("wbZfw")) calcWeight();
 }
 
 function interp(weight,weights,speeds){
@@ -417,11 +693,11 @@ function calcLanding(){
   $("ldEstimated").textContent=fmt(required,"ft");$("ldMargin").textContent=runway>0?`${margin>=0?"+":""}${fmt(margin,"ft")}`:"—";
   const s=$("ldStatus");if(runway>0){s.className="status "+(margin>=0?"good":"bad");s.textContent=margin>=0?`Estimated stop by ${Math.round(required).toLocaleString()} ft; ${Math.round(margin).toLocaleString()} ft remaining.`:`Estimated stopping distance exceeds runway by ${Math.abs(Math.round(margin)).toLocaleString()} ft.`;}
 }
-function calcAll(){calcRound();calcAir();calcTakeoff();calcLanding();}
+function calcAll(){calcRound();calcAir();calcTakeoff();calcLanding();calcWeight();}
 
 ["rtFob","rtCont","rtGs","rtBurn"].forEach(id=>$(id).addEventListener("input",calcRound));
-["airFob","airBurn","airMinutes","airCont","crew","survival","pax","cargo","medicalCustom"].forEach(id=>$(id).addEventListener("input",()=>{calcAir();calcRound();calcTakeoff();calcLanding();}));
-$("medicalPreset").addEventListener("change",()=>{const custom=$("medicalPreset").value==="custom";$("medicalCustom").classList.toggle("hidden",!custom);calcAir();calcRound();calcTakeoff();calcLanding();});
+["airFob","airBurn","airMinutes","airCont","crew","survival","pax","cargo","medicalCustom"].forEach(id=>$(id).addEventListener("input",()=>{calcAir();calcRound();calcTakeoff();calcLanding();calcWeight();}));
+$("medicalPreset").addEventListener("change",()=>{const custom=$("medicalPreset").value==="custom";$("medicalCustom").classList.toggle("hidden",!custom);calcAir();calcRound();calcTakeoff();calcLanding();calcWeight();});
 ["toWeight","toElev","toAltim","toOAT","toWind","toFlaps","toRunway"].forEach(id=>$(id).addEventListener("input",calcTakeoff));
 ["ldWeight","ldElev","ldAltim","ldOAT","ldWind","ldFlaps","ldRunway"].forEach(id=>$(id).addEventListener("input",calcLanding));
 $("toAirport").addEventListener("change",()=>{updateRunways("to");calcTakeoff();});
@@ -429,11 +705,23 @@ $("ldAirport").addEventListener("change",()=>{updateRunways("ld");calcLanding();
 $("toRunwaySelect").addEventListener("change",()=>runwayChange("to"));
 $("ldRunwaySelect").addEventListener("change",()=>runwayChange("ld"));
 
+
+["wbCrew","wbSurvival","wbPax","wbCargo","wbMedicalCustom"].forEach(id=>$(id).addEventListener("input",pullWeightScreenToShared));
+$("wbMedicalPreset").addEventListener("change",()=>{
+  $("wbMedicalCustom").classList.toggle("hidden",$("wbMedicalPreset").value!=="custom");
+  pullWeightScreenToShared();
+});
+$("wbFob").addEventListener("input",()=>{
+  $("wbFob").dataset.manual=$("wbFob").value?"1":"";
+  calcWeight();
+});
+
 $("newFlight").addEventListener("click",()=>{
   ["rtFob","airFob","airMinutes","pax","cargo","toOAT","ldOAT"].forEach(id=>$(id).value="");
   ["rtCont","airCont"].forEach(id=>$(id).value="0");
   $("airBurn").value="500";$("rtGs").value="249";$("rtBurn").value="500";
   $("crew").value="460";$("survival").value="45";$("medicalPreset").value="360";$("medicalCustom").value="";$("medicalCustom").classList.add("hidden");
+  $("wbFob").value="";$("wbFob").dataset.manual="";
   calcAll();showScreen("home");
 });
 
